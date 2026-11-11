@@ -89,6 +89,6 @@ end, { remap = true })
 
 require("kiyoon.settings.python_keymaps")
 require("kiyoon.settings.markdown_keymaps")
-require("kiyoon.settings.keychrone_mappings")
+-- require("kiyoon.settings.keychrone_mappings")
 require("kiyoon.settings.korean_langmap")
 require("kiyoon.settings.no_lua_ts")

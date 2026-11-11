@@ -377,8 +377,8 @@ require("lazy").setup({
       { "<F27>", [[<cmd>lua require("tmux").resize_left()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F3>
       { "<F26>", [[<cmd>lua require("tmux").resize_left()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F2>
       { "<F30>", [[<cmd>lua require("tmux").resize_right()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F6>
-      "<C-n>",
-      "<C-p>",
+      "<A-n>",
+      "<A-p>",
       "p",
       "P",
       "=p",
@@ -454,7 +454,8 @@ end
 -- Example usage:
 local current_script_directory = get_current_script_dir()
 vim.opt.runtimepath:append(current_script_directory)
-require("kiyoon.settings.keychrone_mappings")
+-- require("kiyoon.settings.keychrone_mappings")
+require("kiyoon.settings.user_keymaps")
 require("kiyoon.settings.korean_langmap")
 require("kiyoon.settings.messages_in_buffer")
 require("kiyoon.settings.tmux_window_name")

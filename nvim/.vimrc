@@ -216,7 +216,7 @@ set noexpandtab
 augroup IndentDefaultsEarly
   autocmd!
   " Apply per-language defaults BEFORE modeline runs
-  autocmd BufReadPre,BufNewFile *.sh,*.bash,*.zsh,*.py,*.tex,*.lua,*.toml,*.yaml,*.yml,*.json,*.js,*.ts
+  autocmd BufReadPre,BufNewFile *.sh,*.bash,*.zsh,*.py,*.rs,*.c,*.cpp,*.h,*.hpp,*.tex,*.lua,*.toml,*.yaml,*.yml,*.json,*.js,*.ts
         \ setlocal expandtab
 
   autocmd BufReadPre,BufNewFile *.tex,*.lua,*.toml,*.yaml,*.yml,*.json,*.js,*.ts
@@ -327,9 +327,10 @@ if !has('nvim')
   autocmd InsertLeave * set nopaste
 endif
 
-" Select last pasted
+" Select last pasted (gP acts as backup in LSP buffers where gp jumps diagnostics)
 " https://vim.fandom.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+nnoremap <expr> gP '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Below <expr> example will behave differently when there is no 'import' in the file.
 " This is not a practical common but it's for example sake.

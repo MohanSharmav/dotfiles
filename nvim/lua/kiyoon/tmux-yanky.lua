@@ -1,6 +1,11 @@
 -- Integrates tmux.nvim with yanky.nvim and which-key.nvim so we get the benefits of all yank-related plugins.
+local in_graffitty = vim.env.GRAFFITTY_SOCKET ~= nil and vim.env.GRAFFITTY_SOCKET ~= ""
+
 require("tmux").setup({
-  navigation = { enable_default_keybindings = false },
+  navigation = {
+    enable_default_keybindings = not in_graffitty,
+    cycle_navigation = false,
+  },
   copy_sync = {
     enable = true,
     sync_clipboard = false,
@@ -81,8 +86,9 @@ vim.keymap.set("x", "<leader>P", function()
   yanky.put("P", true, yanky_wrappers.blockwise())
 end)
 
-vim.keymap.set("n", "<c-n>", "<Plug>(YankyCycleForward)")
-vim.keymap.set("n", "<c-p>", "<Plug>(YankyCycleBackward)")
+-- <C-n>/<C-p> are reserved for NvimTreeToggle and Telescope find_files.
+vim.keymap.set("n", "<A-n>", "<Plug>(YankyCycleForward)")
+vim.keymap.set("n", "<A-p>", "<Plug>(YankyCycleBackward)")
 vim.keymap.set({ "n", "x" }, "y", "<Plug>(YankyYank)")
 vim.keymap.set("n", "=p", "<Plug>(YankyPutAfterFilter)")
 vim.keymap.set("n", "=P", "<Plug>(YankyPutBeforeFilter)")

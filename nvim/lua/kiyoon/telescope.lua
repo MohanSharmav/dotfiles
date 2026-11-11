@@ -111,4 +111,17 @@ M.grep_string_gitdir = function()
   end
 end
 
+M.live_grep_word_or_open = function()
+  local word = vim.fn.expand("<cword>")
+  if word == "" then
+    word = vim.fn.expand("<cWORD>")
+  end
+
+  if word == "" then
+    builtin.live_grep()
+  else
+    builtin.live_grep({ default_text = word })
+  end
+end
+
 return M

@@ -13,10 +13,26 @@ My IDE-like Tmux configuration and tutorial!
 
 Tmux's default keybindings are quite unintuitive, so I've changed a few.
 
-- Prefix changed: `Ctrl+b` -> `Ctrl+a`: easier to type frequently and does not collide with vim scrolling.
-- Split vertically: `Ctrl+b + %` -> `Ctrl+a + -`
-- Split horizontally: `Ctrl+b + "` -> `Ctrl+a + \`
-- Open/split window on current directory: `Ctrl+a + C`, `Ctrl+a + _`, `Ctrl+a + |` (in US layout, just press shift to open on current directory)
+### Quick Shortcut Table
+
+| Key | Mode / Scope | Action |
+|---|---|---|
+| `Ctrl+b` | Prefix | Tmux prefix key (`Ctrl+b` then `Ctrl+b` or `z` toggles pane zoom) |
+| `Ctrl+b` `\|` / `\` | Window | Vertical split (side-by-side): current dir (`\|`) / default dir (`\`) |
+| `Ctrl+b` `-` / `_` | Window | Horizontal split (top/bottom) in current dir |
+| `Ctrl+b` `C` / `c` | Window | New window in current dir (`C`) / default dir (`c`) |
+| `Ctrl+h/j/k/l` | Global (no prefix) | Seamless pane navigation across Tmux and Neovim |
+| `Ctrl+\` | Global (no prefix) | Switch to previous pane (Tmux & Neovim) |
+| `Ctrl+b` `H/J/K/L` | Window (repeatable) | Resize pane by 5 (`Ctrl+Alt+y/u/i/o` without prefix) |
+| `Ctrl+b` `r` / `R` | Global | Reload `~/.tmux.conf` |
+| `Ctrl+b` `a` | Window | Toggle `synchronize-panes` (type in all panes at once) |
+| `Ctrl+b` `S` | Pane | Swap current pane with top-left pane |
+| `Ctrl+b` `<` / `>` | Window (repeatable) | Move/reorder current window left / right |
+| `Ctrl+b` `N` / `P` | Pane (repeatable) | Move pane to next / previous window (`b` breaks pane out) |
+| `Ctrl+b` `Tab` / `Backspace` | Global | Toggle Treemux file tree sidebar / toggle + focus |
+| `Ctrl+b` `[` then `v` / `y` | Copy mode (vi) | Scroll & copy (`Ctrl+b` `]` pastes; `y`/`Y` copies shell line / `$PWD`) |
+| `Ctrl+b` `x` / `X` | Pane / Session | Kill pane (`x`) / confirm kill session (`X`) |
+| `Ctrl+Alt+k/j` | Global | Jump to previous / next shell prompt (OSC 133) |
 
 ## 🛠️ Installation
 
@@ -76,85 +92,90 @@ or, `tmux new -s <session_name>`
 
 ### Create window and navigate
 
-- Ctrl+a + c: create window
+- Ctrl+b + c: create window
 - `echo $TMUX_PANE`: see pane number (%0, %1, ..)
 - `echo ${TMUX_PANE##%}`: see pane number (0, 1, ..)
 - `exit`: exit window
-- Ctrl+a + n: next window
-- Ctrl+a + p: previous window
-- Ctrl+a + \<number\>: jump to the window number
-- Ctrl+a + '\<number\>\<Enter\>: jump to the window number (use when bigger than 9)
-- Ctrl+a + ,: change window title
-- Ctrl+Shift+s+Left / Right: re-order windows
+- Ctrl+b + n: next window
+- Ctrl+b + p: previous window
+- Ctrl+b + t: last window
+- Ctrl+b + \<number\>: jump to the window number
+- Ctrl+b + '\<number\>\<Enter\>: jump to the window number (use when bigger than 9)
+- Ctrl+b + ,: change window title
+- Ctrl+b + < / >: re-order windows
 - Mouse: drag and hold a window title for 0.5 seconds; the pink `` shows the exact insertion position
 - Mouse: click `󰘀` / `󰘁` around the window list to jump to the first / last window, and the `<` / `>` that appear when the list is clipped for the previous / next one
 
 ### Detach and resume
 
-- Ctrl+a + d: detach tmux session
+- Ctrl+b + d: detach tmux session
 - `tmux ls`: list sessions
 - `tmux attach` or `tmux a`: attach session
 - `tmux attach -t <session_name>`: attach session (specified by the number or name)
-- Ctrl+a + s: select and move session
+- Ctrl+b + s: select and move session
 
 ### Divide window (create pane) and navigate
 
-- Ctrl+a + \\: divide screen (vertical)
-- Ctrl+a + -: divide screen (horizontal)
-- Ctrl+a + |: divide screen (vertical, current dir)
-- Ctrl+a + \_: divide screen (horizontal, current dir)
-- Ctrl+a + h/j/k/l: move between panes
+- Ctrl+b + \\: divide screen (vertical)
+- Ctrl+b + |: divide screen (vertical, current dir)
+- Ctrl+b + - / \_: divide screen (horizontal, current dir)
+- Ctrl+b + h/j/k/l: move between panes
+- Ctrl+h/j/k/l: move between tmux panes and Neovim splits seamlessly
+- Ctrl+\\: switch to previous pane
 - Alt + \<ArrowKey\>: move between panes
-- Ctrl+a + q + \<number\>: see pane number and move between panes
-- Ctrl+a + H/J/K/L: resize panes
+- Ctrl+b + q + \<number\>: see pane number and move between panes
+- Ctrl+b + H/J/K/L: resize panes by 5
+- Ctrl+b + z (or Ctrl+b + Ctrl+b): toggle pane zoom
+- Ctrl+b + a: toggle synchronize-panes
 
 You can even use mouse right click.
 
 ### Swap panes
 
-- Ctrl+a + {: swap with the prvious pane
-- Ctrl+a + }: swap with the next pane
-- Ctrl+a + `:swap-pane -U/-D/-L/-R`: swap with another pane
-- Ctrl+a + Ctrl+o: rotate pane clockwise
-- Ctrl+a + Alt+o: rotate pane anticlockwise
+- Ctrl+b + {: swap with the previous pane
+- Ctrl+b + }: swap with the next pane
+- Ctrl+b + S: swap with the first (top-left) pane
+- Ctrl+b + `:swap-pane -U/-D/-L/-R`: swap with another pane
+- Ctrl+b + Ctrl+o: rotate pane clockwise
+- Ctrl+b + Alt+o: rotate pane anticlockwise
 
-### Change horizontal split to vertical (and vice verca)
+### Change horizontal split to vertical (and vice versa)
 
-- Ctrl+a + `:move-pane -h -t '.{up-of}'`: horizontal split to vertical
-- Ctrl+a + `:move-pane -t '.{left-of}'`: vertical split to horizontal
+- Ctrl+b + `:move-pane -h -t '.{up-of}'`: horizontal split to vertical
+- Ctrl+b + `:move-pane -t '.{left-of}'`: vertical split to horizontal
 
 ### Move pane to next/previous window
 
 > [!NOTE]
 > This only works if you installed the `./scripts/` dir in `~/.config/dotfiles/tmux/scripts/...`
 
-- Ctrl+a + N: move pane to the next window (repeatable. Keep pressing N)
-- Ctrl+a + P: move pane to the previous window (repeatable. Keep pressing P)
+- Ctrl+b + N: move pane to the next window (repeatable. Keep pressing N)
+- Ctrl+b + P: move pane to the previous window (repeatable. Keep pressing P)
 
 ### Copy / scroll
 
-- Ctrl+a + \[: Copy mode (use vim commands to scroll)
+- Ctrl+b + \[: Copy mode (use vim commands to scroll)
   - Ctrl+f: page down (front page)
   - Ctrl+b: page up (back page)
   - Ctrl+d: half page down
   - Ctrl+u: half page up
-- In copy mode, `v` to select region. `y` to copy and `q` to exit copy mode. Then Ctrl+a + ] to paste.
+- In copy mode, `v` to select region. `y` to copy and `q` to exit copy mode. Then Ctrl+b + ] to paste.
 - You can use mouse drag to copy.
-- Ctrl+a + =: see buffer list
+- Ctrl+b + =: see buffer list
 
 ### Kill
 
-- Ctrl+a + x: kill current pane
-- Ctrl+a + X: kill session
+- Ctrl+b + x: kill current pane
+- Ctrl+b + X: kill session
 
 ### Plugins
 
-- Ctrl+a + I: Install plugins
-- Ctrl+a + U: Update plugins
-- (tmux-yank): Ctrl+a + y: copy bash command line
-- (tmux-yank): Ctrl+a + Y: copy PWD
-- ([treemux](https://github.com/kiyoon/treemux)): Ctrl+a + \<Tab\>: toggle file browser on the side
-- ([treemux](https://github.com/kiyoon/treemux)): Ctrl+a + \<Backspace\>: toggle file browser on the side, and focus on it
+- Ctrl+b + I: Install plugins
+- Ctrl+b + U: Update plugins
+- (tmux-yank): Ctrl+b + y: copy bash command line
+- (tmux-yank): Ctrl+b + Y: copy PWD
+- ([treemux](https://github.com/kiyoon/treemux)): Ctrl+b + \<Tab\>: toggle file browser on the side
+- ([treemux](https://github.com/kiyoon/treemux)): Ctrl+b + \<Backspace\>: toggle file browser on the side, and focus on it
 - Inside treemux, `<space>o` to toggle between Oil and Nvim-tree.
 
 ### Shell integration
@@ -178,8 +199,8 @@ Move between prompts:
 ### Other tips 💡
 
 - If you press Ctrl+s by mistake, it will freeze. Ctrl+q to unfreeze.
-- On a nested tmux, use Ctrl+a + a + \<command\>.
-- Ctrl+a `:attach -c /new/dir`: change default directory for new windows.
+- On a nested tmux, press `Ctrl+b` twice (`Ctrl+b` + `Ctrl+b`) or pass through command to inner session.
+- `Ctrl+b` `:attach -c /new/dir`: change default directory for new windows.
 - Shift + drag: bypass tmux mouse integration and select terminal.
 
 ## 📜 Advanced: scripting with tmux

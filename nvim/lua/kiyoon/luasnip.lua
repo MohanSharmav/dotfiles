@@ -19,13 +19,19 @@ ls.config.set_config {
 }
 
 vim.keymap.set({ "i", "s" }, "<A-j>", function()
-  if ls.expand_or_jumpable() then
+  local cmp_ok, cmp = pcall(require, "cmp")
+  if cmp_ok and cmp.visible() then
+    cmp.select_next_item()
+  elseif ls.expand_or_jumpable() then
     ls.expand_or_jump()
   end
 end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<A-k>", function()
-  if ls.jumpable(-1) then
+  local cmp_ok, cmp = pcall(require, "cmp")
+  if cmp_ok and cmp.visible() then
+    cmp.select_prev_item()
+  elseif ls.jumpable(-1) then
     ls.jump(-1)
   end
 end, { silent = true })

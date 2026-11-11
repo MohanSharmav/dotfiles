@@ -44,12 +44,18 @@ gglr() {
 }
 
 ssh_add_if_notyet() {
-	ssh-add -l | grep -q `ssh-keygen -lf ~/.ssh/id_ed25519 | awk '{print $2}'` || ssh-add ~/.ssh/id_ed25519
+	if [[ -f ~/.ssh/id_ed25519 ]]; then
+		ssh-add -l 2>/dev/null | grep -q "$(ssh-keygen -lf ~/.ssh/id_ed25519 | awk '{print $2}')" || ssh-add ~/.ssh/id_ed25519
+	fi
 }
-unalias gc  # defined in oh-my-zsh git plugin
+unalias gc 2>/dev/null  # defined in oh-my-zsh git plugin
 gc () {
 	ssh_add_if_notyet
-	git commit --verbose --gpg-sign "$@"
+	if [[ -n "$(git config --get user.signingkey 2>/dev/null)" || "$(git config --bool --get commit.gpgsign 2>/dev/null)" == "true" ]]; then
+		git commit --verbose --gpg-sign "$@"
+	else
+		git commit --verbose "$@"
+	fi
 }
 
 # git commit with "." as the message

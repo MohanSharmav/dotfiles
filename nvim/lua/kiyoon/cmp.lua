@@ -19,9 +19,28 @@ cmp.setup({
     ["<C-p>"] = {
       i = cmp.mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert }),
     },
+    ["<M-j>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Insert })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<M-k>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert })
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
     ["<C-y>"] = {
       i = cmp.mapping.confirm({ select = false }),
     },
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
     ["<C-e>"] = {
       i = cmp.mapping.abort(),
     },

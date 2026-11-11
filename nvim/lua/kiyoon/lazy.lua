@@ -19,6 +19,7 @@ local icons = require("kiyoon.icons")
 return {
   {
     "graffitty/graffitty.nvim",
+    cond = in_graffitty,
     opts = {},
     keys = function()
       local keys = {
@@ -556,32 +557,38 @@ return {
   ---Yank
   {
     "aserowy/tmux.nvim",
-    keys = {
-      { "<C-A-i>", [[<cmd>lua require("tmux").resize_top()<cr>]] },
-      { "<C-A-u>", [[<cmd>lua require("tmux").resize_bottom()<cr>]] },
-      { "<C-A-y>", [[<cmd>lua require("tmux").resize_left()<cr>]] },
-      { "<C-A-o>", [[<cmd>lua require("tmux").resize_right()<cr>]] },
-      { "<F16>", [[<cmd>lua require("tmux").resize_top()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <S-F3>
-      { "<F15>", [[<cmd>lua require("tmux").resize_top()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <S-F2>
-      { "<F18>", [[<cmd>lua require("tmux").resize_bottom()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <S-F6>
-      { "<F27>", [[<cmd>lua require("tmux").resize_left()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F3>
-      { "<F26>", [[<cmd>lua require("tmux").resize_left()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F2>
-      { "<F30>", [[<cmd>lua require("tmux").resize_right()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F6>
-      "<C-n>",
-      "<C-p>",
-      -- { '"', mode = { "n", "x" } },
-      -- { "<C-r>", mode = { "i" } },
-      { "p", mode = { "n", "x", "o", "s" } },
-      { "P", mode = { "n", "x", "o", "s" } },
-      { "=p", mode = { "n", "x", "o", "s" } },
-      { "=P", mode = { "n", "x", "o", "s" } },
-      { "y", mode = { "x", "o", "s" } },
-      { "d", mode = { "x", "o", "s" } },
-      { "c", mode = { "x", "o", "s" } },
-      { "Y", mode = { "n", "x", "o", "s" } },
-      { "D", mode = { "n", "x", "o", "s" } },
-      { "C", mode = { "n", "x", "o", "s" } },
-    },
+    keys = function()
+      local keys = {
+        { "<C-A-i>", [[<cmd>lua require("tmux").resize_top()<cr>]] },
+        { "<C-A-u>", [[<cmd>lua require("tmux").resize_bottom()<cr>]] },
+        { "<C-A-y>", [[<cmd>lua require("tmux").resize_left()<cr>]] },
+        { "<C-A-o>", [[<cmd>lua require("tmux").resize_right()<cr>]] },
+        { "<F16>", [[<cmd>lua require("tmux").resize_top()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <S-F3>
+        { "<F15>", [[<cmd>lua require("tmux").resize_top()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <S-F2>
+        { "<F18>", [[<cmd>lua require("tmux").resize_bottom()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <S-F6>
+        { "<F27>", [[<cmd>lua require("tmux").resize_left()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F3>
+        { "<F26>", [[<cmd>lua require("tmux").resize_left()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F2>
+        { "<F30>", [[<cmd>lua require("tmux").resize_right()<cr>]], mode = { "n", "i", "x", "s", "o" } }, -- <C-F6>
+        "<A-n>",
+        "<A-p>",
+        -- { '"', mode = { "n", "x" } },
+        -- { "<C-r>", mode = { "i" } },
+        { "p", mode = { "n", "x", "o", "s" } },
+        { "P", mode = { "n", "x", "o", "s" } },
+        { "=p", mode = { "n", "x", "o", "s" } },
+        { "=P", mode = { "n", "x", "o", "s" } },
+        { "y", mode = { "x", "o", "s" } },
+        { "d", mode = { "x", "o", "s" } },
+        { "c", mode = { "x", "o", "s" } },
+        { "Y", mode = { "n", "x", "o", "s" } },
+        { "D", mode = { "n", "x", "o", "s" } },
+        { "C", mode = { "n", "x", "o", "s" } },
+      }
+      if not in_graffitty then
+        vim.list_extend(keys, { "<C-h>", "<C-j>", "<C-k>", "<C-l>" })
+      end
+      return keys
+    end,
     dependencies = {
       "gbprod/yanky.nvim",
       "nvim-telescope/telescope.nvim",
@@ -1001,14 +1008,25 @@ return {
     },
     keys = {
       {
+        "<C-n>",
+        "<cmd>NvimTreeToggle<CR>",
+        desc = "Toggle NvimTree",
+      },
+      {
         "<space>nt",
         "<cmd>NvimTreeToggle<CR>",
         desc = "Toggle NvimTree",
+      },
+      {
+        "me",
+        "<cmd>NvimTreeFindFile<CR>",
+        desc = "Find current file in NvimTree",
       },
     },
     cmd = {
       "NvimTreeToggle",
       "NvimTreeOpen",
+      "NvimTreeFindFile",
     },
     config = function()
       require("kiyoon.nvim_tree")
@@ -1634,6 +1652,27 @@ return {
     -- branch = "0.1.x",
     keys = {
       {
+        "<C-p>",
+        "<cmd>lua require('telescope.builtin').find_files()<cr>",
+        noremap = true,
+        silent = true,
+        desc = "[F]uzzy [F]ind Files",
+      },
+      {
+        "<C-f>",
+        "<cmd>lua require('kiyoon.telescope').live_grep_word_or_open()<cr>",
+        noremap = true,
+        silent = true,
+        desc = "Live grep word under cursor or open",
+      },
+      {
+        "zr",
+        "<cmd>lua require('telescope.builtin').resume()<cr>",
+        noremap = true,
+        silent = true,
+        desc = "Resume last Telescope picker",
+      },
+      {
         "<leader>fF",
         "<cmd>lua require('telescope.builtin').git_files()<cr>",
         noremap = true,
@@ -1998,7 +2037,7 @@ return {
         -- LSP configuration
         server = {
           on_attach = function(client, bufnr)
-            -- you can also put keymaps in here
+            require("kiyoon.lsp.handlers").on_attach(client, bufnr)
           end,
           default_settings = {
             -- rust-analyzer language server configuration
@@ -2081,7 +2120,15 @@ return {
         function()
           require("conform").format({ async = true, lsp_fallback = true })
         end,
-        mode = "",
+        mode = { "n", "x" },
+        desc = "Format buffer",
+      },
+      {
+        "fmt",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = { "n", "x" },
         desc = "Format buffer",
       },
     },
@@ -2092,6 +2139,7 @@ return {
         lua = { "stylua" },
         -- python = { "isort", "black" },
         python = { "ruff_fix", "ruff_format" },
+        rust = { "rustfmt" },
         -- javascript = { { "prettierd", "prettier" } },
         -- typescript = { { "prettierd", "prettier" } },
         javascript = { "biome-organize-imports", "biome" },
@@ -3041,8 +3089,6 @@ return {
         ["gk"] = {},
         ["<CR>"] = {},
         ["<C-M>"] = {},
-        ["<C-N>"] = {},
-        ["<C-P>"] = {},
       },
       disabled_keys = {
         ["<Up>"] = {},

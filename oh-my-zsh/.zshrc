@@ -275,7 +275,7 @@ fi
 preexec() { printf '\e]133;C;\a'; }
 
 # bun completions
-[ -s "/Users/kiyoon/.bun/_bun" ] && source "/Users/kiyoon/.bun/_bun"
+[ -s "${BUN_INSTALL:-$HOME/.bun}/_bun" ] && source "${BUN_INSTALL:-$HOME/.bun}/_bun"
 
 # If you want custom zsh settings not synced with dotfiles, put them in ~/.config/zsh/*.zsh
 for custom_config ("$HOME"/.config/zsh/*.zsh(N)); do

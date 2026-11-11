@@ -1,0 +1,44 @@
+[user]
+	name = Mohan
+	email = catchmohansharma@gmail.com
+
+# Machine-specific overrides can live in ~/.gitconfig.local (included below).
+
+[alias]
+	a = add .
+	b = branch
+	bh = branch
+	c = checkout
+	cbc = checkout
+	ck = checkout
+	cl = clean -df
+	cm = commit -m
+	co = checkout
+	f = fetch
+	fo = fetch origin
+	gr = log --graph --oneline --all
+	graph = log --graph --abbrev-commit --date=relative --pretty=format:'%C(cyan)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(auto)-%d%C(reset) %C(dim white)%an%C(reset)'
+	p = push
+	pl = pull
+	ps = push
+	s = status
+	st = status
+	uu = status -u
+
+[core]
+	editor = nvim
+	excludesfile = ~/.gitignore_global
+
+[pull]
+	rebase = false
+
+[credential]
+	helper = !gh auth git-credential
+	useHttpPath = true
+
+[sequence]
+	editor = nvim
+
+[include]
+	path = ~/.gitconfig.local
+

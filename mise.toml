@@ -14,6 +14,8 @@ dotfiles.default_mode = "symlink"
 "~/.config/mise" = "mise-config"
 "~/.vimrc" = "nvim/.vimrc"
 "~/.tmux.conf" = "tmux/.tmux.conf"
+"~/.gitconfig" = "git/.gitconfig"
+"~/.gitignore_global" = "git/.gitignore_global"
 "~/.zshrc" = "oh-my-zsh/.zshrc"
 "~/.dircolors" = "oh-my-zsh/.dircolors"
 "~/.cargo/config.toml" = "cargo/config.toml"
@@ -38,3 +40,7 @@ run = 'mise bootstrap dotfiles apply "$HOME/.config/nvim"'
 [tasks.setup-tmux]
 description = "Link tmux configuration"
 run = 'mise bootstrap dotfiles apply "$HOME/.tmux.conf"'
+
+[tasks.setup-git]
+description = "Link git configuration"
+run = 'mise bootstrap dotfiles apply "$HOME/.gitconfig" "$HOME/.gitignore_global"'

@@ -1,150 +1,154 @@
 # dotfiles that work without sudo
 
-This is a modern Neovim, Tmux, Zsh configuration that supports installing everything locally (i.e. non-system-wide user install, not using sudo).  
-You can enjoy working on a remote SSH server without root permission, just like you do locally.
+Modern Neovim, Tmux, Git, Zsh, Terminal, and macOS/Linux window-management configuration built to install locally without `sudo`.
+
+## Quick Start & Documentation Index
+
+- **[QUICKSTART.md](QUICKSTART.md)** — Start here: open terminal -> file tree -> read/edit files -> Copilot/AI -> format, save & run -> Git
+- **[docs/FUNCTIONS.md](docs/FUNCTIONS.md)** — Master dictionary of every custom function, alias, keybinding, and script
+
+| Folder | Config For | Docs |
+|---|---|---|
+| [`nvim/`](nvim/) | Main Neovim IDE (Lua, Lazy, LSP, Copilot, Telescope, Treesitter, DAP) | [nvim/README.md](nvim/README.md) |
+| [`tmux/`](tmux/) | Tmux (`Ctrl+b` prefix, Treemux, resurrect/continuum, pane borders) | [tmux/README.md](tmux/README.md) |
+| [`git/`](git/) | `.gitconfig` aliases (`a`, `s`, `co`, `cm`, `gr`, `p`, `pl`) & global ignores | [git/README.md](git/README.md) |
+| [`oh-my-zsh/`](oh-my-zsh/) | Zsh, Oh My Zsh, Starship, fzf, zoxide, Copilot CLI, aliases & functions | [oh-my-zsh/README.md](oh-my-zsh/README.md) |
+| [`kitty/`](kitty/) | Upstream Kitty terminal config & shortcuts | [kitty/README.md](kitty/README.md) |
+| [`wezterm/`](wezterm/) | WezTerm terminal config, keybindings & Ubuntu setup | [wezterm/README.md](wezterm/README.md) |
+| [`kinetty/`](kinetty/) | Kinetty terminal config (`init.py`, vertical tabs, quick select) | [kinetty/README.md](kinetty/README.md) |
+| [`ghostty/`](ghostty/) | Ghostty terminfo helper | [ghostty/README.md](ghostty/README.md) |
+| [`aerospace/`](aerospace/) | macOS tiling window manager shortcuts & scripts | [aerospace/README.md](aerospace/README.md) |
+| [`skhd/`](skhd/) | macOS hold-to-repeat resize & passthrough hotkeys | [skhd/README.md](skhd/README.md) |
+| [`hammerspoon/`](hammerspoon/) | macOS global hotkeys (`F18` IME, TranslateScreen, prompt paste) | [hammerspoon/README.md](hammerspoon/README.md) |
+| [`karabiner/`](karabiner/) | macOS low-level key remapping (`Caps Lock` -> `Ctrl`/`Esc`, etc.) | [karabiner/README.md](karabiner/README.md) |
+| [`sketchybar/`](sketchybar/) | macOS menu bar integrated with AeroSpace & system meters | [sketchybar/README.md](sketchybar/README.md) |
+| [`yabai/`](yabai/) | Legacy yabai config (superseded by AeroSpace) | [yabai/README.md](yabai/README.md) |
+| [`helix/`](helix/) | Helix editor Vim-style keybindings & Python LSP | [helix/README.md](helix/README.md) |
+| [`ranger/`](ranger/) | Ranger file manager config (`viu` previews, ratios) | [ranger/README.md](ranger/README.md) |
+| [`mise-config/`](mise-config/) | Global locked CLI tools managed by `mise` | [mise-config/README.md](mise-config/README.md) |
+| [`cargo/`](cargo/), [`conda/`](conda/), [`dprint/`](dprint/) | Tooling configs (`cargo`, `.condarc`, `dprint`) | [cargo](cargo/README.md) · [conda](conda/README.md) · [dprint](dprint/README.md) |
+| [`nvim-coc/`](nvim-coc/), [`nvim-lazyvim/`](nvim-lazyvim/) | Fallback CoC (`vic`) & LazyVim (`lazyvim`) profiles | [nvim-coc](nvim-coc/README.md) · [nvim-lazyvim](nvim-lazyvim/README.md) |
+| [`windows/`](windows/), [`AutoHotKey/`](AutoHotKey/), [`autokey/`](autokey/) | Windows PowerShell/VS & Linux AutoKey scripts | [windows](windows/README.md) · [AutoHotKey](AutoHotKey/README.md) · [autokey](autokey/README.md) |
+| [`docs/`](docs/) | Benchmarks, internals & full functions reference | [docs/README.md](docs/README.md) |
 
 > [!NOTE]
-> Currently I'm experimenting with a tranparent terminal background.
-> If you want to turn it off, change transparent settings in `wezterm/wezterm.lua` and `nvim/lua/kiyoon/tokyonight.lua`.
+> Forked from [`kiyoon/dotfiles`](https://github.com/kiyoon/dotfiles) with custom `git_nvim_tmux_config` shortcuts (`Ctrl+b` Tmux prefix, `<C-n>` NvimTree, `<C-p>`/`<C-f>`/`zr` Telescope, `git/.gitconfig` aliases, `gh`/`gy`/`gi`/`gn`/`gp`/`ze`/`fmt`/`<F2>`/`<C-\>`).  
+> Currently uses a transparent terminal background (`wezterm/wezterm.lua`, `kitty/kitty.conf`, `nvim/lua/kiyoon/tokyonight.lua`).
 
-![image](https://user-images.githubusercontent.com/12980409/218476082-8c400daf-7d9d-4d15-bf7a-f6b41d9191d9.png)
+![image](https://user-images.githubusercontent.com/12980409/218476082-8c400daf-7d9d-4d15-bf7a-f6b41d919191.png)
 
 ![image](https://user-images.githubusercontent.com/12980409/218475937-c9a51b2d-b4d6-499f-8787-012770410209.png)
 
 ![image](https://user-images.githubusercontent.com/12980409/218476252-9de93e0c-ddfe-486b-979a-5ded6a9425a9.png)
 
-## Keep it stable!
+## Vim Profiles
 
-This repository includes a GitHub Actions that automatically checks if the commit hasn't been made for 1 week.  
-If it has not been updated for 1 week, we consider that commit to be 'stable' and automatically bump version with `stable` tag.  
-In order to try the stable version, just run `dotstable` after setting up the zsh. This will also pull neovim plugin versions that have been used for the stable commit.
-
-Also, it has many versions of vim configurations.
-
-- `vi` to run a fully-featured bleeding-edge configuration of neovim.
-- `vic` to run neovim with stable and mild configuration using CoC. It's a balance between the two, and should be used when the first option is broken.
-- `lazyvim` to run pre-configured [LazyVim](https://github.com/LazyVim/LazyVim).
-- `vim` to run original vim with no plugins (only simple `.vimrc`)
-- `csvi` to read CSV files. `:CsvAlign` or `:TsvAlign` to align columns and `H`, `L` to move by columns.
-- Use `vscode_init.lua` for VSCode-Neovim.
+- `vi` (`v`): Main bleeding-edge Neovim config ([`nvim/`](nvim/README.md))
+- `vic`: Minimal CoC fallback (`NVIM_APPNAME=nvim-coc`)
+- `lazyvim`: Pre-configured [LazyVim](https://github.com/LazyVim/LazyVim) (`NVIM_APPNAME=nvim-lazyvim`)
+- `vim`: Plain Vim using `.vimrc` only
+- `csvi`: CSV viewer/aligner (`:CsvAlign` / `:TsvAlign`, `H` / `L` column nav)
+- `vscode_init.lua`: VSCode-Neovim profile
 
 ## Features
 
-### Zsh
+### Zsh (`oh-my-zsh/`)
 
-- Feature-rich prompt powered by [Starship](https://starship.rs)
-- Autocomplete, autosuggest
-- Syntax highlighting
-- Vim mode
-- Fuzzy searching with [fzf](https://github.com/junegunn/fzf)
-  - Try `Ctrl+t` to find file, `Alt+c` to change directory, `Ctrl+r` to reverse search commands.
-- Smart change directory with [Zoxide](https://github.com/ajeetdsouza/zoxide)
-  - Try `z <partial dirname..>` like `z dot` will go to the `~/.config/dotfiles`.
-- Move between prompts: (OSC 133)
-  - In Tmux: Ctrl + Alt + k/j
-  - Outside Tmux (WezTerm setting): Shift + Up/Down
-- Copy to clipboard: (OSC 52)
-  - `osc52copy`, `cppath`, `cpfile` command
-  - Ctrl + o to copy the current command
+- Prompt: [Starship](https://starship.rs) + completions + autosuggestions (`Ctrl+s`) + syntax highlighting + vi-mode
+- Fuzzy finder ([fzf](https://github.com/junegunn/fzf)): `Ctrl+t` (file), `Alt+c` (dir), `Ctrl+r` (history)
+- Smart `cd` ([zoxide](https://github.com/ajeetdsouza/zoxide)): `z <partial-dir>` (e.g. `z dot`)
+- Prompt jumps (OSC 133): `Ctrl+Alt+k/j` in Tmux, `Shift+Up/Down` outside Tmux
+- Clipboard (OSC 52): `osc52copy`, `cppath`, `cpfile`, `Ctrl+o` (copy current command)
+- See [oh-my-zsh/README.md](oh-my-zsh/README.md) and [docs/FUNCTIONS.md](docs/FUNCTIONS.md)
 
-### Neovim
+### Neovim (`nvim/`)
 
-My main frameworks/languages: Python (PyTorch, FastAPI), TypeScript (React), C# (Unity), Rust, Lua (Neovim)
+- Seamless split/pane navigation (`<C-h/j/k/l>`, `<C-\>`) and register sync with Tmux (`p`/`P`)
+- Explorer (`<C-n>`, `me`), Telescope (`<C-p>`, `<C-f>`, `zr`), Copilot (`<C-s>`/`<F7>`, `<F5>`), Claude Code (`\ac`), LSP (`gd`/`gy`/`gi`/`gr`/`gh`/`gn`/`gp`/`ze`), format (`fmt` / `<space>pf`), clipboard (`<space>y`)
+- See [nvim/README.md](nvim/README.md)
 
-- Yank registers synchronised with tmux. Yank from neovim and paste on tmux. Copy from tmux and paste on neovim.
-- Copy to clipboard: (OSC 52)
-  - `<space>y`
-- See more in [nvim/README.md](nvim/README.md)
+### Tmux (`tmux/`)
 
-### Tmux
+- `Ctrl+b` prefix (`Ctrl+b Ctrl+b` or `z` zoom), splits (`|`, `\`, `-`, `_`), `H/J/K/L` resize, `a` sync panes, `S` top-left swap, `<`/`>` window swap
+- Interactive tree view ([Treemux](https://github.com/kiyoon/treemux)), resurrect/continuum session persistence, status bar ([tmux-dracula fork](https://github.com/kiyoon/tmux-dracula))
+- See [tmux/README.md](tmux/README.md)
 
-- Mouse-enabled interactive tree view with [Treemux](https://github.com/kiyoon/treemux)
-- Status bar that shows battery, CPU, GPU, RAM, weather, and git with [tmux-dracula fork](https://github.com/kiyoon/tmux-dracula)
-- See more in [tmux/README.md](tmux/README.md)
+### Git (`git/`)
+
+- `.gitconfig` aliases (`a`, `s`, `st`, `uu`, `b`, `c`, `co`, `cm`, `f`, `gr`, `graph`, `p`, `pl`) + `.gitignore_global` + Zsh git helpers
+- See [git/README.md](git/README.md)
 
 ## Requirements
 
 - Linux, macOS, Windows, WSL2
-- Neovim v0.12.5 (make sure you use this exact version)
+- Neovim v0.12.5
 - Tmux v3.7
-- Zsh v5.9 (in v5.8 highlighting will look weird and fzf-tab will remove some lines)
+- Zsh v5.9
 
+## Installation Steps
 
-## Steps
-
-1. Install dotfiles
+1. Clone & link dotfiles:
 
 ```bash
-cd ~/.config	# it doesn't have to be here. Just install anywhere
-git clone https://github.com/kiyoon/dotfiles
+cd ~/.config	# or clone anywhere, e.g. ~/Developer/dotfiles
+git clone https://github.com/MohanSharmav/dotfiles
 
 cd dotfiles
-# Install mise first if needed.
 curl -fsSL https://mise.run | sh
 export PATH="$HOME/.local/bin:$PATH"
 mise trust
 mise run setup-dotfiles
 ```
 
-2. Install Zsh, mise, CLI tools and Oh My Zsh
+2. Install Zsh, mise CLI tools and Oh My Zsh:
 
 ```bash
 oh-my-zsh/zsh-local-install.sh
 oh-my-zsh/install-installers.sh
 
-# Make the installed tools available in this bash session.
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise -C "$HOME" env -s bash)"
 
 oh-my-zsh/launch-zsh-in-bash.sh
-git submodule update --init --remote  # Install and update all zsh plugins
+git submodule update --init --remote
 ```
-
-Open your terminal again and you'll see you're running zsh.
-
-Use `mise activate zsh`, never mise shim directories or `mise activate --shims` (they are slow).
 
 See [oh-my-zsh/README.md](oh-my-zsh/README.md) for details.
 
-3. Install Neovim dependencies and Tmux plugins
+3. Install Neovim dependencies and Tmux plugins:
 
 ```bash
 bash nvim/install-dependencies.sh
 bash tmux/install-plugins.sh
 ```
 
-4. Install others
+4. Finish setup & font/terminfo:
 
 ```bash
-# You might want to symlink dotfiles again in case some scripts overrode them
 mise run setup-dotfiles
-# You only need to install it to the local computer, not in SSH host computer.
-./install-nerdfont.sh
-# If you're using wezterm (recommended), install terminfo
-wezterm/terminfo.sh
+./install-nerdfont.sh          # local computer only
+bash wezterm/terminfo.sh       # if using WezTerm (or kitty/terminfo.sh for Kitty)
 ```
 
-5. Install / Update dotfiles, apps, plugins etc.
+5. Update later:
 
 ```zsh
-# WARNING: This includes calling mise run setup-dotfiles so the dotfile symlinks will be updated.
-dotupdate			# Use if you want to update to the latest commit
-dotstable			# Use if you want to use the stable tag
-dotupdate <tag>		# Specify the tag/commit you want to use
+dotupdate          # Pull latest & re-run setup
+dotstable          # Switch to auto-tested stable tag
+dotupdate <tag>    # Specific tag/commit
 ```
 
-## SSH with WezTerm
-If you ssh into a remote server, it won't understand the terminal and the UI will break (like backspace seems to work like space).  
-You need to install `wezterm.terminfo` on the server.
+## SSH with WezTerm / Kitty
+
+Run once before connecting to a remote SSH server so terminfo/keys work properly:
 
 ```bash
-bash wezterm/terminfo.sh <ssh_server_name>  # run this before ssh into a new server. Only need it once.
-ssh <ssh_server_name>
+bash wezterm/terminfo.sh <ssh_server_name>   # WezTerm
+# or
+bash kitty/terminfo.sh <ssh_server_name>     # Kitty (or use `kitten ssh <host>`)
 ```
 
 ## Docker
-
-You can use the provided Dockerfile that has everything installed.
 
 ```bash
 docker pull ghcr.io/kiyoon/dotfiles
