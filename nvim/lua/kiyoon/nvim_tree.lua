@@ -81,3 +81,33 @@ nvim_tree.setup({
     custom = { ".git" },
   },
 })
+
+-- Close NvimTree automatically when quitting the last normal window in the tab.
+vim.api.nvim_create_autocmd("QuitPre", {
+  group = vim.api.nvim_create_augroup("nvim_tree_auto_close", { clear = true }),
+  callback = function()
+    local api = require("nvim-tree.api")
+    local cur_win = vim.api.nvim_get_current_win()
+    if api.tree.is_tree_buf(vim.api.nvim_win_get_buf(cur_win)) then
+      return
+    end
+
+    local normal_wins = 0
+    local tree_wins = {}
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_config(win).relative == "" then
+        if api.tree.is_tree_buf(vim.api.nvim_win_get_buf(win)) then
+          table.insert(tree_wins, win)
+        else
+          normal_wins = normal_wins + 1
+        end
+      end
+    end
+
+    if normal_wins <= 1 then
+      for _, win in ipairs(tree_wins) do
+        vim.api.nvim_win_close(win, true)
+      end
+    end
+  end,
+})

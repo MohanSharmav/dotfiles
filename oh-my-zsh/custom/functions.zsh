@@ -29,28 +29,12 @@ dotinstall() {
 }
 
 dotupdate() {
-	checkout="$1"
 	DOTFILES_DIR=$(dotfiles_dir)
-	git -C "$DOTFILES_DIR" pull
-	if [ $? -ne 0 ]; then
-		echo
-		print -P "%F{red}Failed to update dotfiles due to local changes.%f"
-		print -P "%F{red}To discard local changes and force update, run %f"
-		echo
-		echo "dotstash"
-		echo
-		print -P "%F{red}and try again%f"
-		return 1
+	if [ -x "$DOTFILES_DIR/update.sh" ]; then
+		"$DOTFILES_DIR/update.sh" "$@"
+	else
+		bash "$DOTFILES_DIR/update.sh" "$@"
 	fi
-	git -C "$DOTFILES_DIR" submodule update --init --remote
-
-	if [ -n "$checkout" ]; then
-		git -C "$DOTFILES_DIR" checkout "$checkout"
-	fi
-
-	# omz reload
-	source ~/.zshrc
-	dotinstall
 }
 
 dotstable() {

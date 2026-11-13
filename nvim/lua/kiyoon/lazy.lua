@@ -2,7 +2,7 @@
 
 local nvim_treesitter_dev = false
 local nvim_treesitter_textobjects_dev = false
-local nvim_treesitter_context_dev = true
+local nvim_treesitter_context_dev = false
 local repeatable_move_dev = false
 local jupynium_dev = false
 local python_import_dev = false
@@ -981,28 +981,73 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     lazy = true,
-    -- init = function()
-    --   local function open_nvim_tree(data)
-    --     -- buffer is a directory
-    --     local directory = vim.fn.isdirectory(data.file) == 1
-    --
-    --     if not directory then
-    --       return
-    --     end
-    --
-    --     -- change to the directory
-    --     vim.cmd.cd(data.file)
-    --
-    --     -- open the tree
-    --     require("nvim-tree.api").tree.open()
-    --   end
-    --
-    --   vim.api.nvim_create_augroup("nvim_tree_open", {})
-    --   vim.api.nvim_create_autocmd({ "VimEnter" }, {
-    --     callback = open_nvim_tree,
-    --     group = "nvim_tree_open",
-    --   })
-    -- end,
+    init = function()
+      local started_from_stdin = false
+      local augroup = vim.api.nvim_create_augroup("nvim_tree_open", { clear = true })
+
+      vim.api.nvim_create_autocmd("StdinReadPre", {
+        group = augroup,
+        once = true,
+        callback = function()
+          started_from_stdin = true
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("VimEnter", {
+        group = augroup,
+        once = true,
+        callback = function(data)
+          -- Defer until alpha-nvim and filetype detection finish on startup.
+          vim.schedule(function()
+            if started_from_stdin or #vim.api.nvim_list_uis() == 0 or vim.o.diff then
+              return
+            end
+
+            local skip_ft = {
+              gitcommit = true,
+              gitrebase = true,
+              hgcommit = true,
+              svn = true,
+              cvs = true,
+              man = true,
+              help = true,
+              qf = true,
+            }
+            local buf = vim.api.nvim_get_current_buf()
+            local ft = vim.bo[buf].filetype
+            local bt = vim.bo[buf].buftype
+
+            local api = require("nvim-tree.api")
+            local target = vim.api.nvim_buf_get_name(buf)
+            if target == "" and data.file ~= "" then
+              target = data.file
+            end
+            local raw_dir = target:match("^oil://(.*)") or (data.file ~= "" and data.file:match("^oil://(.*)")) or target
+            if raw_dir == "" and data.file ~= "" then
+              raw_dir = data.file
+            end
+            local is_dir = raw_dir ~= "" and vim.fn.isdirectory(raw_dir) == 1
+
+            if skip_ft[ft] or (bt ~= "" and ft ~= "alpha" and not is_dir) then
+              return
+            end
+
+            local api = require("nvim-tree.api")
+
+            if is_dir then
+              vim.cmd.cd(vim.fn.fnameescape(raw_dir))
+              vim.cmd("enew")
+              pcall(vim.api.nvim_buf_delete, buf, { force = true })
+              api.tree.open({ path = raw_dir })
+            elseif vim.fn.argc() == 0 and (ft == "alpha" or target == "") then
+              api.tree.open()
+            elseif not api.tree.is_visible() then
+              api.tree.find_file({ open = true, focus = false, update_root = true })
+            end
+          end)
+        end,
+      })
+    end,
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },

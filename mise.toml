@@ -44,3 +44,7 @@ run = 'mise bootstrap dotfiles apply "$HOME/.tmux.conf"'
 [tasks.setup-git]
 description = "Link git configuration"
 run = 'mise bootstrap dotfiles apply "$HOME/.gitconfig" "$HOME/.gitignore_global"'
+
+[tasks.update]
+description = "Update repo, submodules, symlinks, mise tools, Neovim plugins, and Tmux plugins"
+run = './update.sh'

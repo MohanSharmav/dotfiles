@@ -11,9 +11,11 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
 
 ### 1. File Tree & Explorers
 
+> **Default file explorer:** NvimTree automatically opens on the left sidebar by default on startup (for empty editor `nvim`, folder `nvim .`, or file `nvim file.py`). Press `<C-n>` or `<space>nt` to toggle it. Quitting the last editor window (`:q`) automatically closes NvimTree as well.
+
 | Key | Mode | Action |
 |---|---|---|
-| `<C-n>` / `<space>nt` | Normal | Toggle NvimTree sidebar |
+| `<C-n>` / `<space>nt` | Normal | Toggle NvimTree sidebar (open by default on startup) |
 | `me` | Normal | Reveal/find current file in NvimTree |
 | `<space>nn` | Normal, Visual | Toggle Neo-tree (`?` for help) |
 | `Enter` / `l` / `o` | NvimTree | Open file or expand folder |

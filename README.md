@@ -132,10 +132,17 @@ bash wezterm/terminfo.sh       # if using WezTerm (or kitty/terminfo.sh for Kitt
 
 5. Update later:
 
-```zsh
-dotupdate          # Pull latest & re-run setup
-dotstable          # Switch to auto-tested stable tag
-dotupdate <tag>    # Specific tag/commit
+```bash
+# From any terminal / shell:
+./update.sh           # Full update: repo, submodules, symlinks, mise, Neovim & Tmux plugins
+./update.sh --dry-run # Preview update steps without making changes
+./update.sh --skip-git # Update plugins and tools without pulling from git
+
+# Or inside Zsh:
+dotupdate
+
+# Or via mise:
+mise run update
 ```
 
 ## SSH with WezTerm / Kitty

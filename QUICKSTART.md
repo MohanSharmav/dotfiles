@@ -45,12 +45,14 @@ Enable GitHub Copilot once inside Neovim:
 
 ```bash
 cd /path/to/your/project   # or `z <partial-name>` with zoxide
-nvim .                     # opens Dashboard / Neovim (`v` and `vi` also launch nvim)
+nvim .                     # opens Neovim with NvimTree file explorer open on the left (`v` and `vi` also launch nvim)
 ```
+
+> **Default file explorer:** Neovim automatically opens the **NvimTree** file explorer sidebar by default on startup (whether opening an empty editor, a project folder, or a specific file). Press `Ctrl + n` or `Space n t` anytime to toggle it closed or open.
 
 | Action | Shortcut | Notes |
 |---|---|---|
-| Toggle file explorer sidebar (NvimTree) | `Ctrl + n` or `Space n t` | Shows full folder structure |
+| Toggle file explorer sidebar (NvimTree) | `Ctrl + n` or `Space n t` | Opened by default on startup; shows full folder structure |
 | Jump to current file in NvimTree | `m e` | Highlights open file in the tree |
 | Alternative file explorer (Neo-tree) | `Space n n` | Press `?` inside for help |
 | Tmux-level file sidebar (Treemux) | `Ctrl+b` then `Tab` (focus: `Backspace`) | Side pane outside Neovim; `<Space>o` switches Oil / NvimTree |
@@ -154,7 +156,31 @@ nvim .                     # opens Dashboard / Neovim (`v` and `vi` also launch 
 
 ---
 
-## 7. Individual Tool Guides
+## 7. Updating Dotfiles & Dependencies
+
+To update your repository, submodules, symlinks, `mise` tools, Neovim plugins, and Tmux plugins in one command:
+
+```bash
+# From any terminal:
+~/Developer/dotfiles/update.sh
+
+# Or inside Zsh:
+dotupdate
+
+# Or via mise:
+mise run update
+```
+
+| Option | What it does |
+|---|---|
+| `./update.sh` | Full update (pulls git, updates submodules, mise tools, Lazy plugins, Treesitter, TPM plugins, and reloads Tmux) |
+| `./update.sh --dry-run` | Preview all actions without modifying files |
+| `./update.sh --skip-git` | Updates plugins and symlinks without pulling from git (keeps local repo branch untouched) |
+| `./update.sh --force` | Auto-stashes local uncommitted changes before pulling from remote |
+
+---
+
+## 8. Individual Tool Guides
 
 - [All Functions, Aliases & Commands Reference](docs/FUNCTIONS.md)
 - [Neovim Shortcuts](nvim/README.md) · [CoC Fallback](nvim-coc/README.md) · [LazyVim](nvim-lazyvim/README.md)
