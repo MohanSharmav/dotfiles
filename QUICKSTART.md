@@ -7,15 +7,19 @@ A zero-fluff workflow guide to open your terminal, browse project files, edit co
 
 ---
 
-## 0. First-Time Link & Setup
+## 0. First-Time Setup (Choose Your OS)
 
 ```bash
-cd /Users/harshitharohit/Developer/dotfiles # or ~/.config/dotfiles
-mise trust
-mise run setup-dotfiles     # Symlinks nvim, tmux, git, zsh, wezterm, kitty, etc.
-bash nvim/install-dependencies.sh
-bash tmux/install-plugins.sh
+cd ~/Developer/dotfiles # or ~/.config/dotfiles
+
+# On macOS:
+./setup_mac.sh
+
+# On Ubuntu / Linux:
+./setup_ubuntu.sh      # or ./setup_linux.sh
 ```
+
+These scripts back up any existing old files, create all symlinks, install `mise` toolchains, configure Neovim's Python 3.12 virtualenv and plugins, install Tmux TPM plugins, and configure terminfo.
 
 Enable GitHub Copilot once inside Neovim:
 

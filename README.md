@@ -85,52 +85,30 @@ Modern Neovim, Tmux, Git, Zsh, Terminal, and macOS/Linux window-management confi
 - Tmux v3.7
 - Zsh v5.9
 
-## Installation Steps
+## Installation (Choose Your OS)
 
-1. Clone & link dotfiles:
-
-```bash
-cd ~/.config	# or clone anywhere, e.g. ~/Developer/dotfiles
-git clone https://github.com/MohanSharmav/dotfiles
-
-cd dotfiles
-curl -fsSL https://mise.run | sh
-export PATH="$HOME/.local/bin:$PATH"
-mise trust
-mise run setup-dotfiles
-```
-
-2. Install Zsh, mise CLI tools and Oh My Zsh:
+Clone to `~/Developer/dotfiles` (or `~/.config/dotfiles`):
 
 ```bash
-oh-my-zsh/zsh-local-install.sh
-oh-my-zsh/install-installers.sh
-
-export PATH="$HOME/.local/bin:$PATH"
-eval "$(mise -C "$HOME" env -s bash)"
-
-oh-my-zsh/launch-zsh-in-bash.sh
-git submodule update --init --remote
+git clone https://github.com/MohanSharmav/dotfiles.git ~/Developer/dotfiles
+cd ~/Developer/dotfiles
 ```
 
-See [oh-my-zsh/README.md](oh-my-zsh/README.md) for details.
-
-3. Install Neovim dependencies and Tmux plugins:
-
+### On macOS
 ```bash
-bash nvim/install-dependencies.sh
-bash tmux/install-plugins.sh
+./setup_mac.sh
 ```
+*Checks Homebrew, runs user-space installers, links macOS-specific window managers (AeroSpace, Sketchybar, Karabiner), and bootstraps Neovim, Tmux, and terminfo.*
 
-4. Finish setup & font/terminfo:
-
+### On Ubuntu / Linux
 ```bash
-mise run setup-dotfiles
-./install-nerdfont.sh          # local computer only
-bash wezterm/terminfo.sh       # if using WezTerm (or kitty/terminfo.sh for Kitty)
+./setup_ubuntu.sh   # or ./setup_linux.sh
 ```
+*Installs recommended apt packages (`build-essential`, `curl`, `git`, `zsh`, `tmux`, `xclip`, `wl-clipboard`), downloads JetBrains Mono Nerd Font to `~/.local/share/fonts`, configures Linux symlinks (including AutoKey), and bootstraps Neovim, Tmux, and terminfo.*
 
-5. Update later:
+---
+
+## Updating Later:
 
 ```bash
 # From any terminal / shell:
