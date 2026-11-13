@@ -79,6 +79,8 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
 | `\ac` / `\af` | Normal | **Claude Code**: toggle / focus terminal |
 | `\ar` / `\aC` / `\am` | Normal | **Claude Code**: resume / continue / select model |
 | `\ab` / `\as` (visual or tree) | Normal, Visual | **Claude Code**: add current buffer / send selection (`\aa` accept diff, `\ad` deny diff) |
+| `\cc` / `\cq` | Normal, Visual | **Copilot Chat**: toggle chat / open chat window |
+| `\cr` / `\cf` / `\ct` / `\cx` | Normal, Visual | **Copilot Chat**: review / fix / tests / explain selection (`\cR` reset) |
 | `\cg` / `\ce` | Normal, Visual | **gp.nvim (ChatGPT)**: open chat / rewrite selection |
 | `<space>as` | Visual | **NeoAI**: summarize/rewrite selection (`\ag` in gitcommit for commit msg) |
 

@@ -704,6 +704,50 @@ return {
     end,
   },
   {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" },
+      { "nvim-lua/plenary.nvim" },
+    },
+    build = "make tiktoken",
+    init = function()
+      local status, wk = pcall(require, "which-key")
+      if status then
+        wk.add({
+          { "<leader>c", group = "AI Chat / ChatGPT" },
+        })
+      end
+    end,
+    opts = {
+      window = {
+        layout = "vertical",
+        width = 0.4,
+      },
+    },
+    cmd = {
+      "CopilotChat",
+      "CopilotChatOpen",
+      "CopilotChatClose",
+      "CopilotChatToggle",
+      "CopilotChatStop",
+      "CopilotChatReset",
+      "CopilotChatExplain",
+      "CopilotChatReview",
+      "CopilotChatFix",
+      "CopilotChatTests",
+      "CopilotChatCommit",
+    },
+    keys = {
+      { "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle", mode = { "n", "x" } },
+      { "<leader>cq", "<cmd>CopilotChat<cr>", desc = "CopilotChat Open", mode = { "n", "x" } },
+      { "<leader>cr", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat Review Code", mode = { "n", "x" } },
+      { "<leader>cf", "<cmd>CopilotChatFix<cr>", desc = "CopilotChat Fix Code", mode = { "n", "x" } },
+      { "<leader>ct", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat Generate Tests", mode = { "n", "x" } },
+      { "<leader>cx", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat Explain Code", mode = { "n", "x" } },
+      { "<leader>cR", "<cmd>CopilotChatReset<cr>", desc = "CopilotChat Reset Chat", mode = { "n", "x" } },
+    },
+  },
+  {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
     config = true,
@@ -831,7 +875,7 @@ return {
       local status, wk = pcall(require, "which-key")
       if status then
         wk.add({
-          { "<leader>c", group = "ChatGPT" },
+          { "<leader>c", group = "AI Chat / ChatGPT" },
         })
       end
     end,

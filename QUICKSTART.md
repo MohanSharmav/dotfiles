@@ -117,12 +117,14 @@ nvim .                     # opens Neovim with NvimTree file explorer open on th
 | Next / previous Copilot suggestion | `Alt + ]` / `Alt + [` | Cycle alternatives |
 | Copilot setup / status | `:Copilot status` / `:Copilot panel` | Normal-mode commands |
 
-### Claude Code, ChatGPT (`gp.nvim`) & Copilot CLI
+### Claude Code, Copilot Chat, ChatGPT (`gp.nvim`) & Copilot CLI
 
 | Tool | Shortcut / Command | What it does |
 |---|---|---|
 | Toggle Claude Code in Neovim | `\ a c` (focus: `\ a f`) | Embedded Claude terminal |
 | Send file or selection to Claude | `\ a b` / Visual `\ a s` | Add buffer / send selection (`\ a a` accept diff, `\ a d` deny diff) |
+| Toggle / Open Copilot Chat | `\ c c` / `\ c q` | Embedded GitHub Copilot Chat window (`CopilotChat.nvim`) |
+| Review / Fix / Tests with Copilot | `\ c r` / `\ c f` / `\ c t` / `\ c x` | Review, fix, generate tests, or explain code |
 | Open ChatGPT chat / rewrite selection | `\ c g` / `\ c e` | `gp.nvim` chat or inline rewrite |
 | Summarize / fix selected text | Visual `Space a s` | `neoai` textify shortcut |
 | Ask Copilot for a shell command (in Zsh) | `ghcs "list large files"` | `gh copilot suggest` wrapper (`oh-my-zsh/custom/copilot.zsh`) |
