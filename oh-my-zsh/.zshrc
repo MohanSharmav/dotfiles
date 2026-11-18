@@ -152,9 +152,9 @@ ZVM_KEYTIMEOUT=0.0
 plugins=(
 	fzf-tab
 	git-open
+	zsh-autosuggestions
 	zsh-vi-mode
 	# vi-mode
-	zsh-autosuggestions
 	# zsh-syntax-highlighting
 	fast-syntax-highlighting
 	zsh-history-substring-search
@@ -205,6 +205,9 @@ source $ZSH/oh-my-zsh.sh
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey '^s' autosuggest-accept
+bindkey '^ ' autosuggest-accept
+bindkey '^[[C' autosuggest-accept
+bindkey '^[OC' autosuggest-accept
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

@@ -178,3 +178,44 @@ zle -N zvm_bracketed_paste_in_insert
 bindkey -M vicmd '^[[200~' zvm_bracketed_paste_in_insert
 bindkey -M viins '^[[200~' bracketed-paste
 ## End of zsh-vi-mode paste bug fix
+
+# ============================================================
+# zsh-autosuggestions (history autosuggest) & vi-mode bindings
+# ============================================================
+# Suggest based on command history first, then completion fallback
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
+export ZSH_AUTOSUGGEST_USE_ASYNC=1
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+
+# Hook into zsh-vi-mode so keybindings persist after vi-mode initialises
+function zvm_after_init() {
+  # Accept full autosuggestion:
+  # - Right Arrow (^[[C / ^[OC)
+  # - Ctrl + Space (^  / ^@)
+  # - Ctrl + s (^s)
+  # - Ctrl + f (^f)
+  # - Ctrl + e (^e)
+  zvm_bindkey viins '^[[C' autosuggest-accept
+  zvm_bindkey viins '^[OC' autosuggest-accept
+  zvm_bindkey viins '^ ' autosuggest-accept
+  zvm_bindkey viins '^@' autosuggest-accept
+  zvm_bindkey viins '^s' autosuggest-accept
+  zvm_bindkey viins '^f' autosuggest-accept
+  zvm_bindkey viins '^e' autosuggest-accept
+
+  # Accept next word of autosuggestion:
+  # - Alt + Right Arrow (^[[1;3C)
+  # - Alt + f (^[f)
+  # - Alt + l (^[l)
+  zvm_bindkey viins '^[[1;3C' forward-word
+  zvm_bindkey viins '^[f' forward-word
+  zvm_bindkey viins '^[l' forward-word
+  zvm_bindkey viins '^[h' backward-word
+
+  # History substring search
+  zvm_bindkey viins '^[[A' history-substring-search-up
+  zvm_bindkey viins '^[[B' history-substring-search-down
+  zvm_bindkey vicmd 'k' history-substring-search-up
+  zvm_bindkey vicmd 'j' history-substring-search-down
+}

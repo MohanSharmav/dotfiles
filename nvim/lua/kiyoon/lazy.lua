@@ -734,12 +734,36 @@ return {
       "CopilotChatExplain",
       "CopilotChatReview",
       "CopilotChatFix",
+      "CopilotChatFixDiagnostic",
       "CopilotChatTests",
       "CopilotChatCommit",
+      "CopilotChatCommitStaged",
+      "CopilotChatModels",
     },
     keys = {
       { "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle", mode = { "n", "x" } },
       { "<leader>cq", "<cmd>CopilotChat<cr>", desc = "CopilotChat Open", mode = { "n", "x" } },
+      {
+        "<leader>cp",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+        end,
+        desc = "CopilotChat Prompt Actions",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>ch",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+        end,
+        desc = "CopilotChat Help Actions",
+        mode = { "n", "x" },
+      },
+      { "<leader>cd", "<cmd>CopilotChatFixDiagnostic<cr>", desc = "CopilotChat Fix Diagnostic", mode = { "n", "x" } },
+      { "<leader>cm", "<cmd>CopilotChatCommitStaged<cr>", desc = "CopilotChat Commit Staged", mode = { "n", "x" } },
+      { "<leader>cM", "<cmd>CopilotChatModels<cr>", desc = "CopilotChat Select Model", mode = { "n", "x" } },
       { "<leader>cr", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat Review Code", mode = { "n", "x" } },
       { "<leader>cf", "<cmd>CopilotChatFix<cr>", desc = "CopilotChat Fix Code", mode = { "n", "x" } },
       { "<leader>ct", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat Generate Tests", mode = { "n", "x" } },

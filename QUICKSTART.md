@@ -124,6 +124,10 @@ nvim .                     # opens Neovim with NvimTree file explorer open on th
 | Toggle Claude Code in Neovim | `\ a c` (focus: `\ a f`) | Embedded Claude terminal |
 | Send file or selection to Claude | `\ a b` / Visual `\ a s` | Add buffer / send selection (`\ a a` accept diff, `\ a d` deny diff) |
 | Toggle / Open Copilot Chat | `\ c c` / `\ c q` | Embedded GitHub Copilot Chat window (`CopilotChat.nvim`) |
+| Telescope Prompts / Actions menu | `\ c p` (help: `\ c h`) | Fuzzy-search all Copilot actions & prompts |
+| Fix Diagnostic under cursor | `\ c d` | Sends LSP diagnostic at cursor directly to Copilot |
+| Auto-generate Git commit message | `\ c m` | Generates conventional commit from staged changes |
+| Select Copilot Model | `\ c M` | Switch models (Claude 3.5/3.7, GPT-4o, o1/o3-mini) |
 | Review / Fix / Tests with Copilot | `\ c r` / `\ c f` / `\ c t` / `\ c x` | Review, fix, generate tests, or explain code |
 | Open ChatGPT chat / rewrite selection | `\ c g` / `\ c e` | `gp.nvim` chat or inline rewrite |
 | Summarize / fix selected text | Visual `Space a s` | `neoai` textify shortcut |
