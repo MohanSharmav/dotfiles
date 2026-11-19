@@ -159,8 +159,9 @@ You can even use mouse right click.
   - Ctrl+b: page up (back page)
   - Ctrl+d: half page down
   - Ctrl+u: half page up
-- In copy mode, `v` to select region. `y` to copy and `q` to exit copy mode. Then Ctrl+b + ] to paste.
+- In copy mode, `v` to select region. `y` (or `Enter`) to copy and `q` to exit copy mode. Then Ctrl+b + ] to paste.
 - You can use mouse drag to copy.
+- Copies go to the system clipboard on macOS (`pbcopy`), WSL (`clip.exe`), Wayland (`wl-copy`) and X11 (`xclip`/`xsel`), picked by [`scripts/set-copy-command.sh`](scripts/set-copy-command.sh). Over SSH they reach your local clipboard through OSC 52 (`set-clipboard on`).
 - Ctrl+b + =: see buffer list
 
 ### Kill
@@ -172,6 +173,7 @@ You can even use mouse right click.
 
 - Ctrl+b + I: Install plugins
 - Ctrl+b + U: Update plugins
+- (tmux-resurrect): Ctrl+b + Ctrl+s / Ctrl+r: save / restore all sessions. tmux-continuum also saves every 15 minutes. Neovim panes come back with their files (see *Sessions* in [nvim/README.md](../nvim/README.md)).
 - (tmux-yank): Ctrl+b + y: copy bash command line
 - (tmux-yank): Ctrl+b + Y: copy PWD
 - ([treemux](https://github.com/kiyoon/treemux)): Ctrl+b + \<Tab\>: toggle file browser on the side

@@ -5,7 +5,11 @@ Symlinked by `mise` to `~/.gitconfig` and `~/.gitignore_global` (`git/.gitconfig
 - Sets default `[user]` (`name = Mohan`, `email = catchmohansharma@gmail.com`).
 - Sets `nvim` as `core.editor` and `sequence.editor` (interactive rebase).
 - Uses GitHub CLI (`gh auth git-credential`) as credential helper.
-- Loads optional machine-local overrides from `~/.gitconfig.local` (`[include]`).
+- Loads optional machine-local overrides from `~/.gitconfig.local` (`[include]`), last so they win.
+- Defaults: `init.defaultBranch=main`, `push.autoSetupRemote` (first `git push` creates the remote branch),
+  `fetch.prune`, `merge.conflictStyle=diff3`, `rerere.enabled` (reuse conflict resolutions),
+  `rebase.autoStash/autoSquash/updateRefs`, `diff.algorithm=histogram`, `diff.colorMoved`,
+  `commit.verbose`, `branch.sort=-committerdate`, `tag.sort=version:refname`, `column.ui=auto`.
 - Zsh git helpers live in [`oh-my-zsh/custom/aliases_git.zsh`](../oh-my-zsh/custom/aliases_git.zsh) (`difftastic` external diff is enabled when `difft` is installed).
 
 ---
@@ -53,6 +57,8 @@ In addition to Oh My Zsh's `git` and `gh` plugins:
 ---
 
 ## Global Ignores (`.gitignore_global`)
+
+Also ignores `Session.vim` (Neovim sessions kept for tmux-resurrect).
 
 Automatically ignores across all repos:
 - `.*.sw?` (Vim swap files)

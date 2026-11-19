@@ -32,6 +32,11 @@ Local, rootless Zsh setup with Starship prompt, `fzf`, `fzf-tab`, `zoxide`, `zsh
 
 ---
 
+## History (`custom/options.zsh`)
+
+1,000,000 commands are kept and shared live between all shells and tmux panes
+(`share_history`). Duplicates are trimmed first and not shown twice in `Ctrl + r` / `Up`.
+
 ## Custom Aliases (`oh-my-zsh/custom/`)
 
 ### Files, Editors & General (`aliases.zsh`, `mistakes.zsh`)

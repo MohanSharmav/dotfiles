@@ -101,7 +101,9 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
 | `<space>pr` / `<space>pR` | Normal | Live rename (`live-rename` / `IncRename`) |
 | `<space>ps` / `<space>pq` / `<space>po` | Normal (LSP) | Signature help / send diagnostics to quickfix / organize Python imports |
 | `<space>pi` / `<space>pI` | Normal | `:LspInfo` / `:LspInstallInfo` |
-| `fmt` / `<space>pf` | Normal, Visual | Format buffer or selection (`conform.nvim`; also runs on `:w`) |
+| `fmt` / `<space>pf` | Normal, Visual | Format buffer or selection (`conform.nvim`; also runs on `:w`, except Markdown) |
+| `:FormatDisable` / `:FormatDisable!` / `:FormatEnable` | Command | Turn format-on-save off everywhere / for this buffer only / back on |
+| `:Obsess!` | Command | Stop the automatic `Session.vim` and delete it (see *Sessions* below) |
 | `\xx` / `\xX` / `\cs` / `\cl` / `\xQ` | Normal | Trouble panels (diagnostics / buffer / symbols / LSP / quickfix) |
 
 ### 6. Splits, Tmux Integration, Run & Debug
@@ -151,6 +153,29 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
   - Swap: `)a`/`(a` (parameter), `)m`/`(m` (function), `<space>.` / `<space>,` (`iswap`), `<space><space><space>.` / `,` (`sibling-swap`)
 
 ---
+
+## Sessions (tmux-resurrect)
+
+Inside tmux, when Neovim starts in a git repository it keeps `./Session.vim` up to date
+([vim-obsession](https://github.com/tpope/vim-obsession)). After a reboot,
+tmux-resurrect (`Ctrl+b` `Ctrl+r`) reopens Neovim in each pane with `nvim -S`, so your
+files, splits and tabs come back. `Session.vim` is ignored globally by git.
+
+- Skipped when Neovim is the git commit/rebase editor, the man pager, `nvim -d`, or reads stdin.
+- `:Obsess!` stops tracking and deletes the file. `export NVIM_NO_AUTO_SESSION=1` turns it off.
+- File trees, the dashboard and terminals are not saved (`sessionoptions` has no `blank`/`terminal`).
+
+## Language servers
+
+Installed by Mason on first start: `emmylua_ls`, `html`, `cssls`, `tailwindcss`, `vtsls`,
+`jsonls`, `biome`, `pyrefly`, `bashls`, `yamlls`, `vimls`, `dockerls`,
+`docker_compose_language_service`, `marksman`, `taplo`, `clangd` (plus `rust_analyzer` via
+rustaceanvim). Edit the list in [`lua/kiyoon/lsp/init.lua`](lua/kiyoon/lsp/init.lua).
+
+## Checks
+
+[`.github/workflows/lint.yml`](../.github/workflows/lint.yml) starts this config headless on
+every push and runs [`tests/`](tests/) (`check_wiring.lua`, `test_auto_session.py`).
 
 ## Installing & Profiles
 

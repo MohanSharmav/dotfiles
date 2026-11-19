@@ -90,6 +90,76 @@ return {
     end,
   },
   {
+    -- Keeps ./Session.vim up to date (on every buffer/window change and on exit)
+    -- so tmux-resurrect can bring Neovim back with `nvim -S` after a reboot.
+    -- See `@resurrect-strategy-nvim 'session'` in tmux/.tmux.conf.
+    -- Inside tmux, tracking starts automatically in git repositories.
+    -- Stop tracking and delete the file with :Obsess!
+    -- Opt out per shell with: export NVIM_NO_AUTO_SESSION=1
+    "tpope/vim-obsession",
+    lazy = false,
+    init = function()
+      -- No "blank": windows of nofile buffers (nvim-tree, neo-tree, alpha, trouble, ...)
+      -- would come back as empty windows. No "terminal": dead terminals can't be restored.
+      -- No "folds": nvim-ufo manages folds and saved fold commands fail on restore (E490).
+      vim.opt.sessionoptions = { "buffers", "curdir", "help", "tabpages", "winsize" }
+    end,
+    config = function()
+      local group = vim.api.nvim_create_augroup("auto_obsession", { clear = true })
+      local started_from_stdin = false
+      vim.api.nvim_create_autocmd("StdinReadPre", {
+        group = group,
+        once = true,
+        callback = function()
+          started_from_stdin = true
+        end,
+      })
+      vim.api.nvim_create_autocmd("VimEnter", {
+        group = group,
+        once = true,
+        callback = function()
+          -- Wait until filetype detection has run on the first buffer.
+          vim.schedule(function()
+            if
+              (vim.env.TMUX or "") == ""
+              or (vim.env.NVIM_NO_AUTO_SESSION or "") ~= ""
+              or started_from_stdin
+              or vim.o.diff
+              or #vim.api.nvim_list_uis() == 0
+              or vim.v.this_session ~= "" -- `nvim -S`: obsession resumes tracking by itself
+            then
+              return
+            end
+
+            -- Neovim as $GIT_EDITOR, $MANPAGER, etc. must not overwrite the project session.
+            local skip_ft = {
+              gitcommit = true,
+              gitrebase = true,
+              gitconfig = true,
+              hgcommit = true,
+              svn = true,
+              man = true,
+              help = true,
+            }
+            if skip_ft[vim.bo.filetype] or vim.api.nvim_buf_get_name(0):find("/%.git/") then
+              return
+            end
+
+            local cwd = vim.fn.getcwd()
+            if cwd == vim.env.HOME or vim.fn.filewritable(cwd) ~= 2 then
+              return
+            end
+            if vim.fs.find(".git", { upward = true, path = cwd, limit = 1 })[1] == nil then
+              return
+            end
+
+            vim.cmd("silent! Obsess")
+          end)
+        end,
+      })
+    end,
+  },
+  {
     "kiyoon/tmux-send.nvim",
     cond = not in_graffitty,
     dev = tmux_send_dev,
@@ -2269,9 +2339,26 @@ return {
         cpp = { "clang-format" },
         cs = { "csharpier" },
         toml = { "dprint" },
+        -- shfmt's options are under `formatters.shfmt` below.
+        sh = { "shfmt" },
+        bash = { "shfmt" },
+        -- Manual only (`fmt` / <space>pf): see `no_format_on_save` below.
+        markdown = { "prettierd", "prettier", stop_after_first = true },
+        go = { "gofmt" },
       },
-      -- Set up format-on-save
-      format_on_save = { timeout_ms = 2000, lsp_fallback = true },
+      -- Set up format-on-save.
+      -- :FormatDisable / :FormatDisable! (buffer) / :FormatEnable toggle it.
+      format_on_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        -- Reformatting a whole Markdown file on save rewrites hand-made tables and lists.
+        local no_format_on_save = { markdown = true }
+        if no_format_on_save[vim.bo[bufnr].filetype] then
+          return
+        end
+        return { timeout_ms = 2000, lsp_fallback = true }
+      end,
       -- Customize formatters
       formatters = {
         dprint = {
@@ -2334,6 +2421,19 @@ return {
     init = function()
       -- If you want the formatexpr, here is the place to set it
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+      -- Turn format-on-save off for files you don't own (e.g. someone else's repo).
+      vim.api.nvim_create_user_command("FormatDisable", function(args)
+        if args.bang then
+          vim.b.disable_autoformat = true
+        else
+          vim.g.disable_autoformat = true
+        end
+      end, { desc = "Disable format-on-save (! for this buffer only)", bang = true })
+      vim.api.nvim_create_user_command("FormatEnable", function()
+        vim.b.disable_autoformat = false
+        vim.g.disable_autoformat = false
+      end, { desc = "Re-enable format-on-save" })
     end,
   },
   {

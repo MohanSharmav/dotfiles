@@ -22,10 +22,14 @@ local servers = {
   -- "ty",
   "pyrefly",
   --   "ruff_lsp",
-  --   "bashls",
-  --   "yamlls",
-  --   "vimls",
-  --   "dockerls",
+  "bashls", -- sh/bash; uses shellcheck (installed below) for diagnostics
+  "yamlls", -- YAML; validates against SchemaStore (GitHub Actions, compose, k8s, ...)
+  "vimls", -- .vimrc and other Vimscript
+  "dockerls", -- Dockerfile
+  "docker_compose_language_service", -- compose.yaml / docker-compose.yml
+  "marksman", -- Markdown: heading/link navigation, broken-link diagnostics
+  "taplo", -- TOML (mise.toml, Cargo.toml, pyproject.toml)
+  "clangd", -- C/C++ (clang-format is already set up in conform.nvim)
   --   -- "grammarly",
   --   -- "rust_analyzer", -- rustaceanvim will attach to LSP, so don't put this here
 }
@@ -103,6 +107,7 @@ install_pkg_background("shellcheck")
 install_pkg_background("actionlint")
 install_pkg_background("roslyn")
 install_pkg_background("dprint")
+install_pkg_background("shfmt") -- conform.nvim formatter for sh/bash
 -- install_pkg_background("selene")
 
 -- local lspconfig = require("lspconfig")

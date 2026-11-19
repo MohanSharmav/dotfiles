@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [[ $# -ne 1 ]]; then
 	echo "Usage: $0 <ssh_name>"
 	echo "Synchronise ~/.local/bin, ~/.local/share/nvim, ~/.cargo/bin, ~/.tmux to remote server"

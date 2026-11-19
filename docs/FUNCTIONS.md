@@ -123,7 +123,9 @@ Single-page dictionary of every custom shell function, alias, ZLE keybinding, Gi
 | Toggle window / Tmux pane | `<C-\>` | Switch to previous Neovim split or previous Tmux pane |
 | Toggle NvimTree / locate file | `<C-n>` or `<space>nt` / `me` | Toggle explorer / highlight current file (`i` opens horizontal split) |
 | Telescope quick open / grep | `<C-p>` / `<C-f>` / `zr` | Find files / live grep `<cword>` or open prompt / resume last picker |
-| Format buffer or selection | `fmt` or `<space>pf` | Runs `conform.nvim` formatters (`rustfmt`, `ruff`, `biome`, `stylua`, etc.) |
+| Format buffer or selection | `fmt` or `<space>pf` | Runs `conform.nvim` formatters (`rustfmt`, `ruff`, `biome`, `stylua`, `shfmt`, `prettier`, etc.) |
+| Format-on-save toggle | `:FormatDisable` / `:FormatDisable!` / `:FormatEnable` | Off globally / off for this buffer / back on |
+| Session for tmux-resurrect | automatic in tmux + git repo; `:Obsess!` to stop | Keeps `./Session.vim` so Neovim panes are restored after reboot |
 | LSP definitions / types / impls / hover | `gd` / `gy` / `gi` / `gr` / `gh` / `K` | Telescope LSP jumps & rounded hover doc |
 | Diagnostics & Inlay hints | `gn` / `gp` / `gl` / `ze` / `<space>pl` | Jump next/prev diagnostic (`gn`/`gp`), float (`gl`), toggle hints (`ze`) |
 | Copilot accept / word / cycle | `<C-s>` or `<F7>` / `<F5>` / `Alt+]` | Accept full completion / accept word / cycle suggestions |
