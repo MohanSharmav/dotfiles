@@ -104,6 +104,5 @@ jobs:
       - name: Config is wired
         run: nvim --headless /tmp/check.sh -c "luafile nvim/tests/check_wiring.lua"
       - name: Auto-session tests (tmux-resurrect + vim-obsession)
-        run: |
-          pip install -q pynvim
-          python3 -m unittest discover -s nvim/tests -v
+        timeout-minutes: 10
+        run: python3 -m unittest discover -s nvim/tests -v
