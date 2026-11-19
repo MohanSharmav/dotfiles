@@ -10,7 +10,7 @@ end
 
 return {
   options = {
-    theme = "tokyonight",
+    theme = "auto", -- auto-adapts to active colorscheme (monokai)
     globalstatus = true,
     disabled_filetypes = { statusline = { "dashboard", "alpha" } },
   },

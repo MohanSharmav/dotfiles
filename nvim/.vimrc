@@ -27,8 +27,7 @@
 syntax on
 
 if !has('nvim')
-  " colorscheme zaibatsu
-  colorscheme sorbet
+  colorscheme monokai
 endif
 
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:

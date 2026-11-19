@@ -4,7 +4,7 @@ My IDE-like Tmux configuration and tutorial!
 
 **🔑 Key features:**
 
-- Battery, CPU, GPU, RAM status with [tmux-dracula-fork](https://github.com/kiyoon/tmux-dracula)
+- Monokai status bar theme with CPU, date/time, user & session indicator (ported from `git_nvim_tmux_config`)
 - File tree viewer with [treemux](https://github.com/kiyoon/treemux)
 - Seamless mouse support
 - PID and pane ID viewing for all panes, helping to write scripts instantly.

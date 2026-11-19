@@ -430,7 +430,7 @@ require("lazy").setup({
   },
 })
 
-vim.cmd([[ colorscheme tokyonight-night ]])
+vim.cmd([[ colorscheme monokai ]])
 vim.o.cursorline = true
 
 -- treemux is run with NVIM_APPNAME=nvim-treemux, thus is not possible to load the config files here.

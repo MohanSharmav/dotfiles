@@ -82,11 +82,18 @@ return {
   },
   {
     "folke/tokyonight.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    lazy = true,
+  },
+  {
+    dir = vim.fn.stdpath("config") .. "/colors",
+    name = "monokai",
+    lazy = false,
+    priority = 1000,
     config = function()
-      require("kiyoon.tokyonight")
-      vim.cmd.colorscheme("tokyonight")
+      local ok = pcall(vim.cmd.colorscheme, "monokai")
+      if not ok then
+        pcall(vim.cmd.colorscheme, "molokai")
+      end
     end,
   },
   {
