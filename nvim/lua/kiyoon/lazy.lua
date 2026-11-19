@@ -94,7 +94,7 @@ return {
     -- so tmux-resurrect can bring Neovim back with `nvim -S` after a reboot.
     -- See `@resurrect-strategy-nvim 'session'` in tmux/.tmux.conf.
     -- Inside tmux, tracking starts automatically in git repositories.
-    -- Stop tracking and delete the file with :Obsess!
+    -- Stop tracking and delete the file with :Obsession!
     -- Opt out per shell with: export NVIM_NO_AUTO_SESSION=1
     "tpope/vim-obsession",
     lazy = false,
@@ -153,7 +153,7 @@ return {
               return
             end
 
-            vim.cmd("silent! Obsess")
+            vim.cmd("silent! Obsession")
           end)
         end,
       })

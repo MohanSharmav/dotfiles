@@ -6,7 +6,7 @@
 vim.defer_fn(function()
   local ok, err = pcall(function()
     -- tmux-resurrect restores Neovim from Session.vim kept by vim-obsession.
-    assert(vim.fn.exists(":Obsess") == 2, "vim-obsession is not loaded")
+    assert(vim.fn.exists(":Obsession") == 2, "vim-obsession is not loaded")
     assert(
       not vim.tbl_contains(vim.opt.sessionoptions:get(), "blank"),
       "sessionoptions contains 'blank' (tree/dashboard windows would be restored empty)"

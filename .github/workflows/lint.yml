@@ -85,6 +85,9 @@ jobs:
           neovim: true
           version: stable
       - run: sudo apt-get update -q && sudo apt-get install -y -q tmux
+      # nvim-treesitter compiles parsers with the tree-sitter CLI (mise installs it locally).
+      - name: Install tree-sitter CLI
+        run: npm install -g tree-sitter-cli && tree-sitter --version
       - name: Link config
         run: mkdir -p ~/.config && ln -s "$PWD/nvim" ~/.config/nvim
       - name: Install plugins (versions pinned by lazy-lock.json)
@@ -95,7 +98,7 @@ jobs:
           nvim --headless /tmp/check.sh \
             "+lua vim.defer_fn(function() vim.cmd('qa!') end, 5000)" > nvim.log 2>&1 || true
           cat nvim.log
-          if grep -nE 'E[0-9]+:|stack traceback|Error (executing|detected)' nvim.log; then
+          if grep -niE '\berror\b|E[0-9]+:|stack traceback' nvim.log; then
             exit 1
           fi
       - name: Config is wired

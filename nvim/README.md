@@ -103,7 +103,7 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
 | `<space>pi` / `<space>pI` | Normal | `:LspInfo` / `:LspInstallInfo` |
 | `fmt` / `<space>pf` | Normal, Visual | Format buffer or selection (`conform.nvim`; also runs on `:w`, except Markdown) |
 | `:FormatDisable` / `:FormatDisable!` / `:FormatEnable` | Command | Turn format-on-save off everywhere / for this buffer only / back on |
-| `:Obsess!` | Command | Stop the automatic `Session.vim` and delete it (see *Sessions* below) |
+| `:Obsession!` | Command | Stop the automatic `Session.vim` and delete it (see *Sessions* below) |
 | `\xx` / `\xX` / `\cs` / `\cl` / `\xQ` | Normal | Trouble panels (diagnostics / buffer / symbols / LSP / quickfix) |
 
 ### 6. Splits, Tmux Integration, Run & Debug
@@ -162,7 +162,7 @@ tmux-resurrect (`Ctrl+b` `Ctrl+r`) reopens Neovim in each pane with `nvim -S`, s
 files, splits and tabs come back. `Session.vim` is ignored globally by git.
 
 - Skipped when Neovim is the git commit/rebase editor, the man pager, `nvim -d`, or reads stdin.
-- `:Obsess!` stops tracking and deletes the file. `export NVIM_NO_AUTO_SESSION=1` turns it off.
+- `:Obsession!` stops tracking and deletes the file. `export NVIM_NO_AUTO_SESSION=1` turns it off.
 - File trees, the dashboard and terminals are not saved (`sessionoptions` has no `blank`/`terminal`).
 
 ## Language servers
