@@ -19,7 +19,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("kiyoon.lazy", {
+require("lazy").setup("mohan.lazy", {
 	dev = {
 		path = "~/project",
 		-- patterns = { "kiyoon", "nvim-treesitter-textobjects" },

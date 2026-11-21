@@ -430,7 +430,7 @@ require("lazy").setup({
   },
 })
 
-vim.cmd([[ colorscheme monokai ]])
+vim.cmd([[ colorscheme mohan ]])
 vim.o.cursorline = true
 
 -- treemux is run with NVIM_APPNAME=nvim-treemux, thus is not possible to load the config files here.
@@ -454,11 +454,11 @@ end
 -- Example usage:
 local current_script_directory = get_current_script_dir()
 vim.opt.runtimepath:append(current_script_directory)
--- require("kiyoon.settings.keychrone_mappings")
-require("kiyoon.settings.user_keymaps")
-require("kiyoon.settings.korean_langmap")
-require("kiyoon.settings.messages_in_buffer")
-require("kiyoon.settings.tmux_window_name")
-require("kiyoon.settings.highlight_yank")
-require("kiyoon.settings.osc52")
-require("kiyoon.settings.no_lua_ts")
+-- require("mohan.settings.keychrone_mappings")
+require("mohan.settings.user_keymaps")
+require("mohan.settings.korean_langmap")
+require("mohan.settings.messages_in_buffer")
+require("mohan.settings.tmux_window_name")
+require("mohan.settings.highlight_yank")
+require("mohan.settings.osc52")
+require("mohan.settings.no_lua_ts")

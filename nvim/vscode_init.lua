@@ -21,8 +21,8 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load plugin specs from `~/.config/nvim/lua/kiyoon/lazy.lua`
-require("lazy").setup("kiyoon-vscode.lazy", {
+-- Load plugin specs from `~/.config/nvim/lua/mohan/lazy.lua`
+require("lazy").setup("mohan-vscode.lazy", {
   dev = {
     path = "~/project",
     -- patterns = { "kiyoon", "nvim-treesitter-textobjects" },
@@ -84,11 +84,11 @@ vim.keymap.set("x", "<space>pF", function()
 end, { desc = "Run sql-formatter in selection" })
 
 vim.keymap.set("n", "<space>ta", function()
-  require("kiyoon.tools.cycle_case")()
+  require("mohan.tools.cycle_case")()
 end, { remap = true })
 
-require("kiyoon.settings.python_keymaps")
-require("kiyoon.settings.markdown_keymaps")
--- require("kiyoon.settings.keychrone_mappings")
-require("kiyoon.settings.korean_langmap")
-require("kiyoon.settings.no_lua_ts")
+require("mohan.settings.python_keymaps")
+require("mohan.settings.markdown_keymaps")
+-- require("mohan.settings.keychrone_mappings")
+require("mohan.settings.korean_langmap")
+require("mohan.settings.no_lua_ts")

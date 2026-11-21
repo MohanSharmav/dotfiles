@@ -16,7 +16,7 @@ end
 
 ---@param diagnostics vim.Diagnostic[]
 local function translate_and_simplify_code(diagnostics)
-  local translate_message = require("kiyoon.lang.ty").translate_ty_message
+  local translate_message = require("mohan.lang.ty").translate_ty_message
   for _, diagnostic in ipairs(diagnostics) do
     ---@diagnostic disable-next-line: param-type-mismatch
     diagnostic.message = translate_message(diagnostic.code, diagnostic.message)

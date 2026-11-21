@@ -18,7 +18,7 @@ end
 
 ---@param diagnostics vim.Diagnostic[]
 local function translate_and_simplify_code(diagnostics)
-  local translate_biome_message = require("kiyoon.lang.biome").translate_biome_message
+  local translate_biome_message = require("mohan.lang.biome").translate_biome_message
   for _, diagnostic in ipairs(diagnostics) do
     ---@diagnostic disable-next-line: param-type-mismatch
     diagnostic.message = translate_biome_message(diagnostic.code, diagnostic.message)

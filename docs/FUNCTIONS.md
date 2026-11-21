@@ -27,6 +27,7 @@ Single-page dictionary of every custom shell function, alias, ZLE keybinding, Gi
 
 | Function | Arguments / Key | What it does |
 |---|---|---|
+| `ww` | `stdin`, `<file...>` or `<text>` | Copies to the system clipboard (`pbcopy` / `clip.exe` / `wl-copy` / `xclip` / `xsel`); uses OSC 52 over SSH or when none exists. `cmd \| ww`, `ww file.txt`, `ww some text` |
 | `osc52copy` | `[text]` or `stdin` | Copies text to local clipboard over OSC 52 escape sequence (works over SSH/Tmux) |
 | `cppath` | `[path]` (default `.`) | Copies absolute path to clipboard via `osc52copy` |
 | `cpfile` | `<file>` | Copies entire file contents to clipboard via `osc52copy` |
@@ -45,6 +46,7 @@ Single-page dictionary of every custom shell function, alias, ZLE keybinding, Gi
 |---|---|---|---|
 | `pymv` | `[args]` | `functions.zsh` | Runs `bun` script `rename_module.ts` with `basedpyright` to rename Python modules safely |
 | `gi` | `<lang...>` | `functions.zsh` | Fetches gitignore.io template prepending `.playwright-mcp/` and `.DS_Store` |
+| `g` | `[git args]` | `aliases_git.zsh` | Shortcut for `git` (`g status`, `g log`, `g push`) |
 | `gc` | `[git commit args]` | `aliases_git.zsh` | Ensures `~/.ssh/id_ed25519` is added if present, then runs `git commit --verbose` (with `--gpg-sign` when signing is configured) |
 | `gglr` | `[branch]` | `aliases_git.zsh` | `git pull --rebase origin <branch>` (defaults to current branch) |
 | `ggpf` | `[branch]` | `aliases_git.zsh` | `git push origin <branch> --force-with-lease` (defaults to current branch) |

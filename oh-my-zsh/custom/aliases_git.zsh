@@ -79,3 +79,6 @@ ggpf () {
 if (($+commands[difft])); then
 	export GIT_EXTERNAL_DIFF=difft
 fi
+
+# g = git (also set by the oh-my-zsh git plugin; defined here so it never depends on it)
+alias g=git

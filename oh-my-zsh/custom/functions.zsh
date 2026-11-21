@@ -312,6 +312,67 @@ cpbuffer() {
 zle -N cpbuffer
 bindkey "^O" cpbuffer
 
+# Print the system clipboard command for this machine (empty if none).
+# Same order as tmux/scripts/set-copy-command.sh.
+_ww_clipboard_cmd() {
+	if [[ "$OSTYPE" == darwin* ]] && (( $+commands[pbcopy] )); then
+		echo pbcopy
+	elif (( $+commands[clip.exe] )); then
+		echo clip.exe
+	elif [[ -n "$WAYLAND_DISPLAY" ]] && (( $+commands[wl-copy] )); then
+		echo wl-copy
+	elif [[ -n "$DISPLAY" ]] && (( $+commands[xclip] )); then
+		echo "xclip -in -selection clipboard"
+	elif [[ -n "$DISPLAY" ]] && (( $+commands[xsel] )); then
+		echo "xsel --clipboard --input"
+	fi
+}
+
+# ww: copy to the system clipboard (pbcopy / clip.exe / wl-copy / xclip / xsel).
+#   cmd | ww        copy a command's output (one-line output loses its newline)
+#   ww file...      copy file contents
+#   ww some text    copy the text itself
+# Over SSH, or when no clipboard command exists, it copies with OSC 52 so the
+# text lands on your local machine's clipboard instead of the remote one.
+ww() {
+	local data
+	if [[ ! -t 0 && $# -eq 0 ]]; then
+		data="$(cat; printf x)"
+		data="${data%x}"
+		# `pwd | ww` should paste without a trailing newline.
+		[[ "${data%$'\n'}" != *$'\n'* ]] && data="${data%$'\n'}"
+	elif (( $# )); then
+		local f all_files=1
+		for f in "$@"; do [[ -f "$f" && -r "$f" ]] || all_files=0; done
+		if (( all_files )); then
+			data="$(cat -- "$@"; printf x)"
+			data="${data%x}"
+		else
+			data="$*"
+		fi
+	else
+		echo "Usage: cmd | ww    |    ww <file...>    |    ww <text>" >&2
+		return 1
+	fi
+
+	if [[ -z "$data" ]]; then
+		echo "ww: nothing to copy" >&2
+		return 1
+	fi
+
+	local cmd="$(_ww_clipboard_cmd)" via
+	if [[ -n "$SSH_CONNECTION" || -z "$cmd" ]]; then
+		osc52copy "$data" || return
+		via="OSC 52"
+	else
+		printf %s "$data" | ${(z)cmd} || return
+		via="${cmd%% *}"
+	fi
+
+	local -a lines=("${(@f)${data%$'\n'}}")
+	echo "ww: copied ${#data} chars, ${#lines} line(s) via $via" >&2
+}
+
 ## backup utils
 dust_exclude_tarzst_dirs() {
 	# find all *.tar.zst and exclude the directories with the same name (without the .tar.zst extension)

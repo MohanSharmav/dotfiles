@@ -21,8 +21,8 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load plugin specs from `~/.config/nvim/lua/kiyoon/lazy.lua`
-require("lazy").setup("kiyoon.lazy", {
+-- Load plugin specs from `~/.config/nvim/lua/mohan/lazy.lua`
+require("lazy").setup("mohan.lazy", {
   dev = {
     path = "~/project",
     -- patterns = { "kiyoon", "nvim-treesitter-textobjects" },
@@ -79,7 +79,7 @@ nmap <leader><leader>g <Cmd>let g:quit_nvim_hand_gesture = 1<CR>
 ]])
 
 -- Configure context menu on right click
-require("kiyoon.menu")
+require("mohan.menu")
 
 -- folding (use nvim-ufo for better control)
 -- vim.cmd [[hi Folded guibg=black ctermbg=black]]
@@ -154,24 +154,24 @@ vim.keymap.set("x", "<space>pF", function()
 end, { desc = "Run sql-formatter in selection" })
 
 vim.keymap.set("n", "<space>ta", function()
-  require("kiyoon.tools.cycle_case")()
+  require("mohan.tools.cycle_case")()
 end, { remap = true })
 
-require("kiyoon.settings.gitcommit_fix_cwd")
-require("kiyoon.settings.mkview")
-require("kiyoon.settings.custom_filetypes")
-require("kiyoon.settings.python_keymaps")
-require("kiyoon.settings.markdown_keymaps")
+require("mohan.settings.gitcommit_fix_cwd")
+require("mohan.settings.mkview")
+require("mohan.settings.custom_filetypes")
+require("mohan.settings.python_keymaps")
+require("mohan.settings.markdown_keymaps")
 -- Disabled in favor of personal shortcuts (e.g. <F2> toggles hlsearch).
--- require("kiyoon.settings.keychrone_mappings")
-require("kiyoon.settings.korean_langmap")
-require("kiyoon.settings.macos_ime")
-require("kiyoon.settings.messages_in_buffer")
-require("kiyoon.settings.tmux_window_name")
-require("kiyoon.settings.kitty_camera")
-require("kiyoon.settings.highlight_yank")
-require("kiyoon.settings.osc52")
-require("kiyoon.settings.no_lua_ts")
-require("kiyoon.settings.claude_commit_inject").setup()
-require("kiyoon.settings.lsp_commands")
-require("kiyoon.settings.user_keymaps")
+-- require("mohan.settings.keychrone_mappings")
+require("mohan.settings.korean_langmap")
+require("mohan.settings.macos_ime")
+require("mohan.settings.messages_in_buffer")
+require("mohan.settings.tmux_window_name")
+require("mohan.settings.kitty_camera")
+require("mohan.settings.highlight_yank")
+require("mohan.settings.osc52")
+require("mohan.settings.no_lua_ts")
+require("mohan.settings.claude_commit_inject").setup()
+require("mohan.settings.lsp_commands")
+require("mohan.settings.user_keymaps")

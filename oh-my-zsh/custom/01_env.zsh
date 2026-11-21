@@ -182,9 +182,12 @@ bindkey -M viins '^[[200~' bracketed-paste
 # ============================================================
 # zsh-autosuggestions (history autosuggest) & vi-mode bindings
 # ============================================================
-# Suggest based on command history first, then completion fallback
+# Grey suggestion while you type, from your history (all terminals share it):
+#  1. history: the LATEST command that starts with what you typed
+#     (newest wins, so re-running a command updates the suggestion)
+#  2. completion: if history has nothing, what Tab would complete
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=300   # keep suggesting for long commands
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
@@ -203,12 +206,15 @@ function zvm_after_init() {
   zvm_bindkey viins '^s' autosuggest-accept
   zvm_bindkey viins '^f' autosuggest-accept
   zvm_bindkey viins '^e' autosuggest-accept
+  zvm_bindkey viins '^[[F' autosuggest-accept   # End
+  zvm_bindkey viins '^[OF' autosuggest-accept   # End
 
   # Accept next word of autosuggestion:
   # - Alt + Right Arrow (^[[1;3C)
   # - Alt + f (^[f)
   # - Alt + l (^[l)
   zvm_bindkey viins '^[[1;3C' forward-word
+  zvm_bindkey viins '^[[1;5C' forward-word      # Ctrl + Right Arrow
   zvm_bindkey viins '^[f' forward-word
   zvm_bindkey viins '^[l' forward-word
   zvm_bindkey viins '^[h' backward-word

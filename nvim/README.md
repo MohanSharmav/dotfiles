@@ -1,6 +1,6 @@
 # Neovim IDE Config
 
-Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugins via `lazy.nvim` ([`lua/kiyoon/lazy.lua`](lua/kiyoon/lazy.lua)) + personal keymaps ([`lua/kiyoon/settings/user_keymaps.lua`](lua/kiyoon/settings/user_keymaps.lua)).
+Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugins via `lazy.nvim` ([`lua/mohan/lazy.lua`](lua/mohan/lazy.lua)) + personal keymaps ([`lua/mohan/settings/user_keymaps.lua`](lua/mohan/settings/user_keymaps.lua)).
 
 > Default `<leader>` is `\` (backslash), plus explicit `<space>` prefixes. Press `\` or `<space>` and pause to view popups in [which-key.nvim](https://github.com/folke/which-key.nvim).  
 > Step-by-step workflow: [../QUICKSTART.md](../QUICKSTART.md)
@@ -147,7 +147,7 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
   - `<space>mx` (eval visual or cell), `<space>mX` (eval line), `<space>mr` (re-eval), `<space>md` (delete), `<space>mh` (hide output), `<space>me` (enter output)
 - **Markdown (`markdown_keymaps.lua`)**:
   - `<space>tl` / `<space>tL`: Turn word/selection into Markdown link (`[text]` + `(url)`)
-- **Treesitter Text Objects (`lua/kiyoon/ts_textobjs.lua`)**:
+- **Treesitter Text Objects (`lua/mohan/ts_textobjs.lua`)**:
   - Select (`v`/`d`/`c` +): `am`/`im` (function), `al`/`il` (class), `aa`/`ia` (parameter), `ab`/`ib` (block), `ad`/`id` (conditional), `ao`/`io` (loop), `ai`/`ii`/`aI`/`iI` (indent), `ae`/`ie` (entire file), `az`/`iz` (fold), `ac`/`ic` (comment)
   - Move: `]m`/`[m` (function), `]l`/`[l` (class), `]a`/`[a` (parameter), `;`/`,` repeat last move
   - Swap: `)a`/`(a` (parameter), `)m`/`(m` (function), `<space>.` / `<space>,` (`iswap`), `<space><space><space>.` / `,` (`sibling-swap`)
@@ -170,7 +170,7 @@ files, splits and tabs come back. `Session.vim` is ignored globally by git.
 Installed by Mason on first start: `emmylua_ls`, `html`, `cssls`, `tailwindcss`, `vtsls`,
 `jsonls`, `biome`, `pyrefly`, `bashls`, `yamlls`, `vimls`, `dockerls`,
 `docker_compose_language_service`, `marksman`, `taplo`, `clangd` (plus `rust_analyzer` via
-rustaceanvim). Edit the list in [`lua/kiyoon/lsp/init.lua`](lua/kiyoon/lsp/init.lua).
+rustaceanvim). Edit the list in [`lua/mohan/lsp/init.lua`](lua/mohan/lsp/init.lua).
 
 ## Checks
 
@@ -199,7 +199,7 @@ nvim +"lua require('lazy').restore({wait=true})" +qa
 Check health inside Neovim:
 
 ```vim
-:checkhealth kiyoon
+:checkhealth mohan
 ```
 
 Alternate profiles included in [`../oh-my-zsh/custom/aliases.zsh`](../oh-my-zsh/custom/aliases.zsh):

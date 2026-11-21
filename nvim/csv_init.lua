@@ -43,7 +43,7 @@ vim.g.do_filetype_lua = 1
 --   vim.api.nvim_create_user_command("CsvAlign", ":set nowrap | %!column -t -s, -o,", {})
 -- end
 
-require("kiyoon.async_run")
+require("mohan.async_run")
 
 vim.api.nvim_create_user_command("CsvAlign", function()
   vim.cmd([[%!uv run --quiet ~/.config/nvim/csv_tools.py align --filetype ]] .. vim.bo.filetype)
@@ -144,11 +144,11 @@ vim.keymap.set({ "n", "x" }, "J", "<nop>", { silent = true, noremap = true })
 -- use <space>J to join lines
 vim.keymap.set({ "n", "x" }, "<space>J", "J", { silent = true, noremap = true })
 
-require("kiyoon.settings.mkview")
-require("kiyoon.settings.keychrone_mappings")
-require("kiyoon.settings.korean_langmap")
-require("kiyoon.settings.messages_in_buffer")
-require("kiyoon.settings.tmux_window_name")
-require("kiyoon.settings.highlight_yank")
-require("kiyoon.settings.osc52")
-require("kiyoon.settings.no_lua_ts")
+require("mohan.settings.mkview")
+require("mohan.settings.keychrone_mappings")
+require("mohan.settings.korean_langmap")
+require("mohan.settings.messages_in_buffer")
+require("mohan.settings.tmux_window_name")
+require("mohan.settings.highlight_yank")
+require("mohan.settings.osc52")
+require("mohan.settings.no_lua_ts")

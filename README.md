@@ -33,7 +33,7 @@ Modern Neovim, Tmux, Git, Zsh, Terminal, and macOS/Linux window-management confi
 
 > [!NOTE]
 > Forked from [`kiyoon/dotfiles`](https://github.com/kiyoon/dotfiles) with custom `git_nvim_tmux_config` shortcuts (`Ctrl+b` Tmux prefix, `<C-n>` NvimTree, `<C-p>`/`<C-f>`/`zr` Telescope, `git/.gitconfig` aliases, `gh`/`gy`/`gi`/`gn`/`gp`/`ze`/`fmt`/`<F2>`/`<C-\>`).  
-> Currently uses a transparent terminal background (`wezterm/wezterm.lua`, `kitty/kitty.conf`, `nvim/lua/kiyoon/tokyonight.lua`).
+> Currently uses a transparent terminal background (`wezterm/wezterm.lua`, `kitty/kitty.conf`, `nvim/lua/mohan/tokyonight.lua`).
 
 ![image](https://user-images.githubusercontent.com/12980409/218476082-8c400daf-7d9d-4d15-bf7a-f6b41d919191.png)
 
@@ -136,11 +136,11 @@ bash kitty/terminfo.sh <ssh_server_name>     # Kitty (or use `kitten ssh <host>`
 ## Docker
 
 ```bash
-docker pull ghcr.io/kiyoon/dotfiles
+docker pull ghcr.io/mohansharmav/dotfiles
 docker run -it --rm \
     -u $UID:$UID \
     -e TERM=$TERM \
     -e TERM_PROGRAM=$TERM_PROGRAM \
     -e TERM_PROGRAM_VERSION=$TERM_PROGRAM_VERSION \
-    ghcr.io/kiyoon/dotfiles
+    ghcr.io/mohansharmav/dotfiles
 ```

@@ -1,4 +1,4 @@
-local lang = require("kiyoon.lang").lang
+local lang = require("mohan.lang").lang
 
 ---@type vim.lsp.Config
 local M = {

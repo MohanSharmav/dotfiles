@@ -12,7 +12,7 @@ Local, rootless Zsh setup with Starship prompt, `fzf`, `fzf-tab`, `zoxide`, `zsh
 | Key | Plugin / Custom | Action |
 |---|---|---|
 | `Ctrl + o` | `cpbuffer` (`functions.zsh`) | Copy current command line to system clipboard (OSC 52) |
-| `Right Arrow` / `Ctrl + Space` / `Ctrl + s` | `zsh-autosuggestions` | Accept grey inline autosuggestion from command history |
+| `Right Arrow` / `Ctrl + Space` / `Ctrl + s` | `zsh-autosuggestions` | Accept grey inline autosuggestion: your latest command starting with what you typed (else Tab completion) |
 | `Alt + Right` / `Alt + l` / `Alt + f` | `01_env.zsh` | Accept next suggested word / move word forward |
 | `Alt + f` / `Alt + b` / `Alt + BS` | `01_env.zsh` | Forward word / backward word / delete backward word |
 | `Up` / `Down` | `zsh-history-substring-search` | Filter history matching what you already typed |

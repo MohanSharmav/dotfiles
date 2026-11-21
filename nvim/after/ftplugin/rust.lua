@@ -9,6 +9,6 @@ vim.keymap.set("n", "<C-space>", function()
 end, { silent = true, buffer = bufnr })
 
 -- NOTE: rust doesn't use nvim-lspconfig, so we need to set keymaps manually
-local lsp_handler = require "kiyoon.lsp.handlers"
+local lsp_handler = require "mohan.lsp.handlers"
 lsp_handler.setup()
 lsp_handler.lsp_keymaps(bufnr)

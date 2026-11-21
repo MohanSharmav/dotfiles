@@ -7,3 +7,4 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 else
   top -b -n 2 -d 0.2 2>/dev/null | grep -i "cpu(s)" | tail -1 | awk '{ printf "%d%%", 100 - $8 }'
 fi
+

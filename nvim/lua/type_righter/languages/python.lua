@@ -178,7 +178,7 @@ M.toggle_typing = function(name, opts)
   end
 end
 
---- Added by kiyoon
+--- Added by mohan
 --- Adds `None` to the type hint.
 --- If the type hint is already `Optional[T]`, it removes the `Optional` and add None.
 --- If the type hint already contains `None`, it removes `None`.
@@ -330,7 +330,7 @@ M.toggle_typing_none = function()
   end)
 end
 
---- Added by kiyoon
+--- Added by mohan
 --- Replaces Union[T1, T2] with T1 | T2
 --- Replaces Optional[T] with T | None
 --- Replaces List[T] with list[T]

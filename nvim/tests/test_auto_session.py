@@ -1,4 +1,4 @@
-"""Auto vim-obsession for tmux-resurrect (see "tpope/vim-obsession" in lua/kiyoon/lazy.lua).
+"""Auto vim-obsession for tmux-resurrect (see "tpope/vim-obsession" in lua/mohan/lazy.lua).
 
 Neovim runs in a real tmux pane, as it does for you, and is queried over --listen.
 Needs `nvim` (this config installed as ~/.config/nvim, plugins installed), `tmux`, `git`.

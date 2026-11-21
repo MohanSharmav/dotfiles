@@ -1,5 +1,5 @@
 local python_utils = require("python_import.utils")
-local url_utils = require("kiyoon.utils.url")
+local url_utils = require("mohan.utils.url")
 local ls = require("luasnip")
 local i = ls.insert_node
 local func_node = ls.function_node

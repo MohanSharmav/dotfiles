@@ -1,5 +1,5 @@
 FROM ubuntu:24.04
-LABEL org.opencontainers.image.source="https://github.com/kiyoon/dotfiles"
+LABEL org.opencontainers.image.source="https://github.com/MohanSharmav/dotfiles"
 
 SHELL ["/bin/bash", "-c"]
 
@@ -160,7 +160,7 @@ RUN eval "$(mise env -s bash)" \
 	&& zoxide add $HOME/.local/share/nvim/lazy \
 	&& zoxide add $HOME/.config/dotfiles \
 	&& zoxide add $HOME/.config/dotfiles/nvim \
-	&& zoxide add $HOME/.config/dotfiles/nvim/lua/kiyoon \
+	&& zoxide add $HOME/.config/dotfiles/nvim/lua/mohan \
 	&& zoxide add $HOME/.config/dotfiles/tmux \
 	&& zoxide add $HOME/.config/dotfiles/oh-my-zsh \
 	&& zoxide add $HOME/.config/dotfiles/oh-my-zsh/custom/plugins

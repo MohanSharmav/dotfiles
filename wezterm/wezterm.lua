@@ -172,7 +172,7 @@ config.hyperlink_rules = {
 		regex = "(?<![\\(\\{\\[<])\\b\\w+://\\S+",
 		format = "$0",
 	},
-	-- NOTE(kiyoon): hyperlink at the beginning of the line doesn't work
+	-- NOTE(mohan): hyperlink at the beginning of the line doesn't work
 	-- handle it.
 	-- {
 	-- 	regex = "^\\b(\\w+://\\S+[)/a-zA-Z0-9-]+)",

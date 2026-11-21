@@ -27,7 +27,12 @@
 syntax on
 
 if !has('nvim')
-  colorscheme monokai
+  " The Mohan theme lives in nvim/colors/, which plain Vim doesn't search.
+  " Load it straight from there (found through the ~/.vimrc symlink).
+  let s:mohan_theme = fnamemodify(resolve(expand('<sfile>:p')), ':h') . '/colors/mohan.vim'
+  if filereadable(s:mohan_theme)
+    execute 'source' fnameescape(s:mohan_theme)
+  endif
 endif
 
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
