@@ -138,7 +138,7 @@ COPY --chown=docker1000:docker1000 ./nvim $HOME/.config/nvim
 RUN eval "$(mise env -s bash)" \
     && nvim +"lua require('lazy').restore({wait=true})" +qa
 RUN eval "$(mise env -s bash)" \
-    && nvim -u $DOTFILES_PATH/nvim/treemux_init.lua +"lua require('lazy').restore({wait=true})" +qa
+    && nvim -u $HOME/.config/nvim/treemux_init.lua +"lua require('lazy').restore({wait=true})" +qa
 # RUN nvim a.py +"CocInstall -sync coc-pyright" +qa
 RUN eval "$(mise env -s bash)" \
     && nvim a.py +TSUpdateSync +qa
@@ -158,6 +158,7 @@ COPY --chown=docker1000:docker1000 ./autokey/data $DOTFILES_PATH/autokey/data
 COPY --chown=docker1000:docker1000 ./nvim $DOTFILES_PATH/nvim
 COPY --chown=docker1000:docker1000 ./tmux $DOTFILES_PATH/tmux
 COPY --chown=docker1000:docker1000 ./oh-my-zsh $DOTFILES_PATH/oh-my-zsh
+COPY --chown=docker1000:docker1000 ./git $DOTFILES_PATH/git
 RUN chmod 777 $HOME/.config -R
 
 RUN mise trust $DOTFILES_PATH/mise.toml \
