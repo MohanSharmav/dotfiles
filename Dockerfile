@@ -180,7 +180,8 @@ RUN chmod 777 $HOME/.conda -R
 RUN chmod 777 $HOME/.cache -R
 RUN chmod 777 $HOME/.config -R
 RUN chmod 777 $HOME/.cargo -R
-RUN chmod 777 $HOME/.npm -R
+# ~/.npm only exists if something ran npm; global JS packages now go to ~/.bun.
+RUN for d in .npm .bun; do [ ! -d "$HOME/$d" ] || chmod 777 -R "$HOME/$d"; done
 # RUN sudo chmod 755 /home/linuxbrew -R
 
 # RUN source activate main
