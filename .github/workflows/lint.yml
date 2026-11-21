@@ -1,0 +1,108 @@
+name: Lint & test configs
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shell:
+    name: Shell scripts (shellcheck)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Errors only: catches real breakage without failing on style warnings.
+      # Submodules (zsh plugins) are not checked out, so they are skipped.
+      - run: git ls-files -z '*.sh' ':!:hammerspoon/**' | xargs -0 shellcheck --severity=error
+
+  lua:
+    name: Neovim Lua syntax (LuaJIT)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -q && sudo apt-get install -y -q luajit
+      - name: Compile every Lua file under nvim/
+        run: |
+          status=0
+          while IFS= read -r -d '' f; do
+            luajit -b "$f" /dev/null || status=1
+          done < <(git ls-files -z 'nvim/**.lua' 'nvim-coc/**.lua' 'nvim-lazyvim/**.lua')
+          exit $status
+
+  tmux:
+    name: tmux config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -q && sudo apt-get install -y -q tmux
+      - name: Load config with plugins
+        run: |
+          tmux -V
+          ln -s "$PWD/tmux/.tmux.conf" ~/.tmux.conf
+          git clone -q --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+          tmux new-session -d -x 200 -y 50
+          ~/.tmux/plugins/tpm/bin/install_plugins
+          tmux source-file ~/.tmux.conf
+          sleep 2
+      - name: No config errors
+        # tmux reports config errors on the output of the command that loaded it.
+        run: |
+          tmux source-file ~/.tmux.conf > source.log 2>&1 || true
+          cat source.log
+          if grep -nE 'invalid (option|value)|unknown (key|command|option)|parse error|syntax error|\.tmux\.conf:[0-9]+:' source.log; then
+            exit 1
+          fi
+      - name: Copy-mode copies through copy-command
+        run: |
+          tmux list-keys -T copy-mode-vi | tee keys.log
+          grep -qE 'copy-mode-vi +Enter +send-keys -X copy-pipe$' keys.log
+          grep -qE 'copy-mode-vi +MouseDragEnd1Pane +send-keys -X copy-pipe$' keys.log
+          ! grep -q xclip keys.log
+      - name: tmux-continuum auto-save hook is on the final status-right
+        run: |
+          tmux show -gv status-right
+          tmux show -gv status-right | grep -q 'tmux-continuum/scripts/continuum_save.sh'
+          tmux source-file ~/.tmux.conf
+          test "$(tmux show -gv status-right | grep -o continuum_save | wc -l)" -eq 1
+      - name: Unit tests
+        run: python3 -m unittest discover -s tmux/tests -v
+
+  neovim:
+    name: Neovim starts cleanly
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+      - run: sudo apt-get update -q && sudo apt-get install -y -q tmux
+      # nvim-treesitter compiles parsers with the tree-sitter CLI (mise installs it locally).
+      - name: Install tree-sitter CLI
+        run: npm install -g tree-sitter-cli && tree-sitter --version
+      - name: Link config
+        run: mkdir -p ~/.config && ln -s "$PWD/nvim" ~/.config/nvim
+      - name: Install plugins (versions pinned by lazy-lock.json)
+        run: nvim --headless "+Lazy! restore" +qa
+      - name: Start without errors
+        run: |
+          printf 'echo hi\n' > /tmp/check.sh
+          nvim --headless /tmp/check.sh \
+            "+lua vim.defer_fn(function() vim.cmd('qa!') end, 5000)" > nvim.log 2>&1 || true
+          cat nvim.log
+          if grep -niE '\berror\b|E[0-9]+:|stack traceback' nvim.log; then
+            exit 1
+          fi
+      - name: Config is wired
+        run: nvim --headless /tmp/check.sh -c "luafile nvim/tests/check_wiring.lua"
+      - name: Auto-session tests (tmux-resurrect + vim-obsession)
+        timeout-minutes: 10
+        run: python3 -m unittest discover -s nvim/tests -v

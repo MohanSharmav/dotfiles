@@ -4,3 +4,6 @@
 # rust binary default folder
 target
 
+
+# Neovim session files (vim-obsession / tmux-resurrect)
+Session.vim

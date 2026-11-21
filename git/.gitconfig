@@ -39,6 +39,40 @@
 [sequence]
 	editor = nvim
 
+# Safe defaults. Settings an older git doesn't know are ignored, and the
+# values below avoid ones that make older git fail (zdiff3 needs git 2.35).
+[init]
+	defaultBranch = main
+[push]
+	# `git push` on a new branch creates the upstream branch (git 2.37+).
+	autoSetupRemote = true
+[fetch]
+	# Remove local refs to branches deleted on the remote.
+	prune = true
+[merge]
+	# Show the common ancestor in conflict markers.
+	conflictStyle = diff3
+[rerere]
+	# Remember how a conflict was resolved and reuse it next time.
+	enabled = true
+[rebase]
+	autoStash = true
+	autoSquash = true
+	updateRefs = true
+[diff]
+	algorithm = histogram
+	colorMoved = default
+[commit]
+	# Show the diff below the message in the commit editor.
+	verbose = true
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[column]
+	ui = auto
+
+# Keep last: machine-specific overrides win over everything above.
 [include]
 	path = ~/.gitconfig.local
 
