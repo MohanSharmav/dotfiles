@@ -101,6 +101,12 @@ RUN curl -fsSL https://mise.run | sh \
 # RUN pip3 install --user pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip
 # RUN npm install -g neovim
 COPY --chown=docker1000:docker1000 ./nvim/install-dependencies.sh $HOME
+# uv is installed outside mise (see oh-my-zsh/install-installers.sh); the
+# dependency script needs it. ~/.local/bin is already on PATH.
+RUN set -o pipefail \
+    && curl -LsSf https://astral.sh/uv/install.sh \
+    | env UV_INSTALL_DIR="$HOME/.local/bin" UV_NO_MODIFY_PATH=1 sh \
+    && uv --version
 RUN eval "$(mise env -s bash)" \
     && $HOME/install-dependencies.sh
 RUN rm $HOME/install-dependencies.sh
