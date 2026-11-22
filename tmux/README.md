@@ -98,9 +98,10 @@ or, `tmux new -s <session_name>`
 - `exit`: exit window
 - Ctrl+b + n: next window
 - Ctrl+b + p: previous window
-- Ctrl+b + t: last window
+- Ctrl+b + t (or Ctrl+b + l): last window
 - Ctrl+b + \<number\>: jump to the window number
 - Ctrl+b + '\<number\>\<Enter\>: jump to the window number (use when bigger than 9)
+- Ctrl+b + Space: cycle pane layouts
 - Ctrl+b + ,: change window title
 - Ctrl+b + < / >: re-order windows
 - Mouse: drag and hold a window title for 0.5 seconds; the pink `` shows the exact insertion position
@@ -119,7 +120,7 @@ or, `tmux new -s <session_name>`
 - Ctrl+b + \\: divide screen (vertical)
 - Ctrl+b + |: divide screen (vertical, current dir)
 - Ctrl+b + - / \_: divide screen (horizontal, current dir)
-- Ctrl+b + h/j/k/l: move between panes
+- Ctrl+b + h/j/k: move between panes (Ctrl+b + l is last window; use Ctrl+l for the right pane)
 - Ctrl+h/j/k/l: move between tmux panes and Neovim splits seamlessly
 - Ctrl+\\: switch to previous pane
 - Alt + \<ArrowKey\>: move between panes
@@ -159,7 +160,9 @@ You can even use mouse right click.
   - Ctrl+b: page up (back page)
   - Ctrl+d: half page down
   - Ctrl+u: half page up
-- In copy mode, `v` to select region. `y` (or `Enter`) to copy and `q` to exit copy mode. Then Ctrl+b + ] to paste.
+- In copy mode, `v` to select region. `y` copies and stays in copy mode; `Enter` copies and exits. `q` exits copy mode. Then Ctrl+b + ] to paste.
+- Ctrl+b + Ctrl+v: paste from the system clipboard
+- Ctrl+b + Ctrl+l: clear the screen (plain Ctrl+l moves to the right pane)
 - You can use mouse drag to copy.
 - Copies go to the system clipboard on macOS (`pbcopy`), WSL (`clip.exe`), Wayland (`wl-copy`) and X11 (`xclip`/`xsel`), picked by [`scripts/set-copy-command.sh`](scripts/set-copy-command.sh). Over SSH they reach your local clipboard through OSC 52 (`set-clipboard on`).
 - Ctrl+b + =: see buffer list

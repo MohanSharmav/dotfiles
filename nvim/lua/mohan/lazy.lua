@@ -90,9 +90,11 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      local ok = pcall(vim.cmd.colorscheme, "mohan")
+      -- molokai matches git_nvim_tmux_config (its init.vim: `colorscheme molokai`).
+      -- "mohan" (Monokai) stays as the fallback.
+      local ok = pcall(vim.cmd.colorscheme, "molokai")
       if not ok then
-        pcall(vim.cmd.colorscheme, "molokai")
+        pcall(vim.cmd.colorscheme, "mohan")
       end
     end,
   },
@@ -766,6 +768,9 @@ return {
     -- cmd = { "Copilot" },
     init = function()
       vim.g.copilot_no_tab_map = true
+      -- <Tab> accepts a suggestion (copilot.vim's default, as in git_nvim_tmux_config)
+      -- and inserts a normal Tab when there is none.
+      vim.cmd([[imap <silent><script><expr> <Tab> copilot#Accept("\<Tab>")]])
       vim.cmd([[imap <silent><script><expr> <C-s> copilot#Accept("")]])
       vim.cmd([[imap <silent><script><expr> <F7> copilot#Accept("")]])
 
@@ -2321,6 +2326,14 @@ return {
         mode = { "n", "x" },
         desc = "Format buffer",
       },
+      {
+        "fmtc",
+        function()
+          require("conform").format({ async = true, formatters = { "clang-format" } })
+        end,
+        mode = { "n", "x" },
+        desc = "Format buffer with clang-format",
+      },
     },
     -- Everything in opts will be passed to setup()
     opts = {
@@ -3202,6 +3215,12 @@ return {
   },
   {
     "linrongbin16/gitlinker.nvim",
+    cmd = { "GitLink" },
+    -- Same keys as vim-gh-line in git_nvim_tmux_config: copy the GitHub link.
+    keys = {
+      { "<leader>gh", "<cmd>GitLink<CR>", mode = { "n", "x" }, desc = "Copy GitHub link to line(s)" },
+      { "<leader>gb", "<cmd>GitLink blame<CR>", mode = { "n", "x" }, desc = "Copy GitHub blame link" },
+    },
     config = function()
       require("gitlinker").setup()
     end,

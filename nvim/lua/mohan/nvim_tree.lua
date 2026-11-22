@@ -24,6 +24,12 @@ local function nvim_tree_on_attach(bufnr)
   vim.keymap.del("n", "-", { buffer = bufnr })
   vim.keymap.set("n", "<C-k>", "", { buffer = bufnr })
   vim.keymap.del("n", "<C-k>", { buffer = bufnr })
+  -- As in git_nvim_tmux_config: `i` replaces <C-x> (horizontal split), and <C-e>
+  -- (open in place) is dropped.
+  vim.keymap.set("n", "<C-x>", "", { buffer = bufnr })
+  vim.keymap.del("n", "<C-x>", { buffer = bufnr })
+  vim.keymap.set("n", "<C-e>", "", { buffer = bufnr })
+  vim.keymap.del("n", "<C-e>", { buffer = bufnr })
   vim.keymap.set("n", "O", "", { buffer = bufnr })
   vim.keymap.del("n", "O", { buffer = bufnr })
 end

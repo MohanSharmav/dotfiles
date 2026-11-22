@@ -10,7 +10,7 @@ end
 
 return {
   options = {
-    theme = "auto", -- auto-adapts to active colorscheme (mohan)
+    theme = "auto", -- auto-adapts to active colorscheme (molokai)
     globalstatus = true,
     disabled_filetypes = { statusline = { "dashboard", "alpha" } },
   },
