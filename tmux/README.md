@@ -18,13 +18,16 @@ Tmux's default keybindings are quite unintuitive, so I've changed a few.
 | Key | Mode / Scope | Action |
 |---|---|---|
 | `Ctrl+b` | Prefix | Tmux prefix key (`Ctrl+b` then `Ctrl+b` or `z` toggles pane zoom) |
-| `Ctrl+b` `\|` / `\` | Window | Vertical split (side-by-side): current dir (`\|`) / default dir (`\`) |
+| `Ctrl+b` `\|` / `\` | Window | Vertical split (side-by-side) in current dir |
+| `Ctrl+b` `f` | Global | Project switcher popup: fzf over sessions + zoxide dirs; switches to or creates the session ([`scripts/sessionizer.sh`](scripts/sessionizer.sh)) |
+| `Ctrl+b` `g` | Global | lazygit popup in the current pane's dir |
+| `Ctrl+b` `B` | Window | `bacon` (background `cargo check`/clippy) in a side pane, focus stays put |
 | `Ctrl+b` `-` / `_` | Window | Horizontal split (top/bottom) in current dir |
 | `Ctrl+b` `C` / `c` | Window | New window in current dir (`C`) / default dir (`c`) |
 | `Ctrl+h/j/k/l` | Global (no prefix) | Seamless pane navigation across Tmux and Neovim |
 | `Ctrl+\` | Global (no prefix) | Switch to previous pane (Tmux & Neovim) |
 | `Ctrl+b` `H/J/K/L` | Window (repeatable) | Resize pane by 5 (`Ctrl+Alt+y/u/i/o` without prefix) |
-| `Ctrl+b` `r` / `R` | Global | Reload `~/.tmux.conf` |
+| `Ctrl+b` `r` / `R` | Global | Reload `~/.tmux.conf` (`R` also installs newly added plugins) |
 | `Ctrl+b` `a` | Window | Toggle `synchronize-panes` (type in all panes at once) |
 | `Ctrl+b` `S` | Pane | Swap current pane with top-left pane |
 | `Ctrl+b` `<` / `>` | Window (repeatable) | Move/reorder current window left / right |
@@ -33,6 +36,10 @@ Tmux's default keybindings are quite unintuitive, so I've changed a few.
 | `Ctrl+b` `[` then `v` / `y` | Copy mode (vi) | Scroll & copy (`Ctrl+b` `]` pastes; `y`/`Y` copies shell line / `$PWD`) |
 | `Ctrl+b` `x` / `X` | Pane / Session | Kill pane (`x`) / confirm kill session (`X`) |
 | `Ctrl+Alt+k/j` | Global | Jump to previous / next shell prompt (OSC 133) |
+
+Sessions are saved every 15 minutes (tmux-continuum) and restored automatically when the tmux server starts (`@continuum-restore 'on'`), including Neovim via `Session.vim`.
+
+The vim check behind `Ctrl+h/j/k/l` and the resize keys is a tmux format (`$is_vim` in `.tmux.conf`), not a `ps` call per keypress: it matches a vim-like foreground command, or the pane option `@is_vim` that Neovim sets while running ([`tmux_is_vim.lua`](../nvim/lua/mohan/settings/tmux_is_vim.lua)), so it also works when Neovim is the `git commit` editor.
 
 ## 🛠️ Installation
 

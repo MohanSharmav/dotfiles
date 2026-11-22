@@ -14,8 +14,8 @@ Single-page dictionary of every custom shell function, alias, ZLE keybinding, Gi
 |---|---|---|
 | `dotfiles_dir` | — | Prints the Git root path of this dotfiles repo |
 | `dotstash` | — | Runs `git stash` inside the dotfiles repo |
-| `dotinstall` | — | Links dotfiles via `mise`, runs installers, restores Neovim plugins, installs/updates Tmux plugins, installs terminfo, reloads Zsh |
-| `dotupdate` | `[tag/branch]` | Pulls latest repo + submodules, checks out optional ref, reloads `~/.zshrc`, runs `dotinstall` |
+| `dotinstall` | `[setup options]` | Re-runs `setup_mac.sh` / `setup_ubuntu.sh` (links, packages, tools, plugins, terminfo; idempotent), then reloads Zsh |
+| `dotupdate` | `[tag/branch]` | Runs `update.sh`: checks out the optional ref, pulls, relinks, upgrades packages, tools and plugins |
 | `dotstable` | — | Shortcut for `dotupdate stable` |
 | `license` | `[name]` | Lists GitHub open-source license keys or prints license body via GitHub API + `jq` |
 | `is_gpg_cached` | — | Checks whether GPG agent currently caches the signing subkey (`true` / `false` / `nogpg`) |
@@ -129,6 +129,8 @@ Single-page dictionary of every custom shell function, alias, ZLE keybinding, Gi
 | Format-on-save toggle | `:FormatDisable` / `:FormatDisable!` / `:FormatEnable` | Off globally / off for this buffer / back on |
 | Session for tmux-resurrect | automatic in tmux + git repo; `:Obsession!` to stop | Keeps `./Session.vim` so Neovim panes are restored after reboot |
 | LSP definitions / types / impls / hover | `gd` / `gy` / `gi` / `gr` / `gh` / `K` | Telescope LSP jumps & rounded hover doc |
+| Rust docs (`after/ftplugin/rust.lua`) | `K` / `gK` / `<space>re` / `<space>rd` / `<space>rc` / `<space>rm` / `<space>rr` / `<space>rt` | Hover rustdoc / open docs.rs / explain error / render diagnostic / open Cargo.toml / expand macro / runnables / testables |
+| Cargo.toml (`crates.nvim`) | `K` / `gK` / `<space>rv` / `<space>rf` / `<space>rD` / `<space>ru` / `<space>rU` / `<space>rh` / `<space>rr` / `<space>rc` | Crate info / docs.rs / versions / features / deps / upgrade / upgrade all / homepage / repo / crates.io |
 | Diagnostics & Inlay hints | `gn` / `gp` / `gl` / `ze` / `<space>pl` | Jump next/prev diagnostic (`gn`/`gp`), float (`gl`), toggle hints (`ze`) |
 | Copilot accept / word / cycle | `<C-s>` or `<F7>` / `<F5>` / `Alt+]` | Accept full completion / accept word / cycle suggestions |
 | Claude Code integration | `<leader>ac` / `<leader>af` / `<leader>ab` / `<leader>as` | Open Claude terminal, focus, add file, send visual selection |
@@ -147,10 +149,13 @@ Single-page dictionary of every custom shell function, alias, ZLE keybinding, Gi
 
 | Item | Path / Binding | What it does |
 |---|---|---|
-| Reload config + refresh PATH | `Ctrl+b` `r` or `R` | Sources `~/.tmux.conf` cleanly |
+| Reload config + refresh PATH | `Ctrl+b` `r` or `R` | Sources `~/.tmux.conf` cleanly (`R` also installs new TPM plugins) |
+| Project switcher | `Ctrl+b` `f` | `tmux/scripts/sessionizer.sh`: fzf over sessions + zoxide dirs, switches to or creates the session |
+| lazygit / bacon | `Ctrl+b` `g` / `B` | lazygit popup / `bacon` side pane in the current dir |
 | Move pane to next/prev window | `Ctrl+b` `N` / `P` | Uses `tmux/scripts/get_next_window_uid.sh` / `get_prev_window_uid.sh` |
 | Agent Session IDs | `tmux/scripts/agent-sid.sh`, `codex-daemon-sid.py` | Displays `cc:`, `cx:`, `gc:`, `oc:` session IDs in pane borders |
-| Install / update plugins | `./tmux/install-plugins.sh`, `./tmux/update-plugins.sh` | Installs TPM plugins + `/usr/bin/python3` deps (`pynvim`, `libtmux`) |
+| Install / update plugins | `./tmux/install-plugins.sh`, `./tmux/update-plugins.sh` | Installs (update: installs new, then updates) TPM plugins + `/usr/bin/python3` deps (`pynvim`, `libtmux`); no stray session, and tmux-continuum auto-restore paused via `tmux/scripts/no-auto-restore.sh` |
+| Rust tools | `./cargo/install-rust-tools.sh [--update]` | Default toolchain + `rust-analyzer`/`rust-src`/`rust-docs` components + `bacon` |
 
 ---
 
