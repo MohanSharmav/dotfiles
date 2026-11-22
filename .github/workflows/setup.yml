@@ -1,0 +1,73 @@
+name: Setup scripts
+
+on:
+  push:
+    paths:
+      - setup_mac.sh
+      - setup_ubuntu.sh
+      - update.sh
+      - scripts/**
+      - Brewfile
+      - Brewfile.wm
+      - mise.toml
+      - mise-config/**
+      - cargo/install-rust-tools.sh
+      - oh-my-zsh/install-installers.sh
+      - nvim/install-dependencies.sh
+      - tmux/scripts/no-auto-restore.sh
+      - tests/**
+      - .github/workflows/setup.yml
+  pull_request:
+    paths:
+      - setup_mac.sh
+      - setup_ubuntu.sh
+      - update.sh
+      - scripts/**
+      - Brewfile
+      - Brewfile.wm
+      - mise.toml
+      - mise-config/**
+      - cargo/install-rust-tools.sh
+      - oh-my-zsh/install-installers.sh
+      - nvim/install-dependencies.sh
+      - tmux/scripts/no-auto-restore.sh
+      - tests/**
+      - .github/workflows/setup.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: setup-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Tests + dry run (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      # Link map parity with mise.toml, options, and a dry run that changes nothing.
+      - run: python3 -m unittest discover -s tests -v
+      - name: Brewfiles parse
+        if: runner.os == 'macOS'
+        run: brew bundle list --file=Brewfile --all && brew bundle list --file=Brewfile.wm --all
+
+  ubuntu:
+    name: setup_ubuntu.sh (real run, twice)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # mise's github: backends hit the API; authenticate to avoid rate limits.
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: First run
+        run: ./setup_ubuntu.sh --server --no-chsh
+      - name: Second run is clean (idempotent)
+        run: ./setup_ubuntu.sh --server --no-chsh

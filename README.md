@@ -94,17 +94,22 @@ git clone https://github.com/MohanSharmav/dotfiles.git ~/Developer/dotfiles
 cd ~/Developer/dotfiles
 ```
 
+One script per OS. Both are safe to re-run, back up anything they replace to
+`~/.dotfiles_backup_<time>`, and accept `--dry-run` (print every change, make none).
+
 ### On macOS
 ```bash
-./setup_mac.sh
+./setup_mac.sh             # add --with-wm for AeroSpace, SketchyBar, skhd, Hammerspoon, Karabiner
 ```
-*Checks Homebrew, runs user-space installers, links macOS-specific window managers (AeroSpace, Sketchybar, Karabiner), and bootstraps Neovim, Tmux, and terminfo.*
+*Xcode Command Line Tools, Homebrew + [`Brewfile`](Brewfile) (rustup, uv, bun, GNU tools, eza, kitty, Nerd Fonts; [`Brewfile.wm`](Brewfile.wm) with `--with-wm`, which also starts those apps and points Hammerspoon at `~/.config/hammerspoon`), config links incl. the macOS-only ones, mise tools, Rust tools, Neovim and tmux plugins, terminfo, Claude Code, and the Terminal.app font/colours.*
 
-### On Ubuntu / Linux
+### On Ubuntu / Debian
 ```bash
-./setup_ubuntu.sh   # or ./setup_linux.sh
+./setup_ubuntu.sh          # --server (headless), --desktop, --no-apt (no sudo), --no-chsh
 ```
-*Installs recommended apt packages (`build-essential`, `curl`, `git`, `zsh`, `tmux`, `xclip`, `wl-clipboard`), downloads JetBrains Mono Nerd Font to `~/.local/share/fonts`, configures Linux symlinks (including AutoKey), and bootstraps Neovim, Tmux, and terminfo.*
+*apt packages when sudo is available (otherwise zsh is built under `~/.local`), config links incl. AutoKey, user-space tools under `$HOME` (rustup, uv, bun, mise, pixi extras), Rust tools, Neovim and tmux plugins, terminfo, Claude Code; on a desktop also xclip/wl-clipboard and JetBrainsMono Nerd Font; finally zsh as the login shell (`chsh`, or launched from `~/.bashrc`).*
+
+Shared steps live in [`scripts/setup-common.sh`](scripts/setup-common.sh); [`tests/test_setup_scripts.py`](tests/test_setup_scripts.py) and [`.github/workflows/setup.yml`](.github/workflows/setup.yml) (a real `setup_ubuntu.sh` run, twice) check them.
 
 ---
 
@@ -112,7 +117,8 @@ cd ~/Developer/dotfiles
 
 ```bash
 # From any terminal / shell:
-./update.sh           # Full update: repo, submodules, symlinks, mise, Neovim & Tmux plugins
+./update.sh           # Full update: repo, submodules, links, Homebrew (macOS), mise, Rust tools, Neovim & Tmux plugins
+./update.sh stable    # Switch to the `stable` tag (any tag or branch), then update
 ./update.sh --dry-run # Preview update steps without making changes
 ./update.sh --skip-git # Update plugins and tools without pulling from git
 

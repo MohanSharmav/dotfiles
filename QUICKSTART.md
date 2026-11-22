@@ -12,14 +12,14 @@ A zero-fluff workflow guide to open your terminal, browse project files, edit co
 ```bash
 cd ~/Developer/dotfiles # or ~/.config/dotfiles
 
-# On macOS:
+# On macOS (add --with-wm for the AeroSpace/SketchyBar window-manager stack):
 ./setup_mac.sh
 
-# On Ubuntu / Linux:
-./setup_ubuntu.sh      # or ./setup_linux.sh
+# On Ubuntu / Debian (--server on a headless machine, --no-apt without sudo):
+./setup_ubuntu.sh
 ```
 
-These scripts back up any existing old files, create all symlinks, install `mise` toolchains, configure Neovim's Python 3.12 virtualenv and plugins, install Tmux TPM plugins, and configure terminfo.
+These scripts back up any existing old files, create all symlinks, install packages (Homebrew on macOS, apt on Ubuntu) and `mise` toolchains, configure Neovim's Python 3.12 virtualenv and plugins, install Tmux TPM plugins, Rust tools and Claude Code, and configure terminfo. Both are safe to re-run; `--dry-run` shows what they would do.
 
 Enable GitHub Copilot once inside Neovim:
 
@@ -123,11 +123,12 @@ nvim .                     # opens Neovim with NvimTree file explorer open on th
 |---|---|---|
 | Toggle Claude Code in Neovim | `\ a c` (focus: `\ a f`) | Embedded Claude terminal |
 | Send file or selection to Claude | `\ a b` / Visual `\ a s` | Add buffer / send selection (`\ a a` accept diff, `\ a d` deny diff) |
-| Toggle / Open Copilot Chat | `\ c c` / `\ c q` | Embedded GitHub Copilot Chat window (`CopilotChat.nvim`) |
+| Toggle / Open Copilot Chat | `\ c c` / `\ c q` | Embedded GitHub Copilot Chat window (`CopilotChat.nvim`, Copilot's `auto` model) |
+| Claude chat | `\ c l` | Claude Code panel (same as `\ a c`); needs `claude`, which `setup_mac.sh` / `setup_ubuntu.sh` install |
 | Telescope Prompts / Actions menu | `\ c p` (help: `\ c h`) | Fuzzy-search all Copilot actions & prompts |
 | Fix Diagnostic under cursor | `\ c d` | Sends LSP diagnostic at cursor directly to Copilot |
 | Auto-generate Git commit message | `\ c m` | Generates conventional commit from staged changes |
-| Select Copilot Model | `\ c M` | Switch models (Claude 3.5/3.7, GPT-4o, o1/o3-mini) |
+| Select Copilot Model | `\ c M` | Switch models (only on Copilot plans that allow picking; Free plans use `auto`) |
 | Review / Fix / Tests with Copilot | `\ c r` / `\ c f` / `\ c t` / `\ c x` | Review, fix, generate tests, or explain code |
 | Open ChatGPT chat / rewrite selection | `\ c g` / `\ c e` | `gp.nvim` chat or inline rewrite |
 | Summarize / fix selected text | Visual `Space a s` | `neoai` textify shortcut |
@@ -183,7 +184,8 @@ mise run update
 
 | Option | What it does |
 |---|---|
-| `./update.sh` | Full update (pulls git, updates submodules, mise tools, Lazy plugins, Treesitter, TPM plugins, and reloads Tmux) |
+| `./update.sh` | Full update (pulls git, updates submodules, relinks configs, upgrades Brewfile packages on macOS / pixi extras on Linux, mise tools, Rust toolchain + rust-analyzer/bacon, Lazy plugins, Treesitter, new + existing TPM plugins, and reloads Tmux) |
+| `./update.sh stable` | Check out a tag or branch (here `stable`, like `dotstable`), then update |
 | `./update.sh --dry-run` | Preview all actions without modifying files |
 | `./update.sh --skip-git` | Updates plugins and symlinks without pulling from git (keeps local repo branch untouched) |
 | `./update.sh --force` | Auto-stashes local uncommitted changes before pulling from remote |

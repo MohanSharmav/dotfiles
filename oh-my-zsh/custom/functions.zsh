@@ -10,21 +10,15 @@ dotstash() {
 	git -C "$DOTFILES_DIR" stash
 }
 
+# Re-run this OS's setup script (links, tools, plugins, terminfo; idempotent).
+# Arguments are passed on, e.g. `dotinstall --with-wm` on macOS.
 dotinstall() {
 	DOTFILES_DIR=$(dotfiles_dir)
-
-	mise -C "$DOTFILES_DIR" run setup-dotfiles || return
-	"$DOTFILES_DIR"/oh-my-zsh/install-installers.sh || return
-	eval "$(mise -C "$HOME" env -s zsh)"
-
-	"$DOTFILES_DIR"/nvim/install-dependencies.sh
-	nvim +"lua require('lazy').restore({wait=true})" +qa
-
-	"$DOTFILES_DIR"/tmux/install-plugins.sh
-	"$DOTFILES_DIR"/tmux/update-plugins.sh
-
-	"$DOTFILES_DIR"/wezterm/terminfo.sh
-
+	if [[ $OSTYPE == darwin* ]]; then
+		"$DOTFILES_DIR"/setup_mac.sh "$@"
+	else
+		"$DOTFILES_DIR"/setup_ubuntu.sh "$@"
+	fi
 	omz reload
 }
 

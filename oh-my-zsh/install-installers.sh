@@ -24,6 +24,9 @@ else
     fi
 fi
 
+# Default toolchain, rust-analyzer/rust-src/rust-docs components and bacon.
+bash "$(dirname "${BASH_SOURCE[0]}")/../cargo/install-rust-tools.sh"
+
 # Keep runners outside mise so background commands can use stable executable paths.
 # Check standalone paths on Linux: an inherited PATH may still contain mise tools.
 if [[ $OSTYPE == "darwin"* ]]; then

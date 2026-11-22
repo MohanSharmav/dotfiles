@@ -11,7 +11,7 @@ The executable, Python APIs, terminfo, and remote-control socket still use kitty
 Ported from [../wezterm/wezterm.lua](../wezterm/wezterm.lua).
 
 > [!NOTE]
-> Needs `font-noto-color-emoji` (in `../install-nerdfont.sh`). wezterm bundles
+> Needs `font-noto-color-emoji` (in `../Brewfile`). wezterm bundles
 > Noto Color Emoji; kitty would otherwise fall back to Apple Color Emoji, which
 > looks nothing like it in the tmux dracula status bar.
 

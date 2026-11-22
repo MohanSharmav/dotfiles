@@ -29,6 +29,10 @@ dotfiles.default_mode = "symlink"
 "~/.config/hammerspoon" = { source = "hammerspoon", variants = [{ os = "macos" }] }
 "~/.config/autokey/data" = { source = "autokey/data", variants = [{ os = "linux" }] }
 
+[tasks.setup]
+description = "Full setup for this OS (setup_mac.sh or setup_ubuntu.sh)"
+run = 'if [ "$(uname -s)" = Darwin ]; then ./setup_mac.sh; else ./setup_ubuntu.sh; fi'
+
 [tasks.setup-dotfiles]
 description = "Link dotfiles configuration"
 run = 'mise bootstrap dotfiles apply'

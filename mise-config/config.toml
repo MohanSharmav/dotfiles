@@ -15,7 +15,7 @@ pixi = "latest" # Linux fallback for tools with system-library dependencies (bel
 
 # Zsh plugins, aliases and previews; fd/rg/viu are also Neovim dependencies.
 starship = "latest" # Zsh prompt
-# eza publishes no macOS release binaries; install-extras installs it with Homebrew on macOS.
+# eza publishes no macOS release binaries; the repo Brewfile installs it on macOS.
 "github:eza-community/eza" = { version = "latest", os = [
   "linux",
 ] } # Zsh ls/ll aliases and fzf/fzf-tab directory previews
@@ -58,13 +58,9 @@ run = '''
 set -eu
 case "$(uname -s)" in
   Darwin)
-    # GNU tools used by Zsh helpers and the local install scripts.
-    brew install wget coreutils gnu-sed gnu-tar grep
-    brew install eza      # Zsh ls/ll aliases; eza has no macOS release binaries
-    brew install tig      # Zsh tig plugin (tis, etc.)
-    brew install pv       # Zsh archive/transfer progress helpers
-    brew install chafa    # fzf/fzf-tab and Yazi image previews
-    brew install poppler  # pdftoppm: Yazi and fzf-tab PDF previews (custom/01_env.zsh)
+    # The macOS list lives in the repo's Brewfile (setup_mac.sh installs it too):
+    # GNU tools, eza, tig, pv, chafa, poppler, plus rustup/uv/bun/kitty/fonts.
+    brew bundle install --file="$HOME/.config/dotfiles/Brewfile"
     ;;
   Linux)
     # poppler has no official static binary; its libraries need a dependency solver.

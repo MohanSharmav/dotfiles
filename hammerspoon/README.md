@@ -1,6 +1,8 @@
 # Hammerspoon Config (macOS Automation)
 
 Config: [`init.lua`](init.lua) and helper modules in `~/.config/hammerspoon` (symlinked by `mise`).
+Hammerspoon reads `~/.hammerspoon` by default; `setup_mac.sh` points it here with
+`defaults write org.hammerspoon.Hammerspoon MJConfigFile ~/.config/hammerspoon/init.lua`.
 
 ---
 

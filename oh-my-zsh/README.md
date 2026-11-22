@@ -104,6 +104,8 @@ Uncommitted machine-local overrides can live in `~/.config/zsh/*.zsh` (sourced a
 
 ## Setup (Local / Without Sudo)
 
+`./setup_ubuntu.sh --no-apt` (Linux) and `./setup_mac.sh` run all of the steps below for you; they are listed for doing it by hand.
+
 1. Install Zsh locally if missing or older than v5.9:
 
 ```bash

@@ -1,0 +1,13 @@
+# macOS window-manager stack (setup_mac.sh --with-wm). Configs: aerospace/,
+# sketchybar/, skhd/, hammerspoon/, karabiner/. Each needs Accessibility (and
+# Karabiner its driver) approved in System Settings after the first launch.
+
+tap "nikitabobko/tap"
+tap "felixkratz/formulae"
+tap "koekeishiya/formulae"
+
+cask "nikitabobko/tap/aerospace"         # tiling window manager
+brew "felixkratz/formulae/sketchybar"    # menu bar (reads AeroSpace workspaces)
+brew "koekeishiya/formulae/skhd"         # hold-to-repeat divider resize
+cask "hammerspoon"                       # global hotkeys (IME, TranslateScreen, ...)
+cask "karabiner-elements"                # Caps Lock -> Ctrl/Esc, 한/영 -> F18
