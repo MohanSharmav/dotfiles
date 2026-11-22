@@ -12,6 +12,9 @@ A zero-fluff workflow guide to open your terminal, browse project files, edit co
 ```bash
 cd ~/Developer/dotfiles # or ~/.config/dotfiles
 
+# On either OS (picks the right script below):
+./migrate_and_setup.sh
+
 # On macOS (add --with-wm for the AeroSpace/SketchyBar window-manager stack):
 ./setup_mac.sh
 

@@ -94,7 +94,7 @@ git clone https://github.com/MohanSharmav/dotfiles.git ~/Developer/dotfiles
 cd ~/Developer/dotfiles
 ```
 
-One script per OS. Both are safe to re-run, back up anything they replace to
+`./migrate_and_setup.sh` works on either OS: it runs the right script below with the same options. One script per OS. Both are safe to re-run, back up anything they replace to
 `~/.dotfiles_backup_<time>`, and accept `--dry-run` (print every change, make none).
 
 ### On macOS

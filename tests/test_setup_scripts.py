@@ -92,6 +92,16 @@ class Options(unittest.TestCase):
         self.assertIn("setup_", out.stderr)
 
 
+class MigrateAndSetup(unittest.TestCase):
+    """migrate_and_setup.sh runs this OS's setup script with the same options."""
+
+    def test_dispatches_to_this_os(self):
+        out = run([REPO / "migrate_and_setup.sh", "--help"])
+        self.assertEqual(out.returncode, 0)
+        name = "setup_mac.sh" if platform.system() == "Darwin" else "setup_ubuntu.sh"
+        self.assertIn(f"./{name}", out.stdout)
+
+
 class DryRun(unittest.TestCase):
     """--dry-run on this OS plans every step and changes nothing in $HOME."""
 
