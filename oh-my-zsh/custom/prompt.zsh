@@ -39,7 +39,7 @@ _prompt_build() {
 	mkdir -p $_prompt_cache
 	sed "s/^palette = \"local\"/palette = \"$_prompt_palette\"/" $_prompt_src >| $full
 	# Compact: keep folder, git, contexts, status, duration and the SSH host.
-	sed -E '/^\$(nodejs|bun|python|conda|rust|golang|username|time)\\$/d' $full >| $compact
+	sed -E '/^\$(nodejs|bun|python|c|cpp|conda|rust|golang|username|time)\\$/d' $full >| $compact
 }
 
 _prompt_pick_config() {

@@ -29,6 +29,8 @@ $git_status\
 $nodejs\
 $bun\
 $python\
+$c\
+$cpp\
 $conda\
 $rust\
 $golang\
@@ -98,6 +100,17 @@ format = "[ ${version}( \\($virtualenv\\))]($style) "
 version_format = "${major}.${minor}"
 style = "bold #facc15"
 
+[c]                         # C compiler version, in folders with .c/.h files
+format = "[ $version]($style) "
+version_format = "${major}.${minor}"
+style = "bold #60a5fa"
+
+[cpp]                       # C++ compiler version, in folders with .cpp/.hpp/... files
+disabled = false
+format = "[ $version]($style) "
+version_format = "${major}.${minor}"
+style = "bold #818cf8"
+
 [conda]
 format = "[🅒 $environment]($style) "
 ignore_base = true
@@ -151,7 +164,8 @@ format = "[](fg:#0e7490)[ 󰒋 $hostname ](bg:#0e7490 fg:#ffffff bold)[](fg:#0e7
 
 [time]                      # light pill
 disabled = false
-time_format = "%I:%M:%S %p"
+utc_time_offset = "+5.5"    # India Standard Time (UTC+05:30), whatever the Mac's zone
+time_format = "%I:%M:%S %p IST"
 format = "[](fg:#e5e7eb)[ $time ](bg:#e5e7eb fg:#111111 bold)[](fg:#e5e7eb)"
 
 # ---------- line 2 ----------

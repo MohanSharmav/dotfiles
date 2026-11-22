@@ -17,6 +17,7 @@ require("treesitter-modules").setup({
   -- A list of parser names, or "all"
   ensure_installed = {
     "c",
+    "cpp",
     "lua",
     "rust",
     "python",

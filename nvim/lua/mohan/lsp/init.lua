@@ -108,6 +108,7 @@ install_pkg_background("actionlint")
 install_pkg_background("roslyn")
 install_pkg_background("dprint")
 install_pkg_background("shfmt") -- conform.nvim formatter for sh/bash
+install_pkg_background("clang-format") -- conform.nvim formatter for c/cpp
 -- install_pkg_background("selene")
 
 -- local lspconfig = require("lspconfig")
