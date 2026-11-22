@@ -28,8 +28,18 @@ local function resize(dir)
   fn(STEP)
 end
 
+-- How nvim names the key depends on $TERM: with xterm-256color it reads
+-- <C-S-F9>, but kitty's terminfo (TERM=xterm-kitty inside tmux) numbers
+-- Ctrl+Shift+F1..F12 as F37..F48, so the same bytes arrive as <F45>..<F48>.
+local keys = {
+  ["<C-S-F9>"] = "h", ["<F45>"] = "h",
+  ["<C-S-F10>"] = "j", ["<F46>"] = "j",
+  ["<C-S-F11>"] = "k", ["<F47>"] = "k",
+  ["<C-S-F12>"] = "l", ["<F48>"] = "l",
+}
+
 local modes = { "n", "i", "x", "s", "t" }
-for key, dir in pairs({ ["<C-S-F9>"] = "h", ["<C-S-F10>"] = "j", ["<C-S-F11>"] = "k", ["<C-S-F12>"] = "l" }) do
+for key, dir in pairs(keys) do
   vim.keymap.set(modes, key, function()
     resize(dir)
   end, { desc = "tmux prefix resize " .. dir:upper() })
