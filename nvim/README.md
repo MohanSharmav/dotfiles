@@ -158,7 +158,8 @@ Main entry: [`init.lua`](init.lua) -> sources [`.vimrc`](.vimrc) -> loads plugin
 
 Inside tmux, when Neovim starts in a git repository it keeps `./Session.vim` up to date
 ([vim-obsession](https://github.com/tpope/vim-obsession)). After a reboot,
-tmux-resurrect (`Ctrl+b` `Ctrl+r`) reopens Neovim in each pane with `nvim -S`, so your
+tmux-continuum restores automatically when the tmux server starts (or press `Ctrl+b` `Ctrl+r`)
+and tmux-resurrect reopens Neovim in each pane with `nvim -S`, so your
 files, splits and tabs come back. `Session.vim` is ignored globally by git.
 
 - Skipped when Neovim is the git commit/rebase editor, the man pager, `nvim -d`, or reads stdin.
@@ -171,6 +172,12 @@ Installed by Mason on first start: `emmylua_ls`, `html`, `cssls`, `tailwindcss`,
 `jsonls`, `biome`, `pyrefly`, `bashls`, `yamlls`, `vimls`, `dockerls`,
 `docker_compose_language_service`, `marksman`, `taplo`, `clangd` (plus `rust_analyzer` via
 rustaceanvim). Edit the list in [`lua/mohan/lsp/init.lua`](lua/mohan/lsp/init.lua).
+
+Rust's `rust-analyzer` is not from Mason: it comes from rustup
+(`rustup component add rust-analyzer rust-src`, done by [`cargo/install-rust-tools.sh`](../cargo/install-rust-tools.sh), which the setup and update scripts run).
+In `.rs` files: `K` hover docs, `gK` docs.rs, `<space>re` explain error, `<space>rd` full
+diagnostic. In `Cargo.toml` (crates.nvim): `K` crate info, `gK` docs.rs, `<space>rv`/`rf` versions/features.
+Offline: `rustup doc std::collections::HashMap`, `cargo doc --open` (your exact dependency versions).
 
 ## Checks
 

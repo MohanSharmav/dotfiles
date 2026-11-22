@@ -17,6 +17,15 @@ export MANPATH="/usr/local/man:$HOME/.local/share/man:$MANPATH"
 if [[ -f "$HOME/.cargo/env" ]]; then
     source "$HOME/.cargo/env"
 fi
+# Homebrew's rustup is keg-only: cargo/rustc/rust-analyzer proxies live in its
+# opt dir and nothing links them into PATH. `cargo install` puts tools (bacon, ...)
+# in ~/.cargo/bin, which only exists as ~/.cargo/env with the sh.rustup.rs installer.
+if [[ -d /opt/homebrew/opt/rustup/bin ]]; then
+    export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+fi
+if [[ -d "$HOME/.cargo/bin" ]]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
 if [[ -f "$HOME/.deno/env" ]]; then
     source "$HOME/.deno/env"
 fi

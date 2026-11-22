@@ -801,6 +801,9 @@ return {
       end
     end,
     opts = {
+      -- The plugin default (gpt-5-mini) isn't enabled on every Copilot plan, which
+      -- broke \cx / \cf / \cr etc. "auto" lets Copilot pick an enabled model.
+      model = "auto",
       window = {
         layout = "vertical",
         width = 0.4,
@@ -823,7 +826,10 @@ return {
       "CopilotChatModels",
     },
     keys = {
-      { "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle", mode = { "n", "x" } },
+      -- AI chat: \cc = Copilot (uses Copilot's "auto" model), \cl = Claude (Claude Code
+      -- panel, signed in with your Claude account; same as \ac).
+      { "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "Copilot Chat", mode = { "n", "x" } },
+      { "<leader>cl", "<cmd>ClaudeCode<cr>", desc = "Claude Chat (Claude Code)" },
       { "<leader>cq", "<cmd>CopilotChat<cr>", desc = "CopilotChat Open", mode = { "n", "x" } },
       {
         "<leader>cp",
@@ -2223,30 +2229,67 @@ return {
   },
   {
     "mrcjkb/rustaceanvim",
-    version = "^5", -- Recommended
+    version = "^9", -- Recommended; v9 needs Neovim 0.12
     ft = { "rust" },
     init = function()
-      vim.g.rustaceanvim = {
-        -- Plugin configuration
-        tools = {},
-        -- LSP configuration
-        server = {
-          on_attach = function(client, bufnr)
-            require("mohan.lsp.handlers").on_attach(client, bufnr)
-          end,
-          default_settings = {
-            -- rust-analyzer language server configuration
-            ["rust-analyzer"] = {
-              check = {
-                command = "clippy",
+      -- A function, so blink.cmp's capabilities are read when rustaceanvim
+      -- starts the server rather than at startup (v6+ no longer adds them itself).
+      vim.g.rustaceanvim = function()
+        return {
+          -- Plugin configuration
+          tools = {},
+          -- LSP configuration
+          server = {
+            capabilities = require("mohan.lsp.handlers").capabilities,
+            on_attach = function(client, bufnr)
+              require("mohan.lsp.handlers").on_attach(client, bufnr)
+            end,
+            default_settings = {
+              -- rust-analyzer language server configuration
+              ["rust-analyzer"] = {
+                check = {
+                  command = "clippy",
+                },
               },
             },
           },
-        },
-        -- DAP configuration
-        dap = {},
-      }
+          -- DAP configuration
+          dap = {},
+        }
+      end
     end,
+  },
+  -- Cargo.toml: latest versions inline, feature/version popups, and K hover
+  -- with the crate's description + docs.rs/crates.io links (in-process LSP).
+  {
+    "saecki/crates.nvim",
+    tag = "stable",
+    event = { "BufRead Cargo.toml" },
+    opts = {
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+        on_attach = function(_, bufnr)
+          local crates = require("crates")
+          local function map(lhs, rhs, desc)
+            vim.keymap.set("n", lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
+          end
+          map("K", vim.lsp.buf.hover, "Crate info / docs")
+          map("gK", crates.open_documentation, "Open crate on docs.rs")
+          map("<space>rv", crates.show_versions_popup, "Crate [V]ersions")
+          map("<space>rf", crates.show_features_popup, "Crate [F]eatures")
+          map("<space>rD", crates.show_dependencies_popup, "Crate [D]ependencies")
+          map("<space>ru", crates.upgrade_crate, "[U]pgrade crate")
+          map("<space>rU", crates.upgrade_all_crates, "[U]pgrade all crates")
+          map("<space>rh", crates.open_homepage, "Crate [H]omepage")
+          map("<space>rr", crates.open_repository, "Crate [R]epository")
+          map("<space>rc", crates.open_crates_io, "Open on [C]rates.io")
+        end,
+      },
+      completion = { crates = { enabled = true } },
+    },
   },
   {
     "seblyng/roslyn.nvim",
