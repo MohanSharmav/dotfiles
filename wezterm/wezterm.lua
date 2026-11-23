@@ -257,31 +257,33 @@ config.colors = {
 	-- The color of the scrollbar "thumb"; the portion that represents the current viewport
 	scrollbar_thumb = "#392a48",
 
-	-- Setting copied from Ghostty 1.0
-	background = "#282c34",
-	foreground = "#ffffff",
+	-- Monokai (matches the nvim/tmux "mohan" theme)
+	background = "#272822",
+	foreground = "#f8f8f2",
+	cursor_bg = "#f8f8f0",
+	selection_bg = "#49483e",
 
 	-- See https://www.ditig.com/publications/256-colors-cheat-sheet
 	-- in the range from 0 to 15
 	ansi = {
-		"#1d1f21",
-		"#cc6666",
-		"#b5bd68",
-		"#f0c674",
-		"#81a2be",
-		"#b294bb",
-		"#8abeb7",
-		"#c5c8c6",
+		"#272822",
+		"#f92672",
+		"#a6e22e",
+		"#f4bf75",
+		"#66d9ef",
+		"#ae81ff",
+		"#a1efe4",
+		"#f8f8f2",
 	},
 	brights = {
-		"#666666",
-		"#d54e53",
-		"#b9ca4a",
-		"#e7c547",
-		"#7aa6da",
-		"#c397d8",
-		"#70c0b1",
-		"#eaeaea",
+		"#75715e",
+		"#f92672",
+		"#a6e22e",
+		"#f4bf75",
+		"#66d9ef",
+		"#ae81ff",
+		"#a1efe4",
+		"#f9f8f5",
 	},
 
 	-- in the range from 16 to 255

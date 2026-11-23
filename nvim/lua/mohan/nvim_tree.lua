@@ -32,6 +32,18 @@ local function nvim_tree_on_attach(bufnr)
   vim.keymap.del("n", "<C-e>", { buffer = bufnr })
   vim.keymap.set("n", "O", "", { buffer = bufnr })
   vim.keymap.del("n", "O", { buffer = bufnr })
+
+  -- Double-click: open as usual; Markdown files also get the browser preview.
+  -- (<space>mp on a tree node is the global key in settings/markdown_keymaps.lua;
+  -- everything else is in lua/mohan/markdown_preview.lua.)
+  vim.keymap.set("n", "<2-LeftMouse>", function()
+    local node = api.tree.get_node_under_cursor()
+    api.node.open.edit()
+    local ext = node and node.type == "file" and (node.name:match("%.([%w]+)$") or ""):lower() or ""
+    if ext == "md" or ext == "markdown" or ext == "mdx" then
+      require("mohan.markdown_preview").preview()
+    end
+  end, opts("Open (Markdown: + browser preview)"))
 end
 
 nvim_tree.setup({

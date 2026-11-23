@@ -15,3 +15,12 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
   group = "markdown_mappings",
 })
+
+-- Markdown live preview in the browser; works from any window (a Markdown
+-- file, the file tree, or a window next to one). See lua/mohan/markdown_preview.lua.
+vim.keymap.set("n", "<space>mp", function()
+  require("mohan.markdown_preview").preview()
+end, { desc = "Markdown preview: show" })
+vim.keymap.set("n", "<space>mP", function()
+  require("mohan.markdown_preview").stop()
+end, { desc = "Markdown preview: stop" })

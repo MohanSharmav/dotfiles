@@ -61,6 +61,8 @@ nvim .                     # opens Neovim with NvimTree file explorer open on th
 |---|---|---|
 | Toggle file explorer sidebar (NvimTree) | `Ctrl + n` or `Space n t` | Opened by default on startup; shows full folder structure |
 | Jump to current file in NvimTree | `m e` | Highlights open file in the tree |
+| Preview Markdown in the browser | `Space m p` (stop: `Space m P`) | Works in a `.md` file, on a `.md` in the tree, or next to one; updates as you type; shows the URL |
+| Preview Markdown with the mouse | Double-click a `.md` in NvimTree | Opens it and starts the browser preview |
 | Alternative file explorer (Neo-tree) | `Space n n` | Press `?` inside for help |
 | Tmux-level file sidebar (Treemux) | `Ctrl+b` then `Tab` (focus: `Backspace`) | Side pane outside Neovim; `<Space>o` switches Oil / NvimTree |
 | Open file from NvimTree | `Enter` / `l` / `o` | Opens file in editor (`v` vsplit, `i` horizontal split, `h` collapse dir, `u` parent dir) |
@@ -127,7 +129,7 @@ nvim .                     # opens Neovim with NvimTree file explorer open on th
 | Toggle Claude Code in Neovim | `\ a c` (focus: `\ a f`) | Embedded Claude terminal |
 | Send file or selection to Claude | `\ a b` / Visual `\ a s` | Add buffer / send selection (`\ a a` accept diff, `\ a d` deny diff) |
 | Toggle / Open Copilot Chat | `\ c c` / `\ c q` | Embedded GitHub Copilot Chat window (`CopilotChat.nvim`, Copilot's `auto` model) |
-| Claude chat | `\ c l` | Claude Code panel (same as `\ a c`); needs `claude`, which `setup_mac.sh` / `setup_ubuntu.sh` install |
+| Claude chat | `\ c a` | Claude Code panel (same as `\ a c`); needs `claude`, which `setup_mac.sh` / `setup_ubuntu.sh` install |
 | Telescope Prompts / Actions menu | `\ c p` (help: `\ c h`) | Fuzzy-search all Copilot actions & prompts |
 | Fix Diagnostic under cursor | `\ c d` | Sends LSP diagnostic at cursor directly to Copilot |
 | Auto-generate Git commit message | `\ c m` | Generates conventional commit from staged changes |

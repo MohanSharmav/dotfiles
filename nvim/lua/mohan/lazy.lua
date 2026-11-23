@@ -826,10 +826,10 @@ return {
       "CopilotChatModels",
     },
     keys = {
-      -- AI chat: \cc = Copilot (uses Copilot's "auto" model), \cl = Claude (Claude Code
+      -- AI chat: \cc = Copilot (uses Copilot's "auto" model), \ca = Claude (Claude Code
       -- panel, signed in with your Claude account; same as \ac).
       { "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "Copilot Chat", mode = { "n", "x" } },
-      { "<leader>cl", "<cmd>ClaudeCode<cr>", desc = "Claude Chat (Claude Code)" },
+      { "<leader>ca", "<cmd>ClaudeCode<cr>", desc = "Claude Chat (Claude Code)" },
       { "<leader>cq", "<cmd>CopilotChat<cr>", desc = "CopilotChat Open", mode = { "n", "x" } },
       {
         "<leader>cp",
@@ -3024,22 +3024,10 @@ return {
     "selimacerbas/markdown-preview.nvim",
     dependencies = { "selimacerbas/live-server.nvim" },
     config = function()
-      -- The plugin's module was renamed to "mdkite"; require("markdown_preview")
-      -- still works but prints a deprecation warning that blocks startup with a
-      -- "Press ENTER" prompt (e.g. when nvim is the git commit editor).
-      require("mdkite").setup({
-        -- all optional; sane defaults shown
-        instance_mode = "takeover", -- "takeover" (one tab) or "multi" (tab per instance)
-        port = 0, -- 0 = auto (8421 for takeover, OS-assigned for multi)
-        open_browser = true,
-        debounce_ms = 300,
-        browser = vim.env.TERM_PROGRAM == "graffitty" and vim.env.GRAFFITTY_BIN and {
-          vim.env.GRAFFITTY_BIN,
-          "chromium",
-          "new",
-          "--url",
-        } or nil,
-      })
+      -- Setup, keys and the reasons for each choice: lua/mohan/markdown_preview.lua.
+      -- (The plugin's module is "mdkite"; require("markdown_preview") prints a
+      -- deprecation warning that blocks startup with "Press ENTER".)
+      require("mohan.markdown_preview").setup()
     end,
   },
   -- {

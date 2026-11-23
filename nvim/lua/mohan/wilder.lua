@@ -71,6 +71,26 @@ local highlighters = wilder.highlighter_with_gradient({
   wilder.lua_fzy_highlighter(),
 })
 
+-- wilder's devicons and buffer_flags components do
+-- `let l:expand = get(data, 'cmdline.expand')`. For commands that complete with
+-- a Lua/Vim function (e.g. :MdKite) that value is a Funcref, and assigning a
+-- Funcref to a lowercase variable is E704, so every keystroke spammed errors.
+-- Skip those components in that case; they only apply to file/dir/buffer
+-- completion anyway. Built in Vim script so the Funcrefs never cross into Lua.
+vim.cmd([[
+function! s:mohan_wilder_safe(Inner) abort
+  return {ctx, result -> has_key(result, 'data')
+        \ && type(get(result.data, 'cmdline.expand', '')) != v:t_string
+        \ ? '' : a:Inner(ctx, result)}
+endfunction
+function! MohanWilderDevicons() abort
+  return s:mohan_wilder_safe(wilder#popupmenu_devicons())
+endfunction
+function! MohanWilderBufferFlags(opts) abort
+  return s:mohan_wilder_safe(wilder#popupmenu_buffer_flags(a:opts))
+endfunction
+]])
+
 local popupmenu_renderer = wilder.popupmenu_renderer(wilder.popupmenu_border_theme({
   pumblend = 20,
   border = "rounded",
@@ -78,8 +98,8 @@ local popupmenu_renderer = wilder.popupmenu_renderer(wilder.popupmenu_border_the
   highlighter = highlighters,
   left = {
     " ",
-    wilder.popupmenu_devicons(),
-    wilder.popupmenu_buffer_flags({
+    vim.fn.MohanWilderDevicons(),
+    vim.fn.MohanWilderBufferFlags({
       flags = " a + ",
       icons = { ["+"] = "", a = "", h = "" },
     }),
