@@ -2,8 +2,8 @@
 # Oh My Zsh (lib/history.zsh) already sets share_history, extended_history,
 # hist_ignore_dups, hist_ignore_space and hist_verify; this file is sourced after
 # it, so the settings below win.
-HISTSIZE=1000000
-SAVEHIST=1000000
+HISTSIZE=1000
+SAVEHIST=1000
 
 # Share history between terminals (tmux panes): every command is written to
 # $HISTFILE immediately and other shells pick it up.

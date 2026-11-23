@@ -107,6 +107,7 @@ APT_PACKAGES=(
 	python3-pip python3-venv # pynvim + libtmux for /usr/bin/python3 (treemux, tmux-window-name)
 	fontconfig               # fc-list / fc-cache
 	tmux                     # fallback until mise installs the latest
+	libevent-dev libncurses-dev bison pkg-config # needed for mise to build tmux
 )
 APT_DESKTOP_PACKAGES=(
 	xclip wl-clipboard     # tmux/nvim copy to the system clipboard

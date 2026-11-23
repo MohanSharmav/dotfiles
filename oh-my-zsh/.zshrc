@@ -217,8 +217,8 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey '^s' autosuggest-accept
 bindkey '^ ' autosuggest-accept
-bindkey '^[[C' autosuggest-accept
-bindkey '^[OC' autosuggest-accept
+bindkey '^[[C' forward-char
+bindkey '^[OC' forward-char
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

@@ -186,28 +186,28 @@ bindkey -M viins '^[[200~' bracketed-paste
 #  1. history: the LATEST command that starts with what you typed
 #     (newest wins, so re-running a command updates the suggestion)
 #  2. completion: if history has nothing, what Tab would complete
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=300   # keep suggesting for long commands
+export ZSH_AUTOSUGGEST_STRATEGY=(history)  # completion strategy is slow on every keypress
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=100
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
 # Hook into zsh-vi-mode so keybindings persist after vi-mode initialises
 function zvm_after_init() {
   # Accept full autosuggestion:
-  # - Right Arrow (^[[C / ^[OC)
+  # - Right Arrow / End / Ctrl+e: move the cursor; at end of line they accept the suggestion
   # - Ctrl + Space (^  / ^@)
   # - Ctrl + s (^s)
   # - Ctrl + f (^f)
   # - Ctrl + e (^e)
-  zvm_bindkey viins '^[[C' autosuggest-accept
-  zvm_bindkey viins '^[OC' autosuggest-accept
+  zvm_bindkey viins '^[[C' forward-char
+  zvm_bindkey viins '^[OC' forward-char
   zvm_bindkey viins '^ ' autosuggest-accept
   zvm_bindkey viins '^@' autosuggest-accept
   zvm_bindkey viins '^s' autosuggest-accept
   zvm_bindkey viins '^f' autosuggest-accept
-  zvm_bindkey viins '^e' autosuggest-accept
-  zvm_bindkey viins '^[[F' autosuggest-accept   # End
-  zvm_bindkey viins '^[OF' autosuggest-accept   # End
+  zvm_bindkey viins '^e' end-of-line
+  zvm_bindkey viins '^[[F' end-of-line  # End
+  zvm_bindkey viins '^[OF' end-of-line  # End
 
   # Accept next word of autosuggestion:
   # - Alt + Right Arrow (^[[1;3C)
@@ -215,6 +215,12 @@ function zvm_after_init() {
   # - Alt + l (^[l)
   zvm_bindkey viins '^[[1;3C' forward-word
   zvm_bindkey viins '^[[1;5C' forward-word      # Ctrl + Right Arrow
+  zvm_bindkey viins '^[[1;5D' backward-word     # Ctrl + Left Arrow
+  zvm_bindkey viins '^[[1;3D' backward-word     # Alt + Left Arrow
+  zvm_bindkey viins '^[[D' backward-char
+  zvm_bindkey viins '^[OD' backward-char
+  zvm_bindkey viins '^[[H' beginning-of-line
+  zvm_bindkey viins '^[OH' beginning-of-line
   zvm_bindkey viins '^[f' forward-word
   zvm_bindkey viins '^[l' forward-word
   zvm_bindkey viins '^[h' backward-word
