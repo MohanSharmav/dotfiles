@@ -81,6 +81,16 @@ update_git_repo() {
 		stashed=1
 	fi
 
+	# Every machine follows master unless a tag/branch is named, so all of them
+	# look the same (a machine left on an old feature branch looked different).
+	if [[ -z $REF ]]; then
+		local cur
+		cur="$(git -C "$DOTFILES_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+		if [[ $cur != master ]]; then
+			log "On '$cur'; switching to master so this machine matches the others"
+			REF=master
+		fi
+	fi
 	if [[ -n $REF ]]; then
 		run_step "git fetch" git -C "$DOTFILES_DIR" fetch --tags --quiet || true
 		run_step "git checkout $REF" git -C "$DOTFILES_DIR" checkout --quiet "$REF" || true
@@ -149,8 +159,11 @@ update_nvim() {
 		run_step "nvim/install-dependencies.sh" bash "$DOTFILES_DIR/nvim/install-dependencies.sh" || true
 	fi
 	if have nvim; then
-		# Updates plugins past nvim/lazy-lock.json (commit the new lockfile if it works).
-		run_step "nvim Lazy sync" nvim --headless "+Lazy! sync" +qa || true
+		# Install exactly the versions in nvim/lazy-lock.json (same on every
+		# machine) and delete plugins that are no longer used or are disabled.
+		# To move to newer versions: nvim "+Lazy sync" on one machine, commit the lockfile.
+		run_step "nvim Lazy restore (lockfile versions)" nvim --headless "+Lazy! restore" +qa || true
+		run_step "nvim Lazy clean" nvim --headless "+Lazy! clean" +qa || true
 		run_step "nvim TSUpdate" nvim --headless "+TSUpdateSync" +qa || true
 	fi
 }
@@ -166,6 +179,8 @@ update_tmux() {
 		# install first: update only touches plugins that are already installed.
 		run_step "TPM install_plugins" "$tpm_dir/bin/install_plugins" || true
 		run_step "TPM update_plugins" "$tpm_dir/bin/update_plugins" all || true
+		# Remove plugins that were taken out of .tmux.conf.
+		run_step "TPM clean_plugins" "$tpm_dir/bin/clean_plugins" || true
 	fi
 	if have tmux && tmux list-sessions >/dev/null 2>&1; then
 		run_step "reload tmux config" tmux source-file "$HOME/.tmux.conf" || true
@@ -177,6 +192,40 @@ update_tmux() {
 			args+=(--break-system-packages)
 		fi
 		run_step "pip upgrade pynvim libtmux" bash -c '/usr/bin/python3 -m pip "$@" 2>/dev/null || /usr/bin/python3 -m pip "$@" --user' _ "${args[@]}" || true
+	fi
+}
+
+# Make the terminal windows look the same on every machine.
+update_terminals() {
+	section "Terminals"
+	# kitty re-reads kitty.conf on SIGUSR1; WezTerm reloads wezterm.lua by itself.
+	if pgrep -x kitty >/dev/null 2>&1; then
+		run_step "reload kitty config" pkill -USR1 -x kitty || true
+	fi
+	# Ubuntu's default GNOME Terminal: give its default profile the same Monokai
+	# colours and font as kitty/WezTerm, so it matches even without kitty.
+	if have gsettings && have gnome-terminal; then
+		local id path
+		id="$(gsettings get org.gnome.Terminal.ProfilesList default 2>/dev/null | tr -d "'")"
+		if [[ -n $id ]]; then
+			path="org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$id/"
+			local palette="['#272822', '#f92672', '#a6e22e', '#f4bf75', '#66d9ef', '#ae81ff', '#a1efe4', '#f8f8f2', '#75715e', '#f92672', '#a6e22e', '#f4bf75', '#66d9ef', '#ae81ff', '#a1efe4', '#f9f8f5']"
+			if [[ $DRY_RUN -eq 1 ]]; then
+				log "[dry-run] would set GNOME Terminal profile $id to Monokai"
+			else
+				gsettings set "$path" use-theme-colors false
+				gsettings set "$path" background-color '#272822'
+				gsettings set "$path" foreground-color '#f8f8f2'
+				gsettings set "$path" palette "$palette"
+				gsettings set "$path" use-transparent-background false
+				gsettings set "$path" cursor-blink-mode 'off'
+				if fc-list 2>/dev/null | grep -q 'JetBrainsMono Nerd Font'; then
+					gsettings set "$path" use-system-font false
+					gsettings set "$path" font 'JetBrainsMono Nerd Font Mono 13'
+				fi
+				log "GNOME Terminal profile $id set to Monokai"
+			fi
+		fi
 	fi
 }
 
@@ -200,6 +249,7 @@ main() {
 	update_rust
 	update_nvim
 	update_tmux
+	update_terminals
 	update_omz
 	finish
 }
