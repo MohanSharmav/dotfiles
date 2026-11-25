@@ -51,6 +51,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 SKIP_NETWORK=$SKIP_PLUGINS
+# The shell sets this so typing commands never goes online; updating must.
+unset MISE_PREFER_OFFLINE
 # shellcheck source=scripts/setup-common.sh
 source "$DOTFILES_DIR/scripts/setup-common.sh"
 

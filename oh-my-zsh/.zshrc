@@ -33,6 +33,12 @@ if [[ -d "$HOME/.dotnet/tools" ]]; then
     export PATH="$HOME/.dotnet/tools:$PATH"
 fi
 
+# Use the tool versions already installed; never go online to resolve
+# "lts"/"latest" while you type commands. On a network that breaks TLS
+# (proxy/firewall) that lookup printed "mise WARN failed to resolve tool
+# version list for node ... TLS handshake eof" before commands.
+# ./update.sh still checks online for new versions.
+export MISE_PREFER_OFFLINE=1
 if (($+commands[mise])); then
     # --shims: no `mise hook-env` process after every command
     eval "$(mise activate zsh --shims)"
