@@ -58,14 +58,13 @@ nvim_tree.setup({
     highlight_diagnostics = true,
     --root_folder_modifier = ":t",
     icons = {
-      -- No file/folder icons (speed first); plain arrows only.
-      show = { file = false, folder = false, folder_arrow = true, git = true, diagnostics = true },
+      -- File and folder icons are wanted here (the user asked for them back).
       glyphs = {
         default = "",
         symlink = "",
         folder = {
-          arrow_open = "v",
-          arrow_closed = ">",
+          arrow_open = "",
+          arrow_closed = "",
           default = "",
           open = "",
           empty = "",
