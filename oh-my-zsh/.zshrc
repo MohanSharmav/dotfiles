@@ -248,7 +248,9 @@ if [[ -n $USE_STARSHIP ]] && (( $+commands[starship] )); then
 else
 	# Same as the default zsh prompt that git_nvim_tmux_config uses (it ships no
 	# prompt config): user@host, then only the current folder name, then %.
-	PROMPT='%n@%m %1~ %# '
+	# Light green user@host, light blue folder (bright on a dark theme). Colours
+	# are built into zsh: no extra process, no speed cost.
+	PROMPT='%B%F{120}%n@%m%f %F{117}%1~%f%b %# '
 	RPROMPT=''
 fi
 
