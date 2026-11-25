@@ -15,7 +15,8 @@ local config = {
 	}),
 	font_size = 14.3,
 
-	max_fps = 120,
+	max_fps = 60,
+	harfbuzz_features = { "calt=0", "clig=0", "liga=0" }, -- no ligatures (speed first)
 
 	window_decorations = "RESIZE",
 
@@ -108,7 +109,9 @@ local config = {
 	},
 
 	enable_scroll_bar = true,
-	scrollback_lines = 30000,
+	scrollback_lines = 5000,
+	animation_fps = 1, -- no fades/animations (speed)
+	cursor_blink_rate = 0,
 
 	enable_kitty_graphics = true,
 }
@@ -608,8 +611,8 @@ config.colors.tab_bar = {
 	},
 }
 
-config.window_background_opacity = 0.85
-config.macos_window_background_blur = 20
+config.window_background_opacity = 1.0 -- no transparency (speed)
+config.macos_window_background_blur = 0
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.default_prog = { "pwsh.exe", "-NoLogo" }

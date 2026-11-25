@@ -12,7 +12,7 @@ local servers = {
   "emmylua_ls",
   "html",
   "cssls",
-  "tailwindcss",
+  -- "tailwindcss", -- off: big node server that attaches to almost every web file
   -- "ts_ls",
   "vtsls",
   -- "eslint",
@@ -26,7 +26,7 @@ local servers = {
   "yamlls", -- YAML; validates against SchemaStore (GitHub Actions, compose, k8s, ...)
   "vimls", -- .vimrc and other Vimscript
   "dockerls", -- Dockerfile
-  "docker_compose_language_service", -- compose.yaml / docker-compose.yml
+  -- "docker_compose_language_service", -- off for memory (yamlls still checks compose files)
   "marksman", -- Markdown: heading/link navigation, broken-link diagnostics
   "taplo", -- TOML (mise.toml, Cargo.toml, pyproject.toml)
   "clangd", -- C/C++ (clang-format is already set up in conform.nvim)

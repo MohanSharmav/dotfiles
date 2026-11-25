@@ -16,7 +16,7 @@ local in_graffitty = vim.env.GRAFFITTY_SOCKET ~= nil and vim.env.GRAFFITTY_SOCKE
 
 local icons = require("mohan.icons")
 
-return {
+local spec = {
   {
     "graffitty/graffitty.nvim",
     cond = in_graffitty,
@@ -764,7 +764,7 @@ return {
   -- },
   {
     "github/copilot.vim",
-    -- event = "InsertEnter",
+    event = "InsertEnter", -- start Copilot's node server only once you type (saves ~150 MB per nvim)
     -- cmd = { "Copilot" },
     init = function()
       vim.g.copilot_no_tab_map = true
@@ -3030,6 +3030,24 @@ return {
       require("mohan.markdown_preview").setup()
     end,
   },
+  {
+    -- Markdown preview inside Neovim: headings, tables, code blocks, checkboxes
+    -- and links are drawn in the buffer itself (no browser). The line under the
+    -- cursor shows raw text so you can still edit it.
+    --   <space>mr  toggle in-editor rendering
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    ft = { "markdown" },
+    keys = {
+      { "<space>mr", "<cmd>RenderMarkdown toggle<cr>", desc = "Markdown: toggle in-editor preview" },
+    },
+    opts = {
+      render_modes = { "n", "c", "t" }, -- raw text while typing in insert mode
+      anti_conceal = { enabled = true },
+      code = { sign = false, width = "block", right_pad = 1 },
+      heading = { sign = false },
+    },
+  },
   -- {
   --   "mechatroner/rainbow_csv",
   --   ft = "csv",
@@ -3435,3 +3453,39 @@ return {
     opts = {},
   },
 }
+
+-- Speed: plugins switched off because they draw a lot (animations, images,
+-- glow, popups on every cursor move) or run work on every keystroke.
+-- To bring one back, delete its line here.
+local disabled = {
+  ["giusgad/pets.nvim"] = true, -- animated pets (images)
+  ["3rd/image.nvim"] = true, -- images inside buffers
+  ["benlubas/molten-nvim"] = true, -- Jupyter output with images
+  ["y3owk1n/undo-glow.nvim"] = true, -- glow animation on undo/yank
+  ["rcarriga/nvim-notify"] = true, -- animated notifications
+  ["kiyoon/indent-blankline-v2.nvim"] = true, -- indent guides on every redraw
+  ["RRethy/vim-illuminate"] = true, -- highlights word under cursor on every move
+  ["kosayoda/nvim-lightbulb"] = true, -- code-action check on every cursor hold
+  ["chrisgrieser/nvim-lsp-endhints"] = true, -- inlay hints at line ends
+  ["ray-x/lsp_signature.nvim"] = true, -- signature popup while typing
+  ["SmiteshP/nvim-navic"] = true, -- breadcrumbs updated on every move
+  ["luukvbaal/statuscol.nvim"] = true, -- custom fold/sign column
+  ["kevinhwang91/nvim-ufo"] = true, -- fancy folding
+  ["akinsho/bufferline.nvim"] = true, -- tab bar
+  ["goolord/alpha-nvim"] = true, -- start screen
+  ["gelguy/wilder.nvim"] = true, -- fancy : command line (python)
+  ["stevearc/dressing.nvim"] = true, -- fancy input/select popups
+  ["m4xshen/hardtime.nvim"] = true, -- key-habit checker on every key
+  ["metakirby5/codi.vim"] = true,
+  ["kiyoon/jupynium.nvim"] = true,
+  ["Bryley/neoai.nvim"] = true,
+  ["robitx/gp.nvim"] = true,
+  ["kiyoon/Korean-IME.nvim"] = true,
+  ["kiyoon/haskell-scope-highlighting.nvim"] = true,
+}
+for _, s in ipairs(spec) do
+  if type(s) == "table" and disabled[s[1]] then
+    s.enabled = false
+  end
+end
+return spec

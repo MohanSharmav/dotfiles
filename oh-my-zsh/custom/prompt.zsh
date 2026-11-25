@@ -12,6 +12,7 @@
 #   PROMPT_COMPACT_BELOW=110   PROMPT_NOTIFY_AFTER=60   PROMPT_TRANSIENT=1   PROMPT_SEPARATOR=1
 
 [[ -o interactive ]] || return 0
+[[ -n $USE_STARSHIP ]] || return 0  # off by default for speed
 (( $+commands[starship] )) || return 0
 
 autoload -Uz add-zsh-hook add-zle-hook-widget

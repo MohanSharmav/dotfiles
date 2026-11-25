@@ -10,6 +10,7 @@ local lga_actions = require("telescope-live-grep-args.actions")
 
 telescope.setup({
   defaults = {
+    disable_devicons = true, -- no icons (speed first)
 
     prompt_prefix = " ",
     selection_caret = " ",

@@ -11,6 +11,9 @@ end
 return {
   options = {
     theme = "auto", -- auto-adapts to active colorscheme (molokai)
+    icons_enabled = false, -- no icons (speed first)
+    section_separators = "",
+    component_separators = "|",
     globalstatus = true,
     disabled_filetypes = { statusline = { "dashboard", "alpha" } },
   },

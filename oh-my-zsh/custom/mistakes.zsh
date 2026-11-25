@@ -27,5 +27,5 @@ if (($+commands[nvim])); then
 fi
 
 if (($+commands[eza])); then
-	alias sl='eza --icons auto --hyperlink'
+	alias sl='eza --hyperlink'
 fi

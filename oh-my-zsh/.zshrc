@@ -34,7 +34,8 @@ if [[ -d "$HOME/.dotnet/tools" ]]; then
 fi
 
 if (($+commands[mise])); then
-    eval "$(mise activate zsh)"
+    # --shims: no `mise hook-env` process after every command
+    eval "$(mise activate zsh --shims)"
 fi
 
 SSH_ENV="$HOME/.ssh/agent.env"
@@ -165,25 +166,25 @@ plugins=(
 	zsh-vi-mode
 	# vi-mode
 	# zsh-syntax-highlighting
-	fast-syntax-highlighting
+	# fast-syntax-highlighting  # off for speed: re-colours the line on every keypress
 	zsh-history-substring-search
 	conda-zsh-completion
-	web-search				# google, ddg, ...
+	# web-search
 	cp						# cpv to rsync
 	colored-man-pages
-	colorize				# ccat
-	docker
-	encode64
+	# colorize
+	# docker
+	# encode64
 	extract
 	universalarchive		# ua tar.gz <file>
 	fancy-ctrl-z			# Ctrl+z again to fg
 	dirhistory				# Alt+Left/Right/Up to navigate dir history
-	jsontools				# pp_json
+	# jsontools
 	tmux					# ta to attach to tmux session, ts to create new session
 	gitignore				# gi python >> .gitignore
 	git						# gst, ga, gc to status, add, and commit
 	tig						# tis: tig status
-	gh
+	# gh
 	fzf
 	zoxide
 
@@ -240,8 +241,13 @@ bindkey '^[OC' forward-char
 # bindkey '^[[A' history-substring-search-up
 # bindkey '^[[B' history-substring-search-down
 
-if (( $+commands[starship] )); then
+# Plain built-in prompt: no icons, no extra process per prompt (speed first).
+# Set USE_STARSHIP=1 before this line to get the old Starship prompt back.
+if [[ -n $USE_STARSHIP ]] && (( $+commands[starship] )); then
 	eval "$(starship init zsh)"
+else
+	PROMPT='%F{blue}%~%f %(?.%F{green}.%F{red})>%f '
+	RPROMPT=''
 fi
 
 # Auto activate conda or virtualenv when the current directory is a git repo with the same name as the conda env

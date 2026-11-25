@@ -56,12 +56,14 @@ nvim_tree.setup({
   renderer = {
     --root_folder_modifier = ":t",
     icons = {
+      -- No file/folder icons (speed first); plain arrows only.
+      show = { file = false, folder = false, folder_arrow = true, git = true, diagnostics = true },
       glyphs = {
         default = "",
         symlink = "",
         folder = {
-          arrow_open = "",
-          arrow_closed = "",
+          arrow_open = "v",
+          arrow_closed = ">",
           default = "",
           open = "",
           empty = "",

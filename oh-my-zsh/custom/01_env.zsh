@@ -101,7 +101,7 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # stay in one place. Set FZF_PREVIEW_IMG_BACKEND=kitty|sixel|none to override
 # the terminal the previewer detects.
 # zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -w $(( $(tput cols)/2 - 3 )) --color=always --git-ignore $realpath'
-zstyle ':fzf-tab:complete:*' fzf-preview "${(q)_fzf_preview_script} \"\$realpath\""
+# off for speed (image/file preview on every Tab): zstyle ':fzf-tab:complete:*' fzf-preview "${(q)_fzf_preview_script} \"\$realpath\""
 
 unset _fzf_preview_script
 
@@ -188,7 +188,8 @@ bindkey -M viins '^[[200~' bracketed-paste
 #  2. completion: if history has nothing, what Tab would complete
 export ZSH_AUTOSUGGEST_STRATEGY=(history)  # completion strategy is slow on every keypress
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=100
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
+# No async: it forks a subshell on every keypress. History-only lookups are fast.
+unset ZSH_AUTOSUGGEST_USE_ASYNC
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
 # Hook into zsh-vi-mode so keybindings persist after vi-mode initialises
