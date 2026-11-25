@@ -53,10 +53,17 @@ vim.o.termguicolors = true
 vim.opt.iskeyword:append("-") -- treats words with `-` as single words
 vim.o.cursorline = true
 vim.o.inccommand = "split"
-vim.o.updatetime = 500
+vim.o.updatetime = 400
+-- Look and feel from git_nvim_tmux_config (init.vim)
+vim.o.colorcolumn = "150"
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.signcolumn = "yes"
+vim.o.scrolloff = 8
+vim.o.swapfile = false
 vim.o.exrc = true -- read config from .exrc.lua / .nvimrc.lua
 -- vim.o.winborder = "rounded"
-vim.o.pumblend = 30 -- popup menu transparency
+vim.o.pumblend = 0 -- solid popup menu (no transparency, speed first)
 
 -- This may cause lualine to flicker
 -- vim.o.cmdheight = 0

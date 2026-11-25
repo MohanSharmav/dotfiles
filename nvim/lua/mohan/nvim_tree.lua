@@ -54,6 +54,8 @@ nvim_tree.setup({
     update_cwd = true,
   },
   renderer = {
+    group_empty = true, -- as in git_nvim_tmux_config
+    highlight_diagnostics = true,
     --root_folder_modifier = ":t",
     icons = {
       -- No file/folder icons (speed first); plain arrows only.
@@ -94,7 +96,7 @@ nvim_tree.setup({
     },
   },
   view = {
-    width = 30,
+    width = 40, -- as in git_nvim_tmux_config
     side = "left",
   },
   filters = {

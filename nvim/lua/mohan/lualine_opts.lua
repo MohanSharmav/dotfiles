@@ -10,7 +10,7 @@ end
 
 return {
   options = {
-    theme = "auto", -- auto-adapts to active colorscheme (molokai)
+    theme = "molokai", -- matches the molokai colorscheme from git_nvim_tmux_config
     icons_enabled = false, -- no icons (speed first)
     section_separators = "",
     component_separators = "|",
