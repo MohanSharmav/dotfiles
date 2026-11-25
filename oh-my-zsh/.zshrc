@@ -246,7 +246,9 @@ bindkey '^[OC' forward-char
 if [[ -n $USE_STARSHIP ]] && (( $+commands[starship] )); then
 	eval "$(starship init zsh)"
 else
-	PROMPT='%F{blue}%~%f %(?.%F{green}.%F{red})>%f '
+	# Same as the default zsh prompt that git_nvim_tmux_config uses (it ships no
+	# prompt config): user@host, then only the current folder name, then %.
+	PROMPT='%n@%m %1~ %# '
 	RPROMPT=''
 fi
 
