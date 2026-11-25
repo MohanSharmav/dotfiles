@@ -250,7 +250,13 @@ else
 	# prompt config): user@host, then only the current folder name, then %.
 	# Light green user@host, light blue folder (bright on a dark theme). Colours
 	# are built into zsh: no extra process, no speed cost.
-	PROMPT='%B%F{120}%n@%m%f %F{117}%1~%f%b %# '
+	# Terminals with only 8/16 colours (plain xterm, some SSH/console) can't show
+	# colour 120/117, so fall back to bright green/cyan there.
+	if (( ${terminfo[colors]:-8} >= 256 )); then
+		PROMPT='%B%F{120}%n@%m%f %F{117}%1~%f%b %# '
+	else
+		PROMPT='%B%F{green}%n@%m%f %F{cyan}%1~%f%b %# '
+	fi
 	RPROMPT=''
 fi
 
