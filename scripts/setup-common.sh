@@ -13,6 +13,9 @@
 DRY_RUN=${DRY_RUN:-0}
 SKIP_NETWORK=${SKIP_NETWORK:-0}
 HAD_ERRORS=0
+# Setup must resolve tool versions online; the interactive shell sets this to
+# keep typing offline (oh-my-zsh/.zshrc).
+unset MISE_PREFER_OFFLINE
 BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 MISE_BIN=""
 

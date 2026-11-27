@@ -27,8 +27,13 @@ for arg in "$@"; do
 	case "$arg" in
 	--skip-git) SKIP_GIT=1 ;;
 	-h | --help)
-		sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'
-		exit 0
+		# This script's own steps, then the options of this OS's setup script.
+		sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'
+		echo
+		case "$(uname -s)" in
+		Darwin) exec "$DOTFILES_DIR/setup_mac.sh" --help ;;
+		*) exec "$DOTFILES_DIR/setup_ubuntu.sh" --help ;;
+		esac
 		;;
 	*)
 		[[ $arg == --dry-run ]] && DRY_RUN=1
@@ -80,7 +85,8 @@ fi
 
 # 2. Install and link everything for this OS.
 say "Running $(basename "$SETUP") ${SETUP_ARGS[*]:-}"
-"$SETUP" "${SETUP_ARGS[@]}"
+# ${a[@]+...}: an empty array is "unbound" under set -u in macOS bash 3.2.
+"$SETUP" ${SETUP_ARGS[@]+"${SETUP_ARGS[@]}"}
 
 # 3. Pin plugins to the lockfile, clean leftovers, apply the terminal theme.
 UPDATE_ARGS=(--skip-git)
