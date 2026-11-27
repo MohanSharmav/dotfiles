@@ -167,6 +167,57 @@ step_apt() {
 	run_step "apt-get install" as_root env DEBIAN_FRONTEND=noninteractive apt-get install -y -q "${missing[@]}" || true
 }
 
+# Neovim and tmux must work even if mise could not install them (network/TLS
+# trouble, a failed build). Neovim: the official release tarball under
+# ~/.local (no sudo). tmux: apt's package when sudo is available.
+step_essentials() {
+	section "Neovim and tmux (fallbacks)"
+	load_path
+	if have nvim && nvim --version >/dev/null 2>&1; then
+		log "OK $(nvim --version | head -1)"
+	elif [[ $SKIP_NETWORK -eq 1 ]]; then
+		warn "nvim missing; run without --skip-network to install it"
+		HAD_ERRORS=1
+	else
+		local arch url dir="$HOME/.local/opt"
+		case "$(uname -m)" in
+		x86_64 | amd64) arch=x86_64 ;;
+		aarch64 | arm64) arch=arm64 ;;
+		*) arch="" ;;
+		esac
+		if [[ -z $arch ]]; then
+			warn "No Neovim release for $(uname -m); install nvim by hand"
+			HAD_ERRORS=1
+		else
+			url="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-$arch.tar.gz"
+			log "mise did not provide nvim; installing the release from $url"
+			if [[ $DRY_RUN -eq 1 ]]; then
+				printf '[dry-run] curl %s | tar -xz -C %s && ln -s .../bin/nvim ~/.local/bin/nvim\n' "$url" "$dir"
+			else
+				mkdir -p "$dir" "$HOME/.local/bin"
+				rm -rf "$dir/nvim-linux-$arch"
+				if curl -fsSL "$url" | tar -xz -C "$dir"; then
+					ln -sfn "$dir/nvim-linux-$arch/bin/nvim" "$HOME/.local/bin/nvim"
+					log "OK $("$HOME/.local/bin/nvim" --version | head -1)"
+				else
+					warn "Neovim download failed (network/TLS?). Check: date; sudo apt install --reinstall ca-certificates"
+					HAD_ERRORS=1
+				fi
+			fi
+		fi
+	fi
+
+	if have tmux && tmux -V >/dev/null 2>&1; then
+		log "OK $(tmux -V)"
+	elif [[ $SKIP_NETWORK -eq 0 && $NO_APT -eq 0 ]] && have apt-get && can_sudo; then
+		run_step "apt-get install tmux" as_root env DEBIAN_FRONTEND=noninteractive apt-get install -y -q tmux || true
+	else
+		warn "tmux missing: ask an admin for 'sudo apt install tmux', or re-run with network access"
+		HAD_ERRORS=1
+	fi
+	load_path
+}
+
 # Without apt (no sudo, or --no-apt), build zsh + ncurses under ~/.local.
 step_zsh() {
 	section "zsh"
@@ -264,9 +315,32 @@ step_login_shell() {
 	run_step "oh-my-zsh/launch-zsh-in-bash.sh" bash "$DOTFILES_DIR/oh-my-zsh/launch-zsh-in-bash.sh" || true
 }
 
+# Start each everyday tool for real, so a broken install shows up here and not
+# the next time you type `tmux` or `nvim`.
+verify_daily_tools() {
+	local t out
+	for t in zsh tmux nvim git; do
+		if ! have "$t"; then
+			check "$t" "MISSING"
+			HAD_ERRORS=1
+			continue
+		fi
+		case $t in
+		tmux) out="$(tmux -V 2>&1)" ;;
+		*) out="$("$t" --version 2>&1 | head -1)" ;;
+		esac
+		if [[ $? -eq 0 && -n $out && $out != *ERROR* ]]; then
+			check "$t" "$out ($(command -v "$t"))"
+		else
+			check "$t" "BROKEN: $out"
+			HAD_ERRORS=1
+		fi
+	done
+}
+
 verify_ubuntu() {
 	local os
-	os="$(. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME")"
+	os="$(. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME" || true)"
 	check os "${os:-unknown} ($MODE)"
 	check shell "login shell: $(getent passwd "$USER" 2>/dev/null | cut -d: -f7)$(grep -q '# Launch ZSH in Bash' "$HOME/.bashrc" 2>/dev/null && echo ' (zsh launched from ~/.bashrc)')"
 	if [[ $MODE == desktop ]]; then
@@ -284,7 +358,7 @@ verify_ubuntu() {
 
 main() {
 	local os
-	os="$(. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME")"
+	os="$(. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME" || true)"
 	log "${os:-Linux} ($(uname -m)), $MODE mode, dotfiles at $DOTFILES_DIR"
 	[[ $DRY_RUN -eq 1 ]] && log "Dry run: nothing will be changed"
 
@@ -297,6 +371,7 @@ main() {
 
 	step_user_tools
 	step_mise
+	step_essentials
 	step_extras
 	step_submodules
 	step_rust
@@ -310,6 +385,7 @@ main() {
 
 	verify_common
 	verify_ubuntu
+	verify_daily_tools
 	finish
 }
 

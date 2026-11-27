@@ -245,7 +245,14 @@ step_mise() {
 		run_step "mise trust global config" "$MISE_BIN" trust "$HOME/.config/mise/config.toml" || true
 	fi
 	if [[ $SKIP_NETWORK -eq 0 ]]; then
+		# The tools you open every day first, one by one: if any of the ~30 others
+		# fails later (network, a build), Neovim, tmux and Node are already there.
+		local tool
+		for tool in neovim tmux node; do
+			run_step "mise install $tool" "$MISE_BIN" -C "$HOME" install "$tool" || true
+		done
 		run_step "mise install" "$MISE_BIN" -C "$HOME" install || true
+		[[ $DRY_RUN -eq 1 ]] || run_step "mise reshim" "$MISE_BIN" reshim || true
 	fi
 	[[ $DRY_RUN -eq 1 ]] || load_path
 }
