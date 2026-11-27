@@ -190,7 +190,7 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history)  # completion strategy is slow on ever
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=100
 # No async: it forks a subshell on every keypress. History-only lookups are fast.
 unset ZSH_AUTOSUGGEST_USE_ASYNC
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#75715e'
 
 # Hook into zsh-vi-mode so keybindings persist after vi-mode initialises
 function zvm_after_init() {
@@ -252,3 +252,31 @@ export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} --color=fg:#f8f8f2,bg:#272822,hl:
 
 # bat (cat alias, fzf previews) and git delta in Monokai
 export BAT_THEME="Monokai Extended"
+
+# What you type (fast-syntax-highlighting), in Monokai
+if (( ${+FAST_HIGHLIGHT_STYLES} )); then
+	for _t in '' 'default:'; do
+		FAST_HIGHLIGHT_STYLES[${_t}command]='fg=#a6e22e,bold'
+		FAST_HIGHLIGHT_STYLES[${_t}hashed-command]='fg=#a6e22e,bold'
+		FAST_HIGHLIGHT_STYLES[${_t}builtin]='fg=#a6e22e,bold'
+		FAST_HIGHLIGHT_STYLES[${_t}function]='fg=#a6e22e,bold'
+		FAST_HIGHLIGHT_STYLES[${_t}alias]='fg=#a1efe4,bold'
+		FAST_HIGHLIGHT_STYLES[${_t}precommand]='fg=#a6e22e,underline'
+		FAST_HIGHLIGHT_STYLES[${_t}reserved-word]='fg=#f92672,bold'
+		FAST_HIGHLIGHT_STYLES[${_t}unknown-token]='fg=#f92672,bold,underline'
+		FAST_HIGHLIGHT_STYLES[${_t}commandseparator]='fg=#f92672'
+		FAST_HIGHLIGHT_STYLES[${_t}redirection]='fg=#f92672'
+		FAST_HIGHLIGHT_STYLES[${_t}path]='fg=#f8f8f2,underline'
+		FAST_HIGHLIGHT_STYLES[${_t}path-to-dir]='fg=#66d9ef,underline'
+		FAST_HIGHLIGHT_STYLES[${_t}globbing]='fg=#fd971f'
+		FAST_HIGHLIGHT_STYLES[${_t}single-hyphen-option]='fg=#fd971f'
+		FAST_HIGHLIGHT_STYLES[${_t}double-hyphen-option]='fg=#fd971f'
+		FAST_HIGHLIGHT_STYLES[${_t}single-quoted-argument]='fg=#e6db74'
+		FAST_HIGHLIGHT_STYLES[${_t}double-quoted-argument]='fg=#e6db74'
+		FAST_HIGHLIGHT_STYLES[${_t}dollar-quoted-argument]='fg=#e6db74'
+		FAST_HIGHLIGHT_STYLES[${_t}variable]='fg=#ae81ff'
+		FAST_HIGHLIGHT_STYLES[${_t}assign]='fg=#ae81ff'
+		FAST_HIGHLIGHT_STYLES[${_t}comment]='fg=#75715e,italic'
+	done
+	unset _t
+fi

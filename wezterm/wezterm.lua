@@ -258,7 +258,7 @@ table.insert(config.hyperlink_rules, {
 
 config.colors = {
 	-- The color of the scrollbar "thumb"; the portion that represents the current viewport
-	scrollbar_thumb = "#392a48",
+	scrollbar_thumb = "#75715e",
 
 	-- Monokai (matches the nvim/tmux "mohan" theme)
 	background = "#272822",
@@ -542,14 +542,14 @@ config.colors = {
 config.colors.tab_bar = {
 	-- The color of the strip that goes along the top of the window
 	-- (does not apply when fancy tab bar is in use)
-	background = "#0b0022",
+	background = "#1e1f1c",
 
 	-- The active tab is the one that has focus in the window
 	active_tab = {
 		-- The color of the background area for the tab
-		bg_color = "#2b2042",
+		bg_color = "#a6e22e",
 		-- The color of the text for the tab
-		fg_color = "#c0c0c0",
+		fg_color = "#272822",
 
 		-- Specify whether you want "Half", "Normal" or "Bold" intensity for the
 		-- label shown for this tab.
@@ -572,8 +572,8 @@ config.colors.tab_bar = {
 
 	-- Inactive tabs are the tabs that do not have focus
 	inactive_tab = {
-		bg_color = "#1b1032",
-		fg_color = "#808080",
+		bg_color = "#3e3d32",
+		fg_color = "#f8f8f2",
 
 		-- The same options that were listed under the `active_tab` section above
 		-- can also be used for `inactive_tab`.
@@ -582,8 +582,8 @@ config.colors.tab_bar = {
 	-- You can configure some alternate styling when the mouse pointer
 	-- moves over inactive tabs
 	inactive_tab_hover = {
-		bg_color = "#3b3052",
-		fg_color = "#909090",
+		bg_color = "#75715e",
+		fg_color = "#f8f8f2",
 		italic = true,
 
 		-- The same options that were listed under the `active_tab` section above
@@ -592,8 +592,8 @@ config.colors.tab_bar = {
 
 	-- The new tab button that let you create new tabs
 	new_tab = {
-		bg_color = "#1b1032",
-		fg_color = "#808080",
+		bg_color = "#3e3d32",
+		fg_color = "#f8f8f2",
 
 		-- The same options that were listed under the `active_tab` section above
 		-- can also be used for `new_tab`.
@@ -602,8 +602,8 @@ config.colors.tab_bar = {
 	-- You can configure some alternate styling when the mouse pointer
 	-- moves over the new tab button
 	new_tab_hover = {
-		bg_color = "#3b3052",
-		fg_color = "#909090",
+		bg_color = "#75715e",
+		fg_color = "#f8f8f2",
 		italic = true,
 
 		-- The same options that were listed under the `active_tab` section above
