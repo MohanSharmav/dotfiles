@@ -12,13 +12,21 @@ if not vim.env.TMUX or not pane or pane == "" or vim.env.NVIM then
   return
 end
 
+-- On: store the pane's current foreground command ("nvim", "git", "node", ...).
+-- tmux treats the pane as vim only while that command is still in front, so a
+-- crashed nvim can't leave C-h/j/k/l stuck for whatever runs next (a server,
+-- `tail -f`, a shell).
 local function set(on)
-  local cmd = on and { "tmux", "set-option", "-pq", "-t", pane, "@is_vim", "1" }
-    or { "tmux", "set-option", "-pqu", "-t", pane, "@is_vim" }
-  -- Synchronous on exit so it finishes before nvim does.
-  local job = vim.system(cmd, { text = true })
-  if not on then
-    job:wait(500)
+  if on then
+    vim.system({ "tmux", "display-message", "-p", "-t", pane, "#{pane_current_command}" }, { text = true }, function(res)
+      local name = vim.trim(res.stdout or "")
+      if res.code == 0 and name ~= "" then
+        vim.system({ "tmux", "set-option", "-pq", "-t", pane, "@is_vim", name })
+      end
+    end)
+  else
+    -- Synchronous on exit so it finishes before nvim does.
+    vim.system({ "tmux", "set-option", "-pqu", "-t", pane, "@is_vim" }, { text = true }):wait(500)
   end
 end
 
