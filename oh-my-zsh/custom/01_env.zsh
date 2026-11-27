@@ -232,3 +232,23 @@ function zvm_after_init() {
   zvm_bindkey vicmd 'k' history-substring-search-up
   zvm_bindkey vicmd 'j' history-substring-search-down
 }
+
+# ============================================================
+# Colours (Monokai, same palette as kitty/WezTerm/tmux/Neovim)
+# ============================================================
+# Tab-completion lists: files coloured like `ls`, groups with yellow headers,
+# the selected entry highlighted.
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format '%F{magenta}-- %d --%f'
+zstyle ':completion:*:warnings' format '%F{red}-- no matches --%f'
+zstyle ':completion:*:corrections' format '%F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*' show-group full
+
+# fzf (Ctrl-T, Ctrl-R, Alt-C and fzf-tab) in Monokai
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} --color=fg:#f8f8f2,bg:#272822,hl:#fd971f:bold,fg+:#f8f8f2,bg+:#49483e,hl+:#fd971f:bold,info:#e6db74,prompt:#a6e22e,pointer:#f92672,marker:#a6e22e,spinner:#ae81ff,header:#66d9ef,border:#75715e"
+
+# bat (cat alias, fzf previews) and git delta in Monokai
+export BAT_THEME="Monokai Extended"

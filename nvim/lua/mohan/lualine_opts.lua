@@ -10,7 +10,7 @@ end
 
 return {
   options = {
-    theme = "molokai", -- matches the molokai colorscheme from git_nvim_tmux_config
+    theme = "monokai-pro", -- same Monokai as the editor
     icons_enabled = false, -- no icons (speed first)
     section_separators = "",
     component_separators = "|",

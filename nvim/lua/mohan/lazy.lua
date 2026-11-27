@@ -85,18 +85,55 @@ local spec = {
     lazy = true,
   },
   {
-    dir = vim.fn.stdpath("config") .. "/colors",
-    name = "mohan",
+    -- Classic Monokai with colours for tree-sitter, LSP semantic tokens, the
+    -- completion menu (each kind its own colour), nvim-tree, Telescope,
+    -- gitsigns, diagnostics and lualine. Same palette as kitty/WezTerm/tmux.
+    -- molokai (git_nvim_tmux_config's scheme) stays as the fallback.
+    "loctvl842/monokai-pro.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-      -- molokai matches git_nvim_tmux_config (its init.vim: `colorscheme molokai`).
-      -- "mohan" (Monokai) stays as the fallback.
-      local ok = pcall(vim.cmd.colorscheme, "molokai")
+      local ok = pcall(function()
+        require("monokai-pro").setup({
+          filter = "classic", -- #272822 background, the original Monokai
+          transparent_background = false,
+          terminal_colors = true,
+          devicons = true, -- coloured file icons in nvim-tree
+          styles = {
+            comment = { italic = true },
+            keyword = { italic = true },
+            type = { italic = true },
+            storageclass = { italic = true },
+            structure = { italic = true },
+            parameter = { italic = true },
+            annotation = { italic = true },
+            tag_attribute = { italic = true },
+          },
+          inc_search = "background",
+          background_clear = {},
+          -- Completion menu: the letters you typed in bold orange.
+          override_scheme = function()
+            return { editorSuggestWidget = { highlightForeground = "#fd971f" } }
+          end,
+          plugins = {
+            bufferline = { underline_selected = false, underline_visible = false },
+            indent_blankline = { context_highlight = "pro", context_start_underline = false },
+          },
+        })
+        vim.cmd.colorscheme("monokai-pro-classic")
+      end)
       if not ok then
-        pcall(vim.cmd.colorscheme, "mohan")
+        local ok2 = pcall(vim.cmd.colorscheme, "molokai")
+        if not ok2 then
+          pcall(vim.cmd.colorscheme, "mohan")
+        end
       end
     end,
+  },
+  {
+    dir = vim.fn.stdpath("config") .. "/colors",
+    name = "mohan",
+    lazy = true, -- molokai / mohan colour files, used only as fallbacks
   },
   {
     -- Keeps ./Session.vim up to date (on every buffer/window change and on exit)

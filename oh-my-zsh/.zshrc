@@ -172,7 +172,7 @@ plugins=(
 	zsh-vi-mode
 	# vi-mode
 	# zsh-syntax-highlighting
-	# fast-syntax-highlighting  # off for speed: re-colours the line on every keypress
+	fast-syntax-highlighting  # colours commands, options, strings and paths as you type
 	zsh-history-substring-search
 	conda-zsh-completion
 	# web-search
